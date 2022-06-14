@@ -1,0 +1,295 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ForumPost>
+@using MediaWiz.Core.Helpers
+@using Umbraco.Cms.Core.Security
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@inject IMemberManager _memberManager;
+@{
+
+    int parentId = Model.Parent.Id;
+    var parentPage = Umbraco.Content(parentId);
+
+    if (parentPage.IsDocumentType("ForumPost"))
+    {
+        // if this post has a parent post, that's the page we
+        // want people to see (the full thread)
+        Context.Response.Redirect(parentPage.Url());
+        return;
+    }
+    if (!string.IsNullOrWhiteSpace(Context.Request.Query["edit"]))
+    {
+        @await Html.PartialAsync("Forums/_PostForm",
+            Model,
+            new ViewDataDictionary(this.ViewData) {
+                { "showTitle", parentPage.IsDocumentType("Forum")},
+                { "edit", true }
+            })
+        return;
+
+    }
+
+    bool showTitle = parentPage.IsDocumentType("Forum");
+    int pageSize = Convert.ToInt32(Model.Value<decimal>("intPageSize"));
+    int.TryParse(Context.Request.Query["page"], out var pagenum);
+    bool TopicIslocked = !Model.AllowReplies;
+    var sortdir = Context.Request.Query["sortdir"];
+    var items = Model.Children().Where(x => x.IsDocumentType("Forumpost") && !x.Value<bool>("postType"));
+    var publishedContents = items as IPublishedContent[] ?? items.ToArray();
+    var totalPages = (int)Math.Ceiling((double)publishedContents.Count() / (double)pageSize);
+
+    ViewBag.Page = pagenum;
+    ViewBag.TotalPages = totalPages;
+}
+
+
+<ul class="forums wiz-replies">
+    <li class="wiz-header">
+        <div class="row">
+            <div class="col-9">
+                @if (showTitle)
+                {
+                    <h4 id="@Model.Id">
+                        @Model.PostTitle
+                    </h4>
+                }
+            </div>
+            <div class="col-3">
+                @{
+                    var selected = "";
+                    if (sortdir == "ASC")
+                    {
+                        selected = "selected";
+                    }
+                }
+                <select class="form-select" name="Sortby" id="thread-sort">
+                    <option value="DESC">Oldest First</option>
+                    <option value="ASC" selected="@selected">Newest First</option>
+                </select>
+
+            </div>
+        </div>
+
+    </li>
+    <li class="wiz-body">
+        <ul>
+            @{
+                DisplayPost(Model);
+                var replies = publishedContents.OrderBy(x => x.CreateDate);
+                if (!String.IsNullOrWhiteSpace(sortdir))
+                {
+                    if (sortdir == "DESC")
+                    {
+                        replies = publishedContents.OrderByDescending(x => x.CreateDate);
+                    }
+                }
+                foreach (var reply in replies.Skip((pagenum - 1) * pageSize).Take(pageSize))
+                {
+                    DisplayPost((ContentModels.ForumPost)reply, false);
+                }
+            }
+        </ul>
+    </li>
+</ul>
+@if (totalPages > 1)
+{
+    @await Html.PartialAsync("Forums/_PagerView")
+}
+@* // if the forum and post are active, show the reply box.  *@
+@if (DoesForumAcceptPosts(parentPage) && !TopicIslocked)
+{
+    @await Html.PartialAsync("Forums/_PostForm", Model, new ViewDataDictionary(this.ViewData) { { "showTitle", false } })
+}
+
+@{
+    void DisplayPost(ContentModels.ForumPost post, bool showTitle = true)
+    {
+        var topicClass = post.PostType ? "topic" : "reply";
+        @if (TopicIslocked)
+        {
+            topicClass += " locked";
+        }
+        IList<string> roles = new List<string>();
+        var user = _memberManager.GetCurrentMemberAsync().Result;
+        if (user != null)
+        {
+            roles = _memberManager.GetRolesAsync(user).Result;
+        }
+
+
+        <li class="@topicClass">
+
+            @if (post.IsVisible() || roles.Contains("ForumAdministrator"))
+            {
+                var alertwarning = "";
+                @if (!post.IsVisible())
+                {
+                    alertwarning = "alert-warning";
+                }
+                <div id="post_@post.Id" class="wiz-reply-header">
+                    <div class="wiz-topic-meta @alertwarning">
+                        <span class="wiz-reply-post-date" title="@post.CreateDate">@post.CreateDate.ToLongDateString() @post.CreateDate.ToLongTimeString()</span>
+                        @if (post.EditDate.ToLocalTime() > post.CreateDate.AddSeconds(10))
+                        {
+                            <span class="text-danger" title="@post.EditDate.ToLocalTime()">- last edited @ForumHelper.GetRelativeDate(post.EditDate.ToLocalTime())</span>
+                        }
+                        <ul class="wiz-admin-links list-inline" style="white-space: nowrap;">
+                            @{ DisplayPostTools(post);}
+                            <li class="list-inline-item"><a href="#post_@post.Id" title="Direct link to post"><i class="fs-5 bi-link-45deg"></i></a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="@topicClass ">
+                    <div class="wiz-reply-author">
+                        <a href="/profile/?user=@post.PostCreator" title="View @post.PostCreator's profile" class="wiz-author-link">
+                            <span>
+                                @{ DisplayAvatar(post.PostAuthor);}
+                            </span>
+                            <span class="wiz-author-name">@post.PostCreator</span>
+                        </a>
+                        <div class="wiz-author-role">
+                            @{ DisplayRole(post.PostAuthor);}
+                        </div>
+                    </div>
+                    <div class="wiz-reply-content">
+                        @post.PostBody
+                    </div>
+                </div>
+            }
+            else
+            {
+                // hidden posts are deleted
+                <div class="wiz-reply-header post-deleted">
+                    @if (post.DeletedByAuthor)
+                    {
+                        <div class="alert alert-warning">post deleted by author</div>
+                    }
+                    else
+                    {
+                        <div class="alert alert-warning">post has been removed</div>
+
+                    }
+                </div>
+            }
+        </li>
+    }
+
+    void DisplayAvatar(IPublishedContent author)
+    {
+        int authorId = author?.Id ?? -1;
+        if (authorId > 0)
+        {
+            var memberById = _memberManager.FindByIdAsync(authorId.ToString()).Result;
+            <img width="80" height="80" src="@ForumHelper.GravatarURL(memberById.Email)" class="avatar rounded-circle" alt="author's Avatar" />
+        }
+        else
+        {
+            <img width="80" height="80" src="@ForumHelper.GravatarURL("")" class="avatar rounded-circle" alt="author's Avatar" />
+        }
+
+    }
+
+    void DisplayRole(IPublishedContent author)
+    {
+        int authorId = author?.Id ?? -1;
+
+        if (authorId > 0)
+        {
+            var memberById = _memberManager.FindByIdAsync(authorId.ToString()).Result;
+            if (author != null)
+            {
+                var roles = _memberManager.GetRolesAsync(memberById).Result;
+                foreach (var role in roles)
+                {
+                    <p>@role</p>
+                }
+
+            }
+        }
+
+    }
+
+    void DisplayPostTools(ContentModels.ForumPost post)
+    {
+        int authorId = post.PostAuthor?.Id ?? -1;
+        var isLoggedIn = Context.User?.Identity?.IsAuthenticated ?? false;
+        if (!isLoggedIn)
+        {
+            return;
+
+        }
+        IList<string> roles = new List<string>();
+        var user = _memberManager.GetCurrentMemberAsync().Result;
+        if (user != null)
+        {
+            roles = _memberManager.GetRolesAsync(user).Result;
+        }
+        if ((TopicIslocked || user == null) && !roles.Contains("ForumAdministrator"))
+        {
+            return;
+        }
+        if (TopicIslocked && !roles.Contains("ForumAdministrator"))
+        {
+            return;
+        }
+
+        if (user != null)
+        {
+            var memberById = _memberManager.FindByIdAsync(user.Id).Result;
+            IPublishedContent member = _memberManager.AsPublishedMember(memberById);
+
+
+            if ((member.Id == authorId && isLoggedIn) || roles.Contains("ForumAdministrator"))
+            {
+                <li class="list-inline-item">
+                    <a class="post-delete" data-postid="@post.Id" title="Delete Post" href="#">
+                        <i class="fs-5 bi-trash" aria-hidden="true"></i>
+                    </a>
+                </li>
+                <li class="list-inline-item">
+                    <a href="#" class="post-edit" data-postid="@post.Id" data-bs-toggle="modal" data-bs-target="#editPostModal" title="Edit Post">
+                        <i class="fs-5 bi-pencil" aria-hidden="true"></i>
+                    </a>
+                </li>
+                @if (post.PostType)
+                {
+                    <li class="list-inline-item">
+                        <a class="post-lock" data-postid="@post.Id" href="#" rel="nofollow" title="Lock/Unlock Post">
+                            @if (TopicIslocked)
+                            {
+                                <i class="fs-5 bi-unlock " aria-hidden="true"></i>
+                            }
+                            else
+                            {
+                                <i class="fs-5 bi-lock" aria-hidden="true"></i>
+                            }
+                        </a>
+                    </li>
+                }
+            }
+        }
+    }
+}
+
+
+
+@functions {
+    public bool DoesForumAcceptPosts(IPublishedContent item)
+    {
+        // does recursing up get false?
+        if (item.Value<bool>("isActive") == false)
+        {
+            return false;
+        }
+
+        // thing is this forum may be active, but a parent forum may be off...
+        if (item.Parent != null && item.Parent.IsDocumentType("Forum"))
+        {
+            // so if parent is forum go up to it
+            return DoesForumAcceptPosts(item.Parent);
+        }
+
+        // here.. we have reached the top and not found a false (forum off)
+        // so it must be on...
+        return true;
+    }
+
+}

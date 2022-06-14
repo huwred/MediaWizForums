@@ -1,0 +1,49 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Core.Services
+@inject IMemberManager _memberManager
+@inject IMemberGroupService MemberGroupService
+
+@*
+    allows people to create a new post (if the forum permissions let them)
+*@
+
+@{ var create = Context.Request.Query["create"];
+
+                if (Model.Value<bool>("postAtRoot") && MemberCanPost(Model))
+                {
+                    if (!string.IsNullOrWhiteSpace(create) && create == "true")
+                    {
+    @await Html.PartialAsync("Forums/_PostForm",
+             Model,
+             new ViewDataDictionary(this.ViewData) { { "showTitle", true } }) }
+                    else
+                    {
+    <a href="?create=true" class="btn btn-primary">New Post</a> }
+                } }
+
+
+@functions { public bool MemberCanPost(IPublishedContent item)
+            {
+                if (!_memberManager.IsLoggedIn())
+                    return false;
+
+                var canPostGroups = item.Value<string>("canPostGroups");
+
+                // default(blank list) is anyone can post
+                if (string.IsNullOrWhiteSpace(canPostGroups))
+                    return true;
+
+                // is the user a member of a group
+                // is the user in any of those groups ?
+                var allowedGroupList = new List<string>();
+                foreach (var memberGroupStr in canPostGroups.Split(','))
+                {
+                    var memberGroup = MemberGroupService.GetById(Convert.ToInt32(memberGroupStr));
+                    if (memberGroup != null)
+                    {
+                        allowedGroupList.Add(memberGroup.Name);
+                    }
+                }
+                return _memberManager.IsMemberAuthorizedAsync(allowGroups: allowedGroupList).Result;
+            } }

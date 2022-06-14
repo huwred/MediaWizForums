@@ -1,0 +1,123 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<MediaWiz.Core.Models.ViewModels.SearchViewModel>
+@using Examine
+@using MediaWiz.Core.Interfaces
+@using MediaWiz.Core.Services
+@using Umbraco.Cms.Core.Cache
+@using Umbraco.Cms.Core.Scoping
+@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Core.Services
+@using Umbraco.Extensions
+
+@inject IMemberManager _memberManager
+@inject AppCaches _AppCaches
+@inject IExamineManager _ExamineManager
+@inject IMemberGroupService MemberGroupService
+@inject IScopeProvider _ScopeProvider
+@inject IForumCacheService _cacheService;
+@{
+    Layout = "ForumMaster.cshtml";
+
+    int.TryParse(Context.Request.Query["page"], out var pagemum);
+    if (pagemum == 0)
+    {
+        pagemum = 1;
+    }
+    var pageSize = Model.HasValue("intPageSize") ? Model.Value<int>("intPageSize") : 10;
+    var totalPages = (int)Math.Ceiling((double)Model.TotalResults / (double)pageSize);
+    ViewBag.Page = pagemum;
+    ViewBag.TotalPages = totalPages;
+}
+<div class="wiz-forum-info">
+    <div class="page-header">
+        <h3>@Model.Value("title")</h3>
+    </div>
+    <div class="forum-intro">
+        @Html.Raw(Model.Value("message"))
+    </div>
+</div>
+<div>
+
+    @{
+
+        if (Model.PagedResult.Any())
+        {
+            <div class="wiz-topics">
+                <div class="d-flex flex-row flex-wrap mb-3 p-2 bg-light color-black ">
+                    <div class="col-8 col-sm-5">Topic</div>
+                    <div class="col-2">Replies</div>
+                    <div class="col-2 flex-shrink-0">Views</div>
+                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">Last post</div>
+                </div>
+                <div class="wiz-body">
+                    @foreach (var result in Model.PagedResult)
+                    {
+                        var post = Umbraco.Content(result.Id);
+                        DisplayPost((ForumPost)post);
+                    }
+                    @if (totalPages > 1)
+                    {
+                        @await Html.PartialAsync("Forums/_PagerView", Model)
+                    }
+                </div>
+
+            </div>
+
+        }
+        else
+        {
+            <p>No active Topics </p>
+        }
+    }
+</div>
+
+@{
+    void DisplayPost(ForumPost post, bool showTitle = true)
+    {
+
+        var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id);
+        var views = new ForumViewCounterService(_ScopeProvider).GetViewCount(post.Id)?.Views ?? 0;
+        var topicClass = post.PostType ? "topic" : "reply";
+
+        @if (post.IsVisible())
+        {
+            string locked = post.Value<bool>("allowReplies") ? "" : "locked";
+            <div class="d-flex flex-row flex-wrap @topicClass @locked" id="topic-@post.Id">
+                <div class="col-8 col-sm-5">
+                    <a class="wiz-topic-permalink" href="@post.Url()">@post.Value("postTitle")</a>
+                    <span class="wiz-topic-meta">
+                        <span class="wiz-topic-content">@post.Value("postBody")</span>
+                    </span>
+                </div>
+                <div class="col-2">@(cacheInfo.Count)</div>
+                <div class="col-2">@views</div>
+                <div class="col-12 col-sm flex-shrink-0 flex-grow-1">
+                    <span class="wiz-topic-started-by">Created by @post.Value("postCreator")</span>
+                    @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
+                    {
+                        <span>
+                            <br /><a href="@cacheInfo.lastPostUrl" title="Jump to latest reply">last post</a>&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
+                        </span>
+                    }
+
+                </div>
+            </div>
+        }
+        else
+        {
+            // hidden posts are deleted
+            <div class="d-flex flex-row flex-wrap post-deleted">
+                @if (post.DeletedByAuthor)
+                {
+                    <div class="flex-fill alert alert-warning">post deleted by author</div>
+                }
+                else
+                {
+                    <div class="flex-fill alert alert-warning">post has been removed</div>
+
+                }
+            </div>
+        }
+
+    }
+
+}

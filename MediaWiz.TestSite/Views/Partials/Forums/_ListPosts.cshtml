@@ -1,0 +1,104 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Examine
+@using MediaWiz.Core.Interfaces
+@using MediaWiz.Core.Services
+@using Umbraco.Cms.Core.Cache
+@using Umbraco.Cms.Core.Security
+@inject IMemberManager _memberManager;
+@inject AppCaches _AppCaches;
+@inject IExamineManager _ExamineManager;
+@inject IViewCounterService viewCounter
+@inject IForumCacheService _cacheService
+@{
+    int.TryParse(Context.Request.Query["page"], out var pagenum);
+    var posts = Model.Children().Where(x => x.IsDocumentType("Forumpost")).ToList();
+    var pageSize = Model.HasValue("intPageSize") ? Convert.ToInt32(Model.Value("intPageSize")) : 5;
+    var totalPages = (int)Math.Ceiling((double)posts.Count() / (double)pageSize);
+    ViewBag.Page = pagenum;
+    ViewBag.TotalPages = totalPages;
+    if (posts.Any())
+    {
+        <div>
+            <div class="wiz-topics">
+                <div class="d-flex flex-row flex-wrap mb-3 p-2 bg-light color-black">
+                    <div class="col-8 col-sm-5">Topic</div>
+                    <div class="col-2">Replies</div>
+                    <div class="col-2">Views</div>
+                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">&nbsp;</div>
+                </div>
+                <div class="wiz-body">
+                    @foreach (var post in posts.Skip((pagenum - 1) * pageSize).Take(pageSize)
+                    .OrderByDescending(x => x.Value<int>("stickyness"))
+                    .ThenByDescending(x => _cacheService.GetPost(x, "Topic_" + x.Id).latestPost))
+                    {
+                        var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id);
+                        if (post.IsVisible())
+                        {
+                            string locked = post.Value<bool>("allowReplies") ? "" : "locked";
+                            var views = viewCounter.GetViewCount(post.Id)?.Views ?? 0;
+                            <div class="d-flex flex-row flex-wrap topic @locked" id="topic-@post.Id">
+                                <div class="col-8 col-sm-5">
+                                    <a class="wiz-topic-permalink" href="@post.Url()">@post.Value("postTitle")</a>
+                                    <span class="wiz-topic-meta">
+                                        <span class="wiz-topic-content">@post.Value("postBody")</span>
+                                    </span>
+                                </div>
+                                <div class="col-2">@(cacheInfo.Count)</div>
+                                <div class="col-2">@views</div>
+                                <div class="col-12 col-sm flex-shrink-0 flex-grow-1">
+                                    <span class="wiz-topic-started-by">Created by @post.Value("postCreator")</span>
+                                    @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
+                                    {
+                                        <span>
+                                            <br /><a href="@cacheInfo.lastPostUrl" title="Jump to latest reply">last post</a>&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
+                                        </span>
+                                    }
+
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex flex-row topic type-topic">
+                                @if (post.Value<bool>("deletedByAuthor"))
+                                {
+                                    <span class="alert alert-warning d-flex">post deleted by author</span>
+                                }
+                                else
+                                {
+                                    <span class="alert alert-warning d-flex">post has been removed</span>
+                                }
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+            @if (totalPages > 1)
+            {
+                @await Html.PartialAsync("Forums/_PagerView")
+            }
+        </div>
+    }
+    else if (Model.HasValue("postAtRoot") && Model.Value<int?>("postAtRoot") == 1)
+    {
+        <div class="">
+            <table class="table table-responsive" style="display: block;">
+                <thead class="table-responsive">
+                    <tr class="d-flex">
+                        <th scope="col" class="col-sm-12">Posts</th>
+                    </tr>
+                </thead>
+                <tbody class="table-responsive">
+                    <tr class="d-flex">
+                        <td class="wiz-topic-title col-sm-12">
+                            No posts yet, be the first to make one.
+                        </td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+}
+
+

@@ -1,0 +1,136 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using MediaWiz.Core.Helpers
+@using MediaWiz.Core.Interfaces
+@using MediaWiz.Core.Services
+@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Core.Services
+
+@inject IMemberManager _memberManager
+@inject IMemberGroupService _memberGroupService
+@inject IForumCacheService _cacheService
+<!--
+    lists all the child forums of this one.
+    (uses the cache, to get post count and latest post - without having to recurse everytime)
+-->
+@{
+    var user = _memberManager.GetCurrentMemberAsync().Result;
+    IList<string> roles = new List<string>();
+    if (user != null)
+    {
+        roles = _memberManager.GetRolesAsync(user).Result;
+    }
+
+    var forums = Model.Children().Where(x => x.IsDocumentType("Forum") && x.IsVisible() && (x.Value<int?>("membersOnly") != 1 || (x.Value<int?>("membersOnly") == 1 && _memberManager.IsLoggedIn()))).ToList();
+    if (forums.Any())
+    {
+        <div>
+            <div id="forums-list-0" class="wiz-forums">
+                <div class="d-flex flex-row flex-wrap mb-3 p-2 bg-light color-black">
+                    <div class="col-8 col-sm-5">Forum</div>
+                    <div class="col-2">Topics</div>
+                    <div class="col-2">Posts</div>
+                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">Last Post</div>
+                </div>
+                <div class="wiz-body">
+                    @foreach (var forum in forums)
+                    {
+                        if (CanView(forum))
+                        {
+                            var cacheInfo = _cacheService.GetPost(forum, "forum_" + forum.Id);
+                            <div id="forum-@forum.Id" class="d-flex flex-row flex-wrap forum type-forum">
+                                <div class="col-8 col-sm-5">
+                                    <a class="wiz-forum-title" href="@forum.Url()">@forum.Value("forumTitle")</a>
+                                    <div class="p-2">@forum.Value("forumDescription")</div>
+                                    @if (forum.HasValue("canPostGroups"))
+                                    {
+                                        <span class="text-muted small">(Posting restricted to @PostRestriction(forum))</span>
+                                    }
+                                </div>
+                                <div class="col-2">@cacheInfo.TopicCount</div>
+                                <div class="col-2">@cacheInfo.Count</div>
+                                <div class="col-12 col-sm flex-shrink-0 flex-grow-1">
+                                    @if (cacheInfo.latestPost > DateTime.MinValue)
+                                    {
+                                    <p class="wiz-topic-meta">
+                                        <a href="@cacheInfo.lastPostUrl#post_@cacheInfo.Id" title="Jump to latest post">@ForumHelper.GetRelativeDate(cacheInfo.latestPost)</a>
+                                        by
+                                        <a href="~/profile/?user=@cacheInfo.lastpostAuthor" title="View @cacheInfo.lastpostAuthor's profile" class="wiz-author-link">
+                                            @cacheInfo.lastpostAuthor
+                                        </a>
+                                    </p>
+                                    }
+
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+                @if (roles.Contains("ForumAdministrator"))
+                {
+                    <div class="d-flex flex-row text-right">
+                        @if (TempData["ForumSaveResult"] != null)
+                        {
+                            var result = (PublishResult)TempData["ForumSaveResult"];
+                            @result.Success
+                        }
+                    </div>
+                }
+
+            </div>
+        </div>
+    }
+}
+@if (roles.Contains("ForumAdministrator"))
+{
+    @await Html.PartialAsync("Forums/_CreateForum")
+}
+
+
+
+@functions
+{
+    public bool CanView(IPublishedContent model)
+    {
+
+        var canViewGroups = model.Value<string>("canViewGroups");
+        //all members allowed
+        if (String.IsNullOrWhiteSpace(canViewGroups))
+            return true;
+
+        var allowedGroupList = new List<string>();
+        foreach (var memberGroupStr in canViewGroups.Split(','))
+        {
+            var memberGroup = _memberGroupService.GetById(Convert.ToInt32(memberGroupStr));
+            if (memberGroup != null)
+            {
+                allowedGroupList.Add(memberGroup.Name);
+            }
+        }
+        //check if member is one of the allowed groups
+
+        return _memberManager.IsMemberAuthorizedAsync(null, allowedGroupList).Result;
+    }
+
+    public string PostRestriction(IPublishedContent item)
+    {
+
+        var canPostGroups = item.Value<string>("canPostGroups");
+
+        // default(blank list) is anyone can post
+        if (string.IsNullOrWhiteSpace(canPostGroups))
+            return "";
+
+        // is the user a member of a group
+        // is the user in any of those groups ?
+        var allowedGroupList = new List<string>();
+        foreach (var memberGroupStr in canPostGroups.Split(','))
+        {
+            var memberGroup = _memberGroupService.GetById(Convert.ToInt32(memberGroupStr));
+            if (memberGroup != null)
+            {
+                allowedGroupList.Add(memberGroup.Name);
+            }
+        }
+        return string.Join(", ", allowedGroupList);
+    }
+}

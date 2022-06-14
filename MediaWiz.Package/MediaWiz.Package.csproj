@@ -1,0 +1,53 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+      <AssemblyVersion>9.0.0</AssemblyVersion>
+      <Version>9.0.0</Version>
+      <InformationalVersion>9.0.0</InformationalVersion>
+      <TargetFramework>net5.0</TargetFramework>
+        <ContentTargetFolders>.</ContentTargetFolders>
+        <Product>MediaWizard Forums</Product>
+        <PackageId>MediaWiz.Forums</PackageId>
+        <Title>MediaWizard Forums</Title>
+        <Description>MediaWiz Forums for Umbraco CMS. Built for Umbraco 9.5</Description>
+        <Authors>Huw Reddick</Authors>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <PackageProjectUrl>https://umbraco.themediawizards.co.uk</PackageProjectUrl>
+    </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetsForTfmSpecificBuildOutput>$(TargetsForTfmSpecificBuildOutput);CopyProjectReferencesToPackage</TargetsForTfmSpecificBuildOutput>
+    <Copyright>Huw Reddick</Copyright>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+  </PropertyGroup>
+  <Target Name="CopyProjectReferencesToPackage" DependsOnTargets="ResolveReferences">
+    <ItemGroup>
+      <BuildOutputInPackage Include="@(ReferenceCopyLocalPaths-&gt;WithMetadataValue('ReferenceSourceTarget', 'ProjectReference'))" />
+    </ItemGroup>
+  </Target>
+
+    <ItemGroup>
+        <PackageReference Include="Umbraco.Cms.Web.Website" Version="9.5.1" />
+        <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="9.5.1" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Include="build\**\*.*">
+            <Pack>true</Pack>
+            <PackagePath>buildTransitive</PackagePath>
+        </None>
+      <Content Include="wwwroot\**\*.*">
+        <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+        <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+      </Content>
+
+      <None Remove="Migrations\package.zip" />
+      <EmbeddedResource Include="Migrations\package.zip" />
+
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\MediaWiz.Core\MediaWiz.Core.csproj" PrivateAssets="All" />
+    </ItemGroup>
+
+</Project>

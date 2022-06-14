@@ -1,0 +1,70 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ForumsPostModel>
+@inject IMemberManager _memberManager
+@inject IMemberGroupService MemberGroupService
+@using MediaWiz.Core.Controllers
+@using MediaWiz.Core.Models
+@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Core.Services
+
+@{
+    var user = _memberManager.GetCurrentMemberAsync().Result;
+    IPublishedContent member = _memberManager.AsPublishedMember(user);
+    var roles = _memberManager.GetRolesAsync(user).Result;
+
+    @*if (member.Id != Model.AuthorId && !roles.Contains("ForumAdministrator"))
+    {
+        <h3>You can't edit this post, only Administrators can edit other members posts'</h3>
+        return;
+    }*@
+
+    var showTitle = Model.IsTopic;
+    var mode = "Edit Post";
+    var label = "Message";
+    var btn = "Save";
+    var Post = new ForumsPostModel
+    {
+        Id = Model.Id,
+        Body = Model.Body,
+        Title = Model.Title,
+        AuthorId = Model.AuthorId,
+        ParentId = Model.ParentId,
+        IsTopic = Model.IsTopic,
+        returnPath = Model.returnPath
+    };
+
+    using (Html.BeginUmbracoForm<ForumsSurfaceController>("PostEdit", null, new { @class = "form-horizontal" }))
+    {
+        <fieldset class="container">
+
+            @if (showTitle)
+            {
+                <div class="form-group">
+                    @Html.LabelFor(m => Post.Title, new { @class = "control-label col-1" })
+                    <div class="col-11">
+                        @Html.TextBoxFor(m => Post.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => Post.Title)
+                    </div>
+                </div>
+            }
+            <div class="form-group">
+                @Html.LabelFor(m => Post.Body, label, new { @class = "control-label col-sm-1" })
+                @Html.TextAreaFor(m => Post.Body, 10, 20, new { id = "edit-body",@class= "edit-body" })
+                @Html.ValidationMessageFor(m => Post.Body)
+            </div>
+            @Html.HiddenFor(m => Post.returnPath)
+            @Html.HiddenFor(m => Post.Id)
+            @Html.HiddenFor(m => Post.ParentId)
+            @Html.HiddenFor(m => Post.AuthorId)
+            @Html.HiddenFor(m => Post.IsTopic)
+            @Html.ValidationSummary("PostEdit", true)
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">@btn</button> <button type="button" class="btn btn-danger btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </fieldset>
+    }
+
+}
+
+
+
+

@@ -1,0 +1,55 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedContentQuery PublishedContentQuery
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+
+
+@{
+    var startNodeId = Model?.MacroParameters["startNodeId"]; 
+
+    if (startNodeId != null)
+    {
+    @* Get the starting page *@
+var startNode = PublishedContentQuery.Content(startNodeId);
+var selection = startNode.DescendantsOrSelf()
+    .Where(x => x.IsVisible(PublishedValueFallback) && x.Value<bool>("postType"))
+    .OrderByDescending(o=>o.Value("editDate"))
+    .ThenByDescending(o => o.CreateDate).ToArray();
+
+if (selection.Length > 0)
+{
+            <div class="sidebar">
+                <span class="wiz-forum-title">&nbsp;Latest forum posts</span>
+                <ul class="wiz-topics">
+                    <li class="wiz-body">
+                        @foreach (var item in selection)
+                        {
+                            var editdate = item.Value<DateTime>("editDate");
+                            <ul class="topic">
+                                <li class="wiz-topic-content">
+                                    <a class="wiz-topic-permalink" href="@item.Url(PublishedUrlProvider)">@item.Value("postTitle")</a>
+                                    <span class="wiz-topic-meta">@item.Value("postBody")</span>
+                                    <span class="wiz-topic-header">Created by @item.Value("postCreator") on <span class="wiz-topic-permalink">@item.CreateDate.ToLongDateString() at @item.CreateDate.ToLocalTime().ToShortTimeString()</span>
+                                        @if (editdate == DateTime.MinValue)
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            <span><br />Latest post @editdate.ToLocalTime().ToLongDateString() at @editdate.ToLocalTime().ToShortTimeString()</span>
+                                        }
+                                        
+                                    </span>
+                                </li>
+                            </ul>
+                        }
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+}

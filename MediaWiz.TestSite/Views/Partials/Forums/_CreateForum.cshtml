@@ -1,0 +1,51 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using MediaWiz.Core.Controllers
+@using MediaWiz.Core.Models
+@{
+    var Forum = new ForumsForumModel
+    {
+        ParentId = Model.Id,
+        AllowPosts = true
+    };
+}
+<div class="modal fade" id="forumModal" tabindex="-1" aria-labelledby="forumModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forumModalLabel">Create Forum</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @using (Html.BeginUmbracoForm<ForumsSurfaceController>("CreateForum", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="mb-3">
+                        @Html.LabelFor(m => Forum.Title, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => Forum.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => Forum.Title)
+                    </div>
+
+                    <div class="mb-3">
+                        @Html.LabelFor(m => Forum.Introduction, new { @class = "form-label" })
+                        @Html.TextAreaFor(m => Forum.Introduction, new { @class = "form-control" })
+                        <div id="introHelp" class="form-text">Enter a brief description for the forum.</div>
+                        @Html.ValidationMessageFor(m => Forum.Introduction)
+                    </div>
+                    <div class="mb-3 form-check">
+                        @Html.CheckBoxFor(m => Forum.AllowPosts, new { @class = "form-check-input" })
+                        @Html.LabelFor(m => Forum.AllowPosts, new { @class = "form-check-label" })
+                    </div>
+                    <div class="mb-3 form-check">
+                        @Html.CheckBoxFor(m => Forum.AllowImages, new { @class = "form-check-input" })
+                        @Html.LabelFor(m => Forum.AllowImages, new { @class = "form-check-label" })
+                    </div>
+                    @Html.HiddenFor(m=>Forum.ParentId)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save changes</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>

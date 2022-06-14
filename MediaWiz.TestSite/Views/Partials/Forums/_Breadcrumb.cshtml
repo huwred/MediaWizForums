@@ -1,0 +1,39 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@*
+    This snippet makes a breadcrumb of parents using an unordred html list.
+
+    How it works:
+    - It uses the Ancestors() method to get all parents and then generates links so the visitor can go back
+    - Finally it outputs the name of the current page (without a link)
+*@
+@{
+    var CurrentPage = UmbracoContext.PublishedRequest.PublishedContent;
+    var ForumUrl = Umbraco.GetDictionaryValue("Forums.ForumUrl", "/forums").TrimEnd('/');
+}
+<ul class="forum-breadcrumb">
+
+@if (CurrentPage.Ancestors().Any())
+{
+
+    foreach (var bpage in CurrentPage.Ancestors().OrderBy(x => x.Level))
+    {
+        if (!bpage.IsDocumentType("forumAuthHolder"))
+        {
+            <li class="d-none d-sm-block"><a href="@bpage.Url()">@bpage.Name</a>&nbsp;|&nbsp;</li>
+        }
+
+    }
+
+    @* Display the current page as the last item in the list *@
+    <li class="active d-none d-sm-block">@CurrentPage.Name</li>
+}
+    <li>
+        <form action="@ForumUrl/ForumSearch">
+            <div class="input-group input-group-sm">
+                <input type="text" placeholder="Quick Search" id="query" name="query" class="form-control" required="required" />
+                <button type="submit" name="Submit" class="btn btn-info">Find</button>
+            </div>
+
+        </form>
+    </li>
+</ul>

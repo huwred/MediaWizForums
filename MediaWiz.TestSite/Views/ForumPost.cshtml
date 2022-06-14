@@ -1,0 +1,61 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.ForumPost>
+@using MediaWiz.Core.Services
+@using Umbraco.Cms.Core.Scoping
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@inject IScopeProvider _ScopeProvider
+@{
+    Layout = "ForumMaster.cshtml";
+
+    int nodeId = Umbraco.AssignedContentItem.Id;
+    string cookieName = $"PageView_{nodeId}";
+    if (!Context.Session.Keys.Contains(cookieName))
+    {
+        new ForumViewCounterService(_ScopeProvider).RecordView(nodeId);
+
+        Context.Session.Set(cookieName, new byte[] { 1 });
+    }
+
+}
+<div>
+    @await Html.PartialAsync("Forums/_DisplayThread")
+</div>
+<div class="modal fade" id="editPostModal" tabindex="-1" aria-labelledby="editPostModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="editPostModalLabel">Edit Post</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="partial-form" style="padding:0.5em"></div>
+        </div>
+    </div>
+</div>
+
+@section ForumScripts
+{
+    <script>
+    $(document).ready(function() {
+        MediaWiz.InitTinyMce("textarea.new-post");
+        $("#thread-sort").on("change",function() {
+            $.ajax({
+                url: '@Url.Action("Sort", "ForumsSurface")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    "sort": this.value
+                }),
+                // other settings
+                success: function(data) {
+                    if (data.success) {
+                        location.href = data.message;
+                    }
+                },
+                error: function(jqXHR, exception) {
+                    console.log(jqXHR);
+                    alert(exception);
+                }
+            });
+        });
+    });
+    </script>
+}

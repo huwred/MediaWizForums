@@ -1,0 +1,96 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@using MediaWiz.Core.Controllers
+@using Microsoft.Extensions.Options
+@using Umbraco.Cms.Core.Configuration.Models
+@using Umbraco.Cms.Web.Website.Models
+@using Umbraco.Extensions
+@inject MemberModelBuilderFactory memberModelBuilderFactory
+@inject IOptions<GlobalSettings> hostingSettings
+@{
+    // Build a registration model with parameters
+    var registerModel = memberModelBuilderFactory
+        .CreateRegisterModel()
+        .WithMemberTypeAlias("forumMember")
+        .WithRedirectUrl(null)
+        .WithCustomProperties(true)
+        .Build();
+
+    var success = TempData["FormSuccess"] != null;
+    var _hostingSettings = hostingSettings.Value;
+}
+
+
+@if (success)
+{
+    @* This message will show if registerModel.RedirectUrl is not defined (default) *@
+    <p class="text-success">Your Registration was successful, you should now receive an email containing a validation link to verify your email address.</p>
+    <p>The email will be coming from '@_hostingSettings.Smtp.From' so please add this domain to your whitelist. Should you not receive your validation email, please post on the Our Umbraco forums</p>
+}
+else
+{
+    @if (Model.Value<bool>("useCaptcha"))
+    {
+        @await Html.PartialAsync("Forums/_Captcha")
+    }
+
+    using (Html.BeginUmbracoForm<ForumMemberController>("RegisterMe", null, new { @id = "captcha-form-id", style = "display: none;" }, FormMethod.Post))
+    {
+        <hr />
+
+        <div class="mb-3">
+            <label asp-for="@registerModel.Username" class="form-label"></label>
+            <input asp-for="@registerModel.Username" class="form-control" autocomplete="username" aria-required="true" />
+            <span asp-validation-for="@registerModel.Username" class="form-text text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@registerModel.Email" class="form-label"></label>
+            <input asp-for="@registerModel.Email" class="form-control" autocomplete="email" aria-required="true" />
+            <span asp-validation-for="@registerModel.Email" class="form-text text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@registerModel.Password" class="form-label"></label>
+            <input asp-for="@registerModel.Password" class="form-control" autocomplete="new-password" aria-required="true" />
+            <span asp-validation-for="@registerModel.Password" class="form-text text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@registerModel.ConfirmPassword" class="form-label"></label>
+            <input asp-for="@registerModel.ConfirmPassword" class="form-control" autocomplete="new-password" aria-required="true" />
+            <span asp-validation-for="@registerModel.ConfirmPassword" class="form-text text-danger"></span>
+        </div>
+
+        @if (registerModel.MemberProperties != null)
+        {
+            for (var i = 0; i < registerModel.MemberProperties.Count; i++)
+            {
+                if (registerModel.MemberProperties[i].Alias == "receiveNotifications")
+                {
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="@registerModel.MemberProperties[i].Value">
+                            <label class="form-check-label" for="flexSwitchCheckDefault">@Html.LabelFor(m => registerModel.MemberProperties[i].Value, registerModel.MemberProperties[i].Name)</label>
+                        </div>
+
+                        <span asp-validation-for="@registerModel.MemberProperties[i].Value" class="form-text text-danger"></span>
+                        <div id="notifyHelp" class="form-text">
+                            Receive an email when someone posts on the forum.
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        @Html.LabelFor(m => registerModel.MemberProperties[i].Value, registerModel.MemberProperties[i].Name)
+                        <input asp-for="@registerModel.MemberProperties[i].Value" class="form-control" />
+                        @Html.HiddenFor(m => registerModel.MemberProperties[i].Alias)
+                        <span asp-validation-for="@registerModel.MemberProperties[i].Value" class="form-text text-danger"></span>
+                    </div>
+                }
+            }
+        }
+
+        <button type="submit" class="btn btn-primary" id="register-submit" >Register</button>
+    }
+
+
+}

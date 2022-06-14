@@ -1,0 +1,40 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<ContentModels.Register>
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+    Layout = "ForumMaster.cshtml";
+}
+
+@section ForumHeader{
+    <meta name="robots" content="nofollow,noarchive" />
+}
+<div class="wiz-forum-info">
+    <div class="page-header">
+        <h3>@Model.Title</h3>
+    </div>
+    <div class="forum-intro">
+        @Html.Raw(Model.Message)
+    </div>
+</div>
+@await Html.PartialAsync("Forums/_Register")
+@section ForumScripts
+{
+    <script type="text/javascript">
+        $.fn.clearValidation = function(){var v = $(this).validate();$('[name]',this).each(function(){v.successList.push(this);v.showErrors();});v.resetForm();v.reset();};
+
+        $(document).ready(function() {
+            if ('@Model.Value("useCaptcha")' !== 'True') {
+                $('#register-submit').show();
+            }
+        });
+        $("#btn-captcha").on('click', function(e) {
+            e.preventDefault();
+            if (MediaWiz.captchaCheck($("#Captcha").val())) {
+                $("#captcha-check").hide();
+                $('#captcha-form-id').show();
+                $("#captcha-form-id").clearValidation();
+            } else {
+                $("#Captcha").attr("placeholder", "Incorrect, please try again.");
+            }
+        });
+    </script>
+}

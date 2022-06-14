@@ -1,0 +1,110 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using MediaWiz.Core.Helpers
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Core.Services
+
+@inject IMemberService memberService
+@inject IMemberManager MemberManager
+@{
+    var ForumUrl = Umbraco.GetDictionaryValue("Forums.ForumUrl", "/forums").TrimEnd('/');
+
+    var AllUsers = memberService.GetMembersByPropertyValue("hasVerifiedAccount", true).OrderByDescending(x => x.GetValue<int>("postCount")).ToList();
+
+    var totalMembers = AllUsers.Count();
+
+    int.TryParse(Context.Request.Query["page"], out var pagenum);
+    var pageSize = Model.HasValue("intPageSize") ? Convert.ToInt32(Model.Value("intPageSize")) : 10;
+    var totalPages = (int)Math.Ceiling((double)totalMembers / (double)pageSize);
+    ViewBag.Page = pagenum;
+    ViewBag.TotalPages = totalPages;
+    var sortby = Context.Request.Query["sort"].ToString();
+    string sortdir = Context.Request.Query["dir"].ToString();
+    if (sortby == null)
+    {
+        sortby = "postCount";
+        sortdir = "desc";
+    }
+    switch (sortdir)
+    {
+        case "asc":
+            AllUsers = sortby == "Name" ? new List<IMember>(AllUsers.OrderBy(x => x.Name)) : new List<IMember>(AllUsers.OrderBy(x => x.GetValue(sortby)));
+            sortdir = "desc";
+            break;
+        case "desc":
+            AllUsers = sortby == "Name" ? new List<IMember>(AllUsers.OrderByDescending(x => x.Name)) : new List<IMember>(AllUsers.OrderByDescending(x => x.GetValue(sortby)));
+            sortdir = "asc";
+            break;
+
+    }
+    var currentUser = MemberManager.GetCurrentMemberAsync().Result;
+    IList<string> roles = new List<string>();
+    if (currentUser != null)
+    {
+        roles = MemberManager.GetRolesAsync(currentUser).Result;
+    }
+
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col"><a href="@ForumUrl/members/?page=@pagenum&sort=Name&dir=@sortdir" class="@if(sortby == "Name") { <text>active</text> } @sortdir">Name</a></th>
+            <th scope="col"><a href="@ForumUrl/members/?page=@pagenum&sort=umbracoMemberLastLogin&dir=@sortdir" class="@if(sortby == "umbracoMemberLastLogin") { <text>active</text> } @sortdir">Last Visit</a></th>
+            <th scope="col" class="post-count"><a href="@ForumUrl/members/?page=@pagenum&sort=postCount&dir=@sortdir" class="@if(sortby == "postCount") { <text>active</text> } number @sortdir">Posts</a></th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (IMember member in AllUsers.Skip((pagenum - 1) * pageSize).Take(pageSize))
+        {
+            var user = MemberManager.FindByEmailAsync(member.Username).Result;
+            IPublishedContent Pmember = MemberManager.AsPublishedMember(user);
+            long postcount = member.GetValue<long>("postCount");
+
+            <tr>
+                <td>@member.Name</td>
+                <td><span title="@user.LastLoginDateUtc">@ForumHelper.GetRelativeDate(user.LastLoginDateUtc.Value)</span></td>
+                <td class="post-count">@postcount</td>
+                <td>
+                    @if (user.IsLockedOut)
+                    {
+
+                        @if (roles.Contains("ForumAdministrator"))
+                        {
+                            <a href="#" data-mode="unlock" data-userid="@user.Id" class="lock-user" title="UnLock user"><i class="bi bi-unlock" style="font-size: 1.2em;"></i></a>
+
+                        }
+                        else
+                        {
+                            <i class="bi bi-lock" style="font-size: 1.2em;" title="Account locked"></i>
+                        }
+                    }
+                    else
+                    {
+                        @if (user.LastLoginDateUtc.Value > DateTime.UtcNow.AddMinutes(-10))
+                        {
+                            <i class="bi bi-person-check" style="font-size: 1.2em;" title="User is online"></i>
+                        }
+                        else
+                        {
+                            <i class="bi bi-person" style="font-size: 1.2em;" title="User is offline"></i>
+                        }
+                        @if (roles.Contains("ForumAdministrator"))
+                        {
+                            <a href="#" data-mode="lock" data-userid="@user.Id" title="Lock user" class="lock-user"><i class="bi bi-lock" style="font-size: 1.2em;"></i></a>
+                        }
+                    }
+
+
+
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+@if (totalPages > 1)
+{
+    @await Html.PartialAsync("Forums/_PagerView")
+}

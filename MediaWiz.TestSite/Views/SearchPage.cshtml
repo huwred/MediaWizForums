@@ -1,0 +1,78 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<MediaWiz.Core.Models.ViewModels.SearchViewModel>
+@using MediaWiz.Core.Helpers
+@using MediaWiz.Core.Interfaces
+@using MediaWiz.Core.Services
+@inject IForumCacheService _forumCache;
+
+@{ Layout = "ForumMaster.cshtml";
+
+    int.TryParse(Context.Request.Query["page"], out var pagenum);
+    if (pagenum == 0)
+    {
+        pagenum = 1;
+    }
+    var pageSize = Model.HasValue("intPageSize") ? Model.Value<int>("intPageSize") : 10;
+    var totalPages = (int)Math.Ceiling((double)Model.TotalResults / (double)pageSize);
+    ViewBag.Page = pagenum;
+    ViewBag.TotalPages = totalPages; }
+<div class="row">
+    @await Html.PartialAsync("Forums/_SearchForm")
+</div>
+<div class="row">
+    @{ if (Model.PagedResult != null && Model.PagedResult.Any())
+        {
+<div class="forum-posts col-sm-12">
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">Posts</th>
+                <th scope="col" class="post-count">Replies</th>
+                <th scope="col">Latest post</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in Model.PagedResult)
+            {
+                var post = Umbraco.Content(result.Id);
+                var cacheInfo =  _forumCache.GetPost(post, "Topic_" + post.Id);
+                <tr class="col wiz-topic-content">
+                    <td class="wiz-topic-title">
+                        @if (post.Value<int>("stickyness") > 0)
+                        {
+                            <i class="bi bi-star"></i>
+                        }
+                        <a href="@post.Url()" title="View post @post.Value("postTitle")">@post.Value("postTitle")</a>
+                        @if (post.Value<int>("postType") < 1)
+                        {
+                            <text>Reply to </text> <a href="@post.Parent.Url()#@post.Id" title="Post a comment">@post.Parent.Value("postTitle")</a>
+
+                        }
+                        <div class="post-summay-meta">
+                            started by @post.Value("postCreator")
+                            <span title="@post.CreateDate">@ForumHelper.GetRelativeDate(post.CreateDate)</span>
+                        </div>
+                    </td>
+                    <td class="post-count">@(cacheInfo.Count)</td>
+                    <td class="post-last">
+                        @if (cacheInfo.latestPost != DateTime.MinValue)
+                        {
+                            <span title="@cacheInfo.latestPost.ToLocalTime()">@ForumHelper.GetRelativeDate(cacheInfo.latestPost.ToLocalTime())</span><text> by </text>@cacheInfo.lastpostAuthor
+                        }
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+    @if (totalPages > 1)
+    {
+        @await Html.PartialAsync("Forums/_PagerView", Model)
+    }
+</div>
+        }
+        else
+        {
+        <p>No results found in @Model.searchIn for search terms '@Model.query'</p>
+        }
+    }
+</div>
