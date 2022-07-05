@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
@@ -98,7 +99,25 @@ namespace MediaWiz.Core.Controllers
 
             return false;
         }
+        [Route("captchacheck/{id?}")]
+        public bool CaptchaCheck(int? id)
+        {
+            if (id != null)
+            {
+                var session = _httpContextAccessor.HttpContext.Session;
 
+                if (session.Keys.Contains("Captcha") && session.GetString("Captcha") != id.Value.ToString())
+                {
+                    ModelState.AddModelError("Captcha", "Wrong value of sum, please try again.");
+                    return false;
+                }
+                //empty the captcha variable
+                session.Remove("Captcha");
+                return true;
+            }
+
+            return false;
+        }
         [Route("lockpost/{id?}")]
         public bool LockPost(int? id)
         {

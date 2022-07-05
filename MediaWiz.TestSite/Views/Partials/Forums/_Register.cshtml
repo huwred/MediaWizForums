@@ -34,7 +34,7 @@ else
         @await Html.PartialAsync("Forums/_Captcha")
     }
 
-    using (Html.BeginUmbracoForm<ForumMemberController>("RegisterMe", null, new { @id = "captcha-form-id", style = "display: none;" }, FormMethod.Post))
+    using (Html.BeginUmbracoForm<ForumMemberController>("RegisterMe", null, new { @id = "captcha-form-id", style="display:none" }, FormMethod.Post))
     {
         <hr />
 

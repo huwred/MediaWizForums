@@ -347,8 +347,8 @@ namespace MediaWiz.Core.Controllers
         /// <returns></returns>
         [AllowAnonymous]
         [IgnoreAntiforgeryToken]
-        [HttpPost]
-        public IActionResult CaptchaCheck([FromBody] Object captcha)
+        //[HttpPost]
+        public IActionResult CaptchaCheck(int captcha)
         {
             var data = JsonConvert.DeserializeObject<dynamic>(captcha.ToString());
             var session = _contextAccessor.HttpContext.Session;

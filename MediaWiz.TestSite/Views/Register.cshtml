@@ -28,13 +28,7 @@
         });
         $("#btn-captcha").on('click', function(e) {
             e.preventDefault();
-            if (MediaWiz.captchaCheck($("#Captcha").val())) {
-                $("#captcha-check").hide();
-                $('#captcha-form-id').show();
-                $("#captcha-form-id").clearValidation();
-            } else {
-                $("#Captcha").attr("placeholder", "Incorrect, please try again.");
-            }
+            MediaWiz.captchaCheck($("#Captcha").val());
         });
     </script>
 }
