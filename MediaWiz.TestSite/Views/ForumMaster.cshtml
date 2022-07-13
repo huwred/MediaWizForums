@@ -2,8 +2,7 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @inject IMemberManager _memberManager
 
-@{ 
-    // Replace the layout with your master template if it isn't called cmsMaster.cshtml
+@{ // Replace the layout with your master template if it isn't called cmsMaster.cshtml
     // You may also need to add the section definitions for Styles and extrascripts
     // @RenderSection("Header", false) should go in your head section
     // @RenderSection("PageScripts", false) should go just above the closing body tag
@@ -17,13 +16,15 @@
         returnUrl = (string)TempData["returnUrl"];
         TempData["returnUrl"] = null;
     }
+
+    IList<string> roles = new List<string>();
+
 }
 
 @section Header{
     @if (returnUrl != null)
     {
-        <meta http-equiv="Refresh" content="3;url=@returnUrl" />
-    }
+<meta http-equiv="Refresh" content="3;url=@returnUrl" />}
     <link href="/css/forums.min.css" rel="stylesheet">
     <link href="/css/tinymce/skins/ui/oxide/content.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
@@ -43,11 +44,12 @@
                     @await Html.PartialAsync("Forums/_LoginStatus")
                     @if (_memberManager.IsLoggedIn())
                     {
-                <li class="nav-item"><a href="@ForumUrl/members" class="nav-link" title="View list of Forum members"><i class="fs-5 bi-people me-1"></i><span class="d-none d-sm-inline">Forum Members</span></a></li>}
+                        <li class="nav-item"><a href="@ForumUrl/members" class="nav-link" title="View list of Forum members"><i class="fs-5 bi-people me-1"></i><span class="d-none d-sm-inline">Forum Members</span></a></li>
+                    }
                     <li class="nav-item"><a href="@ForumUrl/active-topics" class="nav-link" title="View Active Topics"><i class="fs-5 bi-list me-1"></i><span class="d-none d-sm-inline">Active Topics</span></a></li>
                     @if (_memberManager.IsLoggedIn())
                     {
-                        IList<string> roles = new List<string>();
+                        
                         var user = _memberManager.GetCurrentMemberAsync().Result;
                         if (user != null)
                         {
@@ -55,8 +57,9 @@
                         }
                         if (roles.Contains("ForumAdministrator"))
                         {
-                            <li class="nav-item"><a href="@ForumUrl/members" class="nav-link" title="Create Forum" data-bs-toggle="modal" data-bs-target="#forumModal"><i class="fs-5 bi-folder me-1"></i><span class="d-none d-sm-inline">Create Forum</span></a></li>}
+                                <li class="nav-item"><a href="@ForumUrl/createforum" class="nav-link" title="Create Forum" data-bs-toggle="modal" data-bs-target="#forumModal"><i class="fs-5 bi-folder me-1"></i><span class="d-none d-sm-inline">Create Forum</span></a></li>
                         }
+                    }
                 </ul>
             </div>
         </div>
@@ -71,6 +74,9 @@
         </div>
     </div>
 </div>
+@if (roles.Contains("ForumAdministrator"))
+{
+@await Html.PartialAsync("Forums/_CreateForum")}
 @section PageScripts{
 
     @*If theses scripts are included in your master template then comment them out or remove here*@

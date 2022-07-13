@@ -28,7 +28,7 @@
             },
             lockPost: function(postId) {
                 if (window.confirm("Are you sure you want to lock/unlock this post?")) {
-                    var locking = $.get("/umbraco/surface/forumssurface/lockpost/" + postId);
+                    var locking = $.get("/lockpost/" + postId);
                     locking.done(function(data, status) {
                         location.reload();
                     });

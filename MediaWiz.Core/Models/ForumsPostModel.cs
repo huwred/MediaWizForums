@@ -34,7 +34,9 @@ namespace MediaWiz.Core.Models
         [DisplayName("Introduction")]
         public string Introduction { get; set; }
 
+        [DisplayName("Allow Posts")]
         public bool AllowPosts { get; set; }
+        [DisplayName("Allow Images")]
         public bool AllowImages { get; set; }
     }
 }

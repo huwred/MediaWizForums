@@ -7,6 +7,7 @@ using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;
 
+
 namespace MediaWiz.Core.Composers
 {
     public class MediaWizComposer : IComposer
@@ -21,6 +22,7 @@ namespace MediaWiz.Core.Composers
             builder.AddNotificationHandler<ContentUnpublishedNotification, ForumPostUnPublishEvent>();
             builder.AddNotificationHandler<ContentSavingNotification, ForumPostSavingEvent>();
             builder.AddNotificationHandler<ContentPublishedNotification, ForumPostPublishedEvent>();
+            builder.AddNotificationHandler<MenuRenderingNotification, MemberTreeNotificationHandler>();
         }
     }
 }
