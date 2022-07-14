@@ -14,6 +14,7 @@ namespace MediaWiz.TestSite
 
         public static IHostBuilder CreateHostBuilder(string[] args)
             => Host.CreateDefaultBuilder(args)
+                .ConfigureUmbracoDefaults()
                 .ConfigureLogging(x => x.ClearProviders())
                 .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
     }

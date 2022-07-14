@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Composing;
-using Umbraco.Cms.Core.Scoping;
+using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
@@ -13,13 +13,15 @@ namespace MediaWiz.Core.Composers
     public class PostViewsComponent : IComponent
     {
         private readonly IScopeProvider _scopeProvider;
+        private readonly IScopeAccessor _scopeAccessor;
         private readonly IMigrationBuilder _migrationBuilder;
         private readonly IKeyValueService _keyValueService;
         private readonly ILoggerFactory _logger;
 
-        public PostViewsComponent(IScopeProvider scopeProvider, IMigrationBuilder migrationBuilder, IKeyValueService keyValueService, ILoggerFactory logger)
+        public PostViewsComponent(IScopeProvider scopeProvider,IScopeAccessor scopeAccessor, IMigrationBuilder migrationBuilder, IKeyValueService keyValueService, ILoggerFactory logger)
         {
             _scopeProvider = scopeProvider;
+            _scopeAccessor = scopeAccessor;
             _migrationBuilder = migrationBuilder;
             _keyValueService = keyValueService;
             _logger = logger;
@@ -40,7 +42,7 @@ namespace MediaWiz.Core.Composers
             // Based on the current/latest step
             var upgrader = new Upgrader(migrationPlan);
             //upgrader.Execute(_migrationBuilder,_scopeProvider, _keyValueService, _logger)
-            upgrader.Execute(new MigrationPlanExecutor(_scopeProvider,_logger,_migrationBuilder), _scopeProvider, _keyValueService);
+            upgrader.Execute(new MigrationPlanExecutor(_scopeProvider,_scopeAccessor,_logger,_migrationBuilder), _scopeProvider, _keyValueService);
         }
 
         public void Terminate()
