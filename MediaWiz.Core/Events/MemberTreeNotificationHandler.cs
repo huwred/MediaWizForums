@@ -20,7 +20,7 @@ namespace MediaWiz.Core.Events
             {
                 var menuItem = new Umbraco.Cms.Core.Models.Trees.MenuItem("sendValidation", "SendValidation");
                 menuItem.AdditionalData.Add("actionView", "/App_Plugins/MediaWizards/resendValidation.html");
-                menuItem.Icon = "shuffle";
+                menuItem.Icon = "message";
                 notification.Menu.Items.Add(menuItem);
             }
         }
