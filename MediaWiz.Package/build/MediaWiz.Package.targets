@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <MediaWizPackageContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\MediaWiz.Package\**\*.*</MediaWizPackageContentFilesPath>
+      <MediaWizPackageMediaFilesPath>$(MSBuildThisFileDirectory)\media\**\*.*</MediaWizPackageMediaFilesPath>
     </PropertyGroup>
 
     <Target Name="CopyMediaWizPackageAssets" BeforeTargets="Build">
@@ -11,13 +12,20 @@
         <Message Text="Copying MediaWiz.Package files: $(MediaWizPackageContentFilesPath) - #@(MediaWizPackageContentFiles->Count()) files"  Importance="high" />
         <Copy SourceFiles="@(MediaWizPackageContentFiles)" DestinationFiles="@(MediaWizPackageContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\MediaWiz.Package\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
     </Target>
-
+  <Target Name="CopyMediaWizMediaAssets" BeforeTargets="Build">
+    <ItemGroup>
+      <MediaWizPackageMediaFiles Include="$(MediaWizPackageMediaFilesPath)" />
+    </ItemGroup>
+    <Message Text="Copying MediaWiz.Package files: $(MediaWizPackageMediaFilesPath) - #@(MediaWizPackageMediaFiles->Count()) files"  Importance="high" />
+    <Copy SourceFiles="@(MediaWizPackageMediaFiles)" DestinationFiles="@(MediaWizPackageMediaFiles->'$(MSBuildProjectDirectory)\media\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
     <Target Name="ClearMediaWizPackageAssets" BeforeTargets="Clean">
         <ItemGroup>
             <MediaWizPackageDir Include="$(MSBuildProjectDirectory)\App_Plugins\MediaWiz.Package\" />
         </ItemGroup>
         <Message Text="Clear old MediaWiz.Package data"  Importance="high" />
         <RemoveDir Directories="@(MediaWizPackageDir)"  />
+        <RemoveDir Directories="@(MediaWizPackageContentFiles)"  />
     </Target>
 
 </Project>

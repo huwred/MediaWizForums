@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MediaWiz.Core.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +12,7 @@ using Newtonsoft.Json;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.Security;
 
@@ -34,10 +36,15 @@ namespace MediaWiz.Core.Controllers
         private readonly ILogger<ForumsApiController> _logger;
         private readonly MediaFileManager _mediaFileManager;
         private readonly IMemberService _memberService;
+        private readonly IForumMailService _mailService;
+        private readonly UmbracoHelper _umbracoHelper;
+
+        public object TempData { get; private set; }
 
         public ForumsApiController(MediaFileManager mediaFileManager, ILogger<ForumsApiController> logger,
             IHttpContextAccessor httpContextAccessor,  IContentService contentservice,MemberManager memberManager, 
-            ILocalizationService localizationService, IMemberService memberService)
+            ILocalizationService localizationService, IMemberService memberService,IForumMailService forumMailService,
+            IUmbracoHelperAccessor umbracoHelper)
         {
             _memberManager = memberManager;
             _localizationService = localizationService;
@@ -46,6 +53,8 @@ namespace MediaWiz.Core.Controllers
             _mediaFileManager = mediaFileManager;
             _contentService = contentservice;
             _memberService = memberService;
+            _mailService = forumMailService;
+            umbracoHelper.TryGetUmbracoHelper(out _umbracoHelper);
         }
 
         /// <summary>
@@ -228,6 +237,17 @@ namespace MediaWiz.Core.Controllers
 
         }
 
+        [Route("sendvalidation/{id?}")]
+        public void ResendValidation(int? id)
+        {
+            if (id == null)
+            {
+                return;
+            }
+            var member = _memberService.GetById(id.Value);
+            
+            var result =  _mailService.SendVerifyAccount(_umbracoHelper,member.Email,member.GetValue<string>("resetGuid")).Result;
+        }
         #endregion
 
         /// <summary>

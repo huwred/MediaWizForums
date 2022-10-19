@@ -6,10 +6,26 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms" Version="10.0.1" />
-    <PackageReference Include="Umbraco.Cms.Core" Version="10.0.1" />
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.0.1" />
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.1" />
+    <Content Include="App_Plugins\MediaWizards\Lang\en-US.xml" />
+    <Content Include="wwwroot\media\omdknwqg\shutterstock_560367070.png">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <None Include="App_Plugins\MediaWizards\resendValidation.html" />
+    <Content Include="App_Plugins\MediaWizards\WelcomeDashboard.html" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="App_Plugins\MediaWizards\customwelcomedashboard.controller.js" />
+    <None Include="App_Plugins\MediaWizards\package.manifest" />
+    <None Include="App_Plugins\MediaWizards\sendvalidation.controller.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Umbraco.Cms" Version="10.2.0" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="10.2.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.2.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.2.0" />
   </ItemGroup>
 
 </Project>

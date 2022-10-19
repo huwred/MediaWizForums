@@ -29,15 +29,19 @@
 }
 else
 {
-    @if (Model.Value<bool>("useCaptcha"))
+@*    @if (Model.Value<bool>("useCaptcha"))
     {
         @await Html.PartialAsync("Forums/_Captcha")
-    }
+    }*@
 
-    using (Html.BeginUmbracoForm<ForumMemberController>("RegisterMe", null, new { @id = "captcha-form-id", style="display:none" }, FormMethod.Post))
+    using (Html.BeginUmbracoForm<ForumMemberController>("RegisterMe", null, new { @id = "captcha-form-id"@*, style="display:none"*@ }, FormMethod.Post))
     {
         <hr />
-
+        <div class="mb-3">
+            <label asp-for="@registerModel.Name" class="form-label"></label>
+            <input asp-for="@registerModel.Name" class="form-control" autocomplete="username" aria-required="true" />
+            <span asp-validation-for="@registerModel.Name" class="form-text text-danger"></span>
+        </div>
         <div class="mb-3">
             <label asp-for="@registerModel.Username" class="form-label"></label>
             <input asp-for="@registerModel.Username" class="form-control" autocomplete="username" aria-required="true" />
