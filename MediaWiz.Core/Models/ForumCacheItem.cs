@@ -20,4 +20,19 @@ namespace MediaWiz.Core.Models
             return latestPost.CompareTo(((ForumCacheItem)obj).latestPost);
         }
     }
+
+    public class TopicCacheItem : IComparable{
+        public int Views { get; set; }
+        public int ReplyCount { get; set; }
+        public string lastpostAuthor { get; set; }
+        public int lastpostAuthorId { get; set; }
+        public DateTime latestPost { get; set; }
+        public DateTime latestEdit { get; set; }
+        public string lastPostUrl { get; set; }
+
+        public int CompareTo(object obj)
+        {
+            return latestPost.CompareTo(((TopicCacheItem)obj).latestPost);
+        }
+    }
 }
