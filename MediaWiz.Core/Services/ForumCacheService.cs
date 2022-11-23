@@ -3,8 +3,9 @@ using System.Linq;
 using MediaWiz.Core.Interfaces;
 using MediaWiz.Core.Models;
 using Umbraco.Cms.Core.Cache;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Extensions;
+using Umbraco.Cms.Web.Common;
 
 namespace MediaWiz.Core.Services
 {
@@ -24,7 +25,12 @@ namespace MediaWiz.Core.Services
             // into cache if it doesn't exist.
             return _runtimeCache.GetCacheItem(cacheKey, () => GetPostInfo(item,_runtimeCache,cacheKey), timeout);
         }
-
+        public TopicCacheItem GetLatestPosts(IPublishedContent item, TimeSpan? timeout = null)
+        {
+            // GetCacheItem will automatically insert the object
+            // into cache if it doesn't exist.
+            return _runtimeCache.GetCacheItem("LatestPosts", () => GetLatestPostInfo(item,_runtimeCache,"LatestPosts"), timeout);
+        }
         public static ForumCacheItem GetPostInfo(IPublishedContent item,IAppPolicyCache cache,string cacheKey = "")
         {
 
@@ -71,6 +77,36 @@ namespace MediaWiz.Core.Services
 
             return forumInfo;
         }
- 
+
+        public static TopicCacheItem GetLatestPostInfo(IPublishedContent item,IAppPolicyCache cache,string cacheKey = "")
+        {
+            
+            var topicInfo = new TopicCacheItem();
+
+            var posts = item.Descendants().Where(x => x.IsVisible() && x.IsDocumentType("forumPost")).ToList();
+
+            topicInfo.ReplyCount = posts.Count(x=> !x.Value<bool>("postType"));
+            
+            if (posts.Any())
+            {
+                var lastPost = posts.OrderByDescending(x => x.CreateDate).FirstOrDefault();
+                if (lastPost != null) topicInfo.latestPost = lastPost.CreateDate;
+                //if (lastPost != null) forumInfo.Id = Convert.ToInt32(lastPost.Id);
+                if (lastPost != null) topicInfo.lastPostUrl = lastPost.Url();
+                topicInfo.lastpostAuthor = lastPost.Value<string>(("postCreator"));
+                var author = lastPost.Value<IPublishedContent>("postAuthor");
+                if (author != null)
+                {
+                    topicInfo.lastpostAuthorId = lastPost.Value<IPublishedContent>("postAuthor").Id;
+                }
+                else
+                {
+                    topicInfo.lastpostAuthorId = -1;
+                }
+                
+            }
+
+            return topicInfo;
+        }
     }
 }
