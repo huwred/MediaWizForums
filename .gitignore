@@ -365,3 +365,4 @@ FodyWeavers.xsd
 /MediaWiz.Core/wwwroot/umbraco
 /MediaWiz.Package/umbraco
 /MediaWiz.Package/wwwroot/umbraco
+/MediaWiz.TestSite/appsettings.Development.json

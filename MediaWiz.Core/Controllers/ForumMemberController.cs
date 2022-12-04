@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using MediaWiz.Core.Helpers;
 using MediaWiz.Core.Interfaces;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -11,11 +12,11 @@ using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Routing;
-using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
+using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Security;
 using Umbraco.Cms.Web.Website.Models;
@@ -57,13 +58,20 @@ namespace MediaWiz.Core.Controllers
                 ModelState.AddModelError("Registration","The username is already in use, please use another");
                 return CurrentUmbracoPage();
             }
-            var member = _memberService.CreateMember(newmember.Username, newmember.Email, newmember.Name, "forumMember");
+            //var member = _memberService.CreateMember(newmember.Username, newmember.Email, newmember.Name, "forumMember");
+
+            var identityUser = MemberIdentityUser.CreateNew(newmember.Username, newmember.Email,"forumMember", isApproved: false, newmember.Name);
+            IdentityResult identityResult = await _memberManager.CreateAsync(
+                identityUser,
+                newmember.Password);
+            var member = _memberService.GetByEmail(identityUser.Email);
+            
             string resetGuid = null;
             if (member != null)
             {
                 resetGuid = ForumHelper.GenerateUniqueCode(16);
                 member.SetValue("resetGuid",resetGuid);
-                member.IsApproved = false;
+                //member.IsApproved = false;
                 foreach (MemberPropertyModel property in newmember.MemberProperties.Where(p => p.Value != null)
                     .Where(property => member.Properties.Contains(property.Alias)))
                 {
