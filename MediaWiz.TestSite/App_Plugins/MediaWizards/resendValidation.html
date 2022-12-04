@@ -1,0 +1,17 @@
+﻿<div ng-controller="MediaWizards.SendValidationController as vm"
+     class="umb-dialog umb-pane" ng-init="vm.init()">
+
+    <div class="umb-dialog-body" auto-scale="90" style="height: 417.01px;">
+
+        <p class="abstract">You are about to resend a validation email to <strong>{{vm.member}}</strong>.</p>
+
+        <div class="umb-pane btn-toolbar umb-btn-toolbar">
+            <a href="#" prevent-default="" ng-click="vm.close()" class="btn btn-link"><localize key="general_cancel" class="ng-isolate-scope ng-scope">Cancel</localize></a>
+            <a href="#" prevent-default="" ng-click="vm.send()" ng-show="!vm.node || vm.node.published" class="btn btn-danger">Send Email</a>
+
+            <!--<umb-confirm caption="Title" on-confirm="vm.send()" on-cancel="vm.close()"></umb-confirm>-->
+        </div>
+    </div>
+
+
+</div>

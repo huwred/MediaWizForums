@@ -1,7 +1,8 @@
 ﻿using System.Linq;
 using MediaWiz.Core.Interfaces;
 using MediaWiz.Core.Models;
-using Umbraco.Cms.Core.Scoping;
+using Umbraco.Cms.Infrastructure.Scoping;
+
 
 namespace MediaWiz.Core.Services
 {
