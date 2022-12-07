@@ -78,16 +78,16 @@ namespace MediaWiz.Core.Controllers
             switch (searchIn)
             {
                 case "Subject":
-                    textFields.Add("postTitle");
+                    textFields.Add("title");
                     break;
                 case "Message":
-                    textFields.Add("postBody");
+                    textFields.Add("message");
                     break;
                 case "Username":
-                    textFields.Add("postCreator");
+                    textFields.Add("author");
                     break;
                 default:
-                    textFields.Add("postTitle");
+                    textFields.Add("title");
                     searchIn = "Subject";
                     break;
             }
@@ -97,13 +97,13 @@ namespace MediaWiz.Core.Controllers
             int pageIndex = page - 1;
             int pageSize = CurrentPage.Value<int>("intPageSize");
 
-            if (_examineManager.TryGetIndex("ExternalIndex", out var index))
+            if (_examineManager.TryGetIndex("ForumIndex", out var index))
             {
                 var searcher = index.Searcher;
                 //var value = "" + query + "*";
                 var search = searcher.CreateQuery("content")
-                    .NodeTypeAlias("forumPost")
-                    .And().Field(textFields[0], query);
+
+                    .GroupedOr(textFields.ToArray(), query);
 
                 results = search.Execute();
             }

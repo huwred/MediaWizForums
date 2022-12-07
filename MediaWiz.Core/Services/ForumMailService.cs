@@ -76,10 +76,11 @@ namespace MediaWiz.Core.Services
 
         public async void SendNotificationEmail(IPublishedContent root, IPublishedContent post, object author, List<string> recipients, bool newPost)
         {
+
             var threadTitle = root.Value<string>("postTitle");
             var updateBody = post.Value<string>("postBody");
 
-            var authorName = author != null ? ((IPublishedContent)author).Name : _localisation.GetDictionaryItemByKey("Forums.NotificationAuthor").GetDefaultValue();
+            var authorName = author != null ? ((IPublishedContent)author).Name : post.Value<string>("postCreator");
 
             var test = ForumHelper.GetAbsoluteUri(_httpContext.HttpContext.Request);
             string siteUrl = test.AbsoluteUri;

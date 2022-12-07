@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using MediaWiz.Core.Helpers;
 using MediaWiz.Core.Interfaces;
@@ -121,6 +122,8 @@ namespace MediaWiz.Core.Events
 
             if (parent != null && forumType != null)
             {
+                parent.UpdateDate = DateTime.Now;
+                _contentService.SaveAndPublish(parent);
                 if (parent.ContentTypeId == forumType.Id || parent.ContentTypeId == forumType.Id)
                 {
                     var cache = $"forum_{parent.Id}";

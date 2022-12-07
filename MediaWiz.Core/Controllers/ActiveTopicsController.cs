@@ -13,6 +13,7 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
+
 namespace MediaWiz.Core.Controllers
 {
     public class ActiveTopicsController : RenderController
@@ -37,20 +38,20 @@ namespace MediaWiz.Core.Controllers
             ISearchResults results = null;
             if (string.IsNullOrWhiteSpace(query))
             {
-                query = "updateDate";
+                query = "updated";
             }
 
             int pageIndex = page - 1;
             int pageSize = CurrentPage.Value<int>("intPageSize");
 
-            if (_examineManager.TryGetIndex("ExternalIndex", out var index))
+            if (_examineManager.TryGetIndex("ForumIndex", out var index))
             {
                 var searcher = index.Searcher;
 
                 results = searcher.CreateQuery("content")
-                    .NodeTypeAlias("forumPost").And()
-                    .Field("postType", "1")
-                    .OrderByDescending(new SortableField[] { new SortableField(query) })
+                    //.NodeTypeAlias("forumPost").And()
+                    .Field("posttype", "1")
+                    .OrderByDescending(new SortableField[] { new SortableField("updateDate") })
                     .Execute(/*maxResults: pageSize * (pageIndex + 1)*/);
             }
 
@@ -79,20 +80,19 @@ namespace MediaWiz.Core.Controllers
             ISearchResults results = null;
             if (String.IsNullOrWhiteSpace(query))
             {
-                query = "updateDate";
+                query = "updated";
             }
 
             int pageIndex = page - 1;
             int pageSize = CurrentPage.Value<int>("intPageSize");
 
-            if (_examineManager.TryGetIndex("ExternalIndex", out var index))
+            if (_examineManager.TryGetIndex("ForumIndex", out var index))
             {
                 var searcher = index.Searcher;
 
                 results = searcher.CreateQuery("content")
-                    .NodeTypeAlias("forumpost").And()
                     .Field("postType", "1")
-                    .OrderByDescending(new SortableField[] { new SortableField(query) })
+                    .OrderByDescending(new SortableField[] { new SortableField("updateDate") })
                     .Execute(/*maxResults: pageSize*(pageIndex + 1)*/);
             }
 

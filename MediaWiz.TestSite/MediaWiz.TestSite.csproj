@@ -20,7 +20,6 @@
     </ItemGroup>
 
     <ItemGroup>
-        <PackageReference Include="MediaWiz.Forums" Version="10.2.3" />
         <PackageReference Include="Umbraco.Cms" Version="10.3.2" />
     </ItemGroup>
 
@@ -31,6 +30,7 @@
     </ItemGroup>
     <ItemGroup>
       <Folder Include="App_Plugins\" />
+      <Folder Include="wwwroot\" />
     </ItemGroup>
 
 

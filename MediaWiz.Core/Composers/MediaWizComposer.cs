@@ -1,6 +1,7 @@
 ﻿using MediaWiz.Core.Events;
 using MediaWiz.Core.Helpers;
 using MediaWiz.Core.Interfaces;
+using MediaWiz.Core.Manifest;
 using MediaWiz.Core.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
@@ -14,11 +15,11 @@ namespace MediaWiz.Core.Composers
     {
         public void Compose(IUmbracoBuilder builder)
         {
+            builder.ManifestFilters().Append<MediaWizManifestFilter>();
             builder.Services.AddScoped<IBackofficeUserAccessor, BackofficeUserAccessor>();
             builder.Services.AddScoped<IForumCacheService, ForumCacheService>();
             builder.Services.AddScoped<IViewCounterService, ForumViewCounterService>();
             builder.Services.AddScoped<IForumMailService, ForumMailService>();
-            //builder.Services.AddOutputCaching();
             builder.AddNotificationHandler<ContentUnpublishedNotification, ForumPostUnPublishEvent>();
             builder.AddNotificationHandler<ContentSavingNotification, ForumPostSavingEvent>();
             builder.AddNotificationHandler<ContentPublishedNotification, ForumPostPublishedEvent>();

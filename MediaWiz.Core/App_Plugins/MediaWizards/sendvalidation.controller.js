@@ -61,13 +61,15 @@
         // ## Login as the selected member
         function send() {
             // ### Setup cookie
+            var url = '/SendValidation';
 
             // Get the current member id using the editorState
             var _memberId = editorState.current.id;
-            var url = '/sendvalidation/' + _memberId;
 
             // Do Login
-            $http.get(url).then(
+            $http.post(
+                url,
+                _memberId).then(
                 function () {
                     close();
                 },

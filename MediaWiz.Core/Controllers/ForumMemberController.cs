@@ -58,7 +58,6 @@ namespace MediaWiz.Core.Controllers
                 ModelState.AddModelError("Registration","The username is already in use, please use another");
                 return CurrentUmbracoPage();
             }
-            //var member = _memberService.CreateMember(newmember.Username, newmember.Email, newmember.Name, "forumMember");
 
             var identityUser = MemberIdentityUser.CreateNew(newmember.Username, newmember.Email,"forumMember", isApproved: false, newmember.Name);
             IdentityResult identityResult = await _memberManager.CreateAsync(

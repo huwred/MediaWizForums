@@ -63,7 +63,7 @@ namespace MediaWiz.Core.Controllers
         /// <param name="id"></param>
         /// <returns></returns>
         [Route("deletepost/{id?}")]
-        [Authorize(Roles = "ForumAdministrator")]
+        //[Authorize(Roles = "ForumAdministrator")]
         public bool DeletePost(int? id)
         {
             if (id != null)

@@ -10,15 +10,20 @@
 
 @{
     var startNodeId = Model?.MacroParameters["startNodeId"]; 
-
+    var numberOfPosts = 3;
+    if (Model.MacroParameters["numberOfPosts"] != null)
+    {
+        int.TryParse((string)Model.MacroParameters["numberOfPosts"], out numberOfPosts);
+    }
+    
     if (startNodeId != null)
     {
     @* Get the starting page *@
-var startNode = PublishedContentQuery.Content(startNodeId);
-var selection = startNode.DescendantsOrSelf()
-    .Where(x => x.IsVisible(PublishedValueFallback) && x.Value<bool>("postType"))
-    .OrderByDescending(o=>o.Value("editDate"))
-    .ThenByDescending(o => o.CreateDate).ToArray();
+        var startNode = PublishedContentQuery.Content(startNodeId);
+        var selection = startNode.DescendantsOrSelf()
+            .Where(x => x.IsVisible(PublishedValueFallback) && x.Value<bool>("postType"))
+            .OrderByDescending(o=>o.Value("editDate"))
+            .ThenByDescending(o => o.CreateDate).Take(numberOfPosts).ToArray();
 
 if (selection.Length > 0)
 {

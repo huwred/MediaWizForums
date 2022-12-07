@@ -16,6 +16,11 @@ namespace MediaWiz.TestSite
             => Host.CreateDefaultBuilder(args)
                 .ConfigureUmbracoDefaults()
                 .ConfigureLogging(x => x.ClearProviders())
-                .ConfigureWebHostDefaults(webBuilder => webBuilder.UseStartup<Startup>());
+                
+                .ConfigureWebHostDefaults(webBuilder =>
+                {
+                    webBuilder.UseStaticWebAssets();
+                    webBuilder.UseStartup<Startup>();
+                });
     }
 }

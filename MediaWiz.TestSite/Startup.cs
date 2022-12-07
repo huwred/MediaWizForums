@@ -57,6 +57,7 @@ namespace MediaWiz.TestSite
                 app.UseDeveloperExceptionPage();
             }
 
+            app.UseStaticFiles();
             app.UseUmbraco()
                 .WithMiddleware(u =>
                 {
