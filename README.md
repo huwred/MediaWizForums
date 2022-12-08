@@ -1,2 +1,2 @@
 # MediaWizForums
-Forums for Umbraco 9.5
+Forums for Umbraco 10
