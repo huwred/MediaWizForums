@@ -1,0 +1,34 @@
+﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <MediaWizForumsContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\MediaWizards\**\*.*</MediaWizForumsContentFilesPath>
+      <ViewsFolder>$(MSBuildThisFileDirectory)..\Views\**\*.*</ViewsFolder>
+    </PropertyGroup>
+
+    <Target Name="CopyMediaWizForumsAssets" BeforeTargets="Build">
+        <ItemGroup>
+            <MediaWizForumsContentFiles Include="$(MediaWizForumsContentFilesPath)" />
+        </ItemGroup>
+        <Message Text="Copying MediaWiz.Forums files: $(MediaWizForumsContentFilesPath) - #@(MediaWizForumsContentFiles->Count()) files" Importance="high" />
+        <Copy SourceFiles="@(MediaWizForumsContentFiles)" DestinationFiles="@(MediaWizForumsContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\MediaWizards\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+    </Target>
+  <Target Name="CopyViews" BeforeTargets="Build">
+    <ItemGroup>
+      <ViewFiles Include="$(ViewsFolder)" />
+    </ItemGroup>
+    <Message Text="Copying views from: $(ViewsFolder) - #@(ViewFiles->Count()) files"  Importance="high" />
+    <Message Text="Copying views to: $(MSBuildProjectDirectory)\Views\"  Importance="high" />
+    <Copy
+      SourceFiles="@(ViewFiles)"
+      DestinationFiles="@(ViewFiles->'$(MSBuildProjectDirectory)\Views\%(RecursiveDir)%(Filename)%(Extension)')"
+      SkipUnchangedFiles="true"
+      Condition="!Exists('$(MSBuildProjectDirectory)\Views\%(RecursiveDir)%(Filename)%(Extension)')"
+    />
+  </Target>    
+    <Target Name="ClearMediaWizForumsAssets" BeforeTargets="Clean">
+        <ItemGroup>
+            <MediaWizForumsDir Include="$(MSBuildProjectDirectory)\App_Plugins\MediaWizards\" />
+        </ItemGroup>
+        <Message Text="Clear old MediaWiz.Forums data" Importance="high" />
+        <RemoveDir Directories="@(MediaWizForumsDir)" />
+    </Target>
+</Project>

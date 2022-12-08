@@ -1,5 +1,7 @@
 ﻿using System.Xml.Linq;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Services;
@@ -11,7 +13,6 @@ namespace MediaWiz.Forums.Migrations
 {
     public class ImportPackageXmlMigration : PackageMigrationBase
     {
-        private readonly IPackagingService _packagingService;
         public ImportPackageXmlMigration(
             IPackagingService packagingService,
             IMediaService mediaService,
@@ -19,26 +20,24 @@ namespace MediaWiz.Forums.Migrations
             MediaUrlGeneratorCollection mediaUrlGenerators,
             IShortStringHelper shortStringHelper,
             IContentTypeBaseServiceProvider contentTypeBaseServiceProvider,
-            IMigrationContext context,ILogger<ImportPackageXmlMigration> logger
-            )
-            : base(packagingService,
+            IMigrationContext context,
+            IOptions<PackageMigrationSettings> packageMigrationsSettings) 
+            : base(
+                packagingService,
                 mediaService,
                 mediaFileManager,
                 mediaUrlGenerators,
                 shortStringHelper,
                 contentTypeBaseServiceProvider,
-                context)
+                context,
+                packageMigrationsSettings)
         {
-            _packagingService = packagingService;
-
+            
         }
 
         protected override void Migrate()
         {
-            //var resourceName = "MediaWiz.Forums.Migrations.package.xml";
-            //var packageXml = XDocument.Load(resourceName);
-            //_packagingService.InstallCompiledPackageData(packageXml);
-            ImportPackage.FromEmbeddedResource(GetType()).Do();
+            ImportPackage.FromEmbeddedResource<ImportPackageXmlMigration>().Do();
             Context.AddPostMigration<PublishRootBranchPostMigration>();
         }
 

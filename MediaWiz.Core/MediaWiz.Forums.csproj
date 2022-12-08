@@ -2,18 +2,19 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>10.3.2</Version>
-    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <Version>10.3.3</Version>
+
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>MediaWiz.Forums</PackageId>
     <Authors>Huw Reddick</Authors>
-    <Product>MediaWiz.Forums</Product>
+    <Product>MediaWiz Forums</Product>
     <Description>MediaWiz Forums for Umbraco CMS. Built for Umbraco 10</Description>
     <Title>MediaWizard Forums</Title>
     <Copyright>Huw Reddick</Copyright>
     <PackageProjectUrl>https://umbraco.themediawizards.co.uk</PackageProjectUrl>
-    <PackageTags>umbraco-marketplace</PackageTags>
+    <PackageTags>umbraco-marketplace umbraco plugin package</PackageTags>
     <RepositoryUrl>https://github.com/huwred/MediaWizForums</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
   </PropertyGroup>
 
 
@@ -29,15 +30,20 @@
 			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
 			<CopyToPublishDirectory>Always</CopyToPublishDirectory>			
 		</Content>
-	</ItemGroup>
-
-	<ItemGroup>
-	  <None Remove="Migrations\package.xml" />
-	  <None Remove="Migrations\package.zip" />
+    <None Include="views\**">
+      <Pack>true</Pack>
+      <PackagePath>Views</PackagePath>
+    </None>
+    <None Include="build\**">
+      <Pack>true</Pack>
+      <PackagePath>buildTransitive</PackagePath>
+    </None>
 	</ItemGroup>
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Migrations\package.zip" />
-	</ItemGroup>                        
+	</ItemGroup>
+
+                    
 
 </Project>

@@ -6,7 +6,7 @@ namespace MediaWiz.Forums.Migrations
     public class MediaWizPackageMigrationPlan : PackageMigrationPlan
     {
         public MediaWizPackageMigrationPlan()
-            : base("MediaWiz.Forums")
+            : base("MediaWiz Forums")
         {
         }
 

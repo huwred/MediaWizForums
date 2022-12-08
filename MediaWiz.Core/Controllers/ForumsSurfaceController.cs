@@ -257,7 +257,7 @@ namespace MediaWiz.Core.Controllers
             TempData["ResetSent"] = false;
             if (!ModelState.IsValid)
             {
-                return PartialView(_umbracoHelper.GetDictionaryValue("Forums.ForgotPasswordView","Forums/_ForgotPassword"), model);
+                return PartialView(_umbracoHelper.GetDictionaryValue("Forums.ForgotPasswordView","/_ForgotPassword"), model);
             }
 
             var member = _memberService.GetByEmail(model.EmailAddress);
@@ -279,7 +279,7 @@ namespace MediaWiz.Core.Controllers
             {
                 ModelState.AddModelError("ForgotPasswordForm", 
                     _umbracoHelper.GetDictionaryValue("Forums.Error.NoUser", "No user found"));
-                return PartialView(_umbracoHelper.GetDictionaryValue("Forums.ForgotPasswordView","Forums/_ForgotPassword"));
+                return PartialView(_umbracoHelper.GetDictionaryValue("Forums.ForgotPasswordView","/_ForgotPassword"));
             }
 
             return CurrentUmbracoPage();
