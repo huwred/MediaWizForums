@@ -9,7 +9,7 @@ using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Examine;
 
-namespace MediaWiz.Core.Indexing
+namespace MediaWiz.Forums.Indexing
 {
     public class ConfigureForumIndexOptions : IConfigureNamedOptions<LuceneDirectoryIndexOptions>
     {

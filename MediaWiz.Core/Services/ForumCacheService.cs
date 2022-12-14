@@ -1,11 +1,9 @@
 ﻿using System;
 using System.Linq;
-using MediaWiz.Core.Interfaces;
-using MediaWiz.Core.Models;
+using MediaWiz.Forums.Interfaces;
+using MediaWiz.Forums.Models;
 using Umbraco.Cms.Core.Cache;
-using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
-using Umbraco.Cms.Web.Common;
 using Umbraco.Extensions;
 
 namespace MediaWiz.Core.Services

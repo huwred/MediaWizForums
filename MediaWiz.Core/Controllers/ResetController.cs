@@ -6,7 +6,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 
-namespace MediaWiz.Core.Controllers
+namespace MediaWiz.Forums.Controllers
 {
     public class ResetController : RenderController
     {

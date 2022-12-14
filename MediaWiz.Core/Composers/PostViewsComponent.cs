@@ -1,11 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Composing;
-using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Cms.Infrastructure.Migrations.Upgrade;
+using Umbraco.Cms.Infrastructure.Scoping;
 
-namespace MediaWiz.Core.Composers
+namespace MediaWiz.Forums.Composers
 {
     /// <summary>
     /// Registers the View counter migration with Umbraco

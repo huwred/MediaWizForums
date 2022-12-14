@@ -1,12 +1,12 @@
 ﻿using System.Security.Claims;
-using MediaWiz.Core.Interfaces;
+using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Options;
 using Umbraco.Extensions;
 
-namespace MediaWiz.Core.Helpers
+namespace MediaWiz.Forums.Helpers
 {
     public class BackofficeUserAccessor : IBackofficeUserAccessor
     {

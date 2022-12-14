@@ -5,7 +5,7 @@ using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Examine;
 
-namespace MediaWiz.Core.Indexing
+namespace MediaWiz.Forums.Indexing
 {
     public class ForumIndex : UmbracoExamineIndex
     {

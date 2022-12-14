@@ -2,21 +2,18 @@
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MediaWiz.Core.Interfaces;
-using Microsoft.AspNetCore.Authorization;
+using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Umbraco.Cms.Core.IO;
-using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.Security;
 
-namespace MediaWiz.Core.Controllers
+namespace MediaWiz.Forums.Controllers
 {
     public class upload
     {
@@ -127,6 +124,7 @@ namespace MediaWiz.Core.Controllers
 
             return false;
         }
+
         [Route("lockpost/{id?}")]
         public bool LockPost(int? id)
         {
@@ -182,7 +180,7 @@ namespace MediaWiz.Core.Controllers
                         break;
                     default:
                         return false;
-                        break;
+
                 }
 
                 return true;
@@ -192,50 +190,7 @@ namespace MediaWiz.Core.Controllers
         }    
         #region Installation
 
-        private void AddDictionaryItems()
-        {
-            try
-            {
-                var defLang = _localizationService.GetDefaultLanguageId();
-                ILanguage lang = _localizationService.GetLanguageById(defLang.Value);
-                _logger.LogDebug("Executing AddDictionaryItems" + defLang);
-                var newitem = _localizationService.GetDictionaryItemByKey("Forums.ForgotPasswordView") ?? new DictionaryItem("Forums.ForgotPasswordView");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang, "/reset" );
-                _localizationService.Save(newitem);
-                newitem = _localizationService.GetDictionaryItemByKey("Forums.LoginView") ?? new DictionaryItem("Forums.LoginView");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/Login" );
-                _localizationService.Save(newitem);
-                newitem = _localizationService.GetDictionaryItemByKey("Forums.ResetPasswordView") ?? new DictionaryItem("Forums.ResetPasswordView");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"Member/ForumAuth.ResetPassword" );
-                _localizationService.Save(newitem);
-                newitem = _localizationService.GetDictionaryItemByKey("Forums.RegisterView") ?? new DictionaryItem("Forums.RegisterView");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"Member/ForumAuth.Register" );
-                _localizationService.Save(newitem);
-                newitem = _localizationService.GetDictionaryItemByKey("Forums.ProfileView") ?? new DictionaryItem("Forums.ProfileView");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"Member/ForumAuth.ViewProfile" );
-                _localizationService.Save(newitem);
-                newitem = _localizationService.GetDictionaryItemByKey("Forums.ProfileEditView") ?? new DictionaryItem("Forums.ProfileEditView");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"Member/ForumAuth.EditProfile" );
-                _localizationService.Save(newitem);
-                newitem = _localizationService.GetDictionaryItemByKey("ForumAuths.LoginUrl") ?? new DictionaryItem("Forums.LoginUrl");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/login" );
-                _localizationService.Save(newitem);
-                _localizationService.Save(newitem);
-                newitem = _localizationService.GetDictionaryItemByKey("Forums.RegisterUrl") ?? new DictionaryItem("Forums.RegisterUrl");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/register" );
-                _localizationService.Save(newitem);
-                newitem = _localizationService.GetDictionaryItemByKey("Forums.VerifyUrl") ?? new DictionaryItem("Forums.VerifyUrl");
-                _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/verify" );
-                _localizationService.Save(newitem);
-                _localizationService.Save(lang);
-            }
-            catch (Exception e)
-            {
-                _logger.LogError( e, "Executing AddDictionaryItems");
 
-            }
-
-        }
 
         [Route("sendvalidation/{id?}")]
         public void ResendValidation(int? id)

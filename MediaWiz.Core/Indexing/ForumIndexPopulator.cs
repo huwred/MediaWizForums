@@ -5,7 +5,7 @@ using Examine;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Examine;
 
-namespace MediaWiz.Core.Indexing
+namespace MediaWiz.Forums.Indexing
 {
     public class ForumIndexPopulator : IndexPopulator
     {

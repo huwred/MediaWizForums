@@ -2,7 +2,7 @@
 using System.Linq;
 using Examine;
 using Examine.Search;
-using MediaWiz.Core.Models.ViewModels;
+using MediaWiz.Forums.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
 using Microsoft.Extensions.Logging;
@@ -13,8 +13,7 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
-
-namespace MediaWiz.Core.Controllers
+namespace MediaWiz.Forums.Controllers
 {
     public class ActiveTopicsController : RenderController
     {

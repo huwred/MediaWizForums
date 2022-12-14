@@ -3,7 +3,7 @@ using System.Threading.Tasks;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Web.Common;
 
-namespace MediaWiz.Core.Interfaces
+namespace MediaWiz.Forums.Interfaces
 {
     public interface IForumMailService
     {

@@ -1,15 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
-using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
-using MediaWiz.Core.Interfaces;
-using MediaWiz.Core.Models;
+using MediaWiz.Forums.Interfaces;
+using MediaWiz.Forums.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -29,7 +25,7 @@ using Umbraco.Cms.Web.Common.Security;
 using Umbraco.Cms.Web.Website.Controllers;
 using Umbraco.Extensions;
 
-namespace MediaWiz.Core.Controllers
+namespace MediaWiz.Forums.Controllers
 {
     /// <summary>
     /// Summary description for ForumsSurfaceController
@@ -71,20 +67,11 @@ namespace MediaWiz.Core.Controllers
             _localizationService = localizationService;
         }
         [HttpGet]
-        public PartialViewResult EditPost(int id)
+        public IActionResult EditPost(int id)
         {
-            
-            var post = _contentService.GetById(id);
-            var model = new ForumsPostModel();
-            model.Id = id;
-            model.ParentId = post.ParentId;
-            model.Title = post.GetValue<string>("postTitle");
-            model.Body = post.GetValue<string>("postBody");
-            model.AuthorId = post.GetValue<int>("postAuthor");
-            model.IsTopic = post.GetValue<bool>("postType");
-            //string referer = Request.Headers["Referer"].ToString();
-            model.returnPath = _contextAccessor.HttpContext.Request.Headers["Referer"].ToString();
-            return PartialView("Forums/_EditPostForm",model);
+
+            return ViewComponent("Topics", new { Template = "EditPostForm", Id = id });
+
         }
 
         [HttpPost]
@@ -257,7 +244,7 @@ namespace MediaWiz.Core.Controllers
             TempData["ResetSent"] = false;
             if (!ModelState.IsValid)
             {
-                return PartialView(_umbracoHelper.GetDictionaryValue("Forums.ForgotPasswordView","/_ForgotPassword"), model);
+                return ViewComponent("PasswordManager", new { Model = model , Template = "ForgotPassword"});
             }
 
             var member = _memberService.GetByEmail(model.EmailAddress);
@@ -279,7 +266,7 @@ namespace MediaWiz.Core.Controllers
             {
                 ModelState.AddModelError("ForgotPasswordForm", 
                     _umbracoHelper.GetDictionaryValue("Forums.Error.NoUser", "No user found"));
-                return PartialView(_umbracoHelper.GetDictionaryValue("Forums.ForgotPasswordView","/_ForgotPassword"));
+                return ViewComponent("PasswordManager", new { Model = model , Template = "ForgotPassword"});
             }
 
             return CurrentUmbracoPage();
@@ -340,122 +327,14 @@ namespace MediaWiz.Core.Controllers
         }
 
         #region Captcha Image
+ 
         /// <summary>
-        /// Checks the result of the Captcha check matches the Captcha stored in Session
+        /// Refreshes the Captch with a new sum
         /// </summary>
-        /// <param name="captcha">Result of Captcha equation</param>
-        /// <returns></returns>
-        [AllowAnonymous]
-        [IgnoreAntiforgeryToken]
-        //[HttpPost]
-        public IActionResult CaptchaCheck(int captcha)
+        /// <returns>new Captcha ViewComponent instance</returns>
+        public IActionResult RefreshCaptcha()
         {
-            var data = JsonConvert.DeserializeObject<dynamic>(captcha.ToString());
-            var session = _contextAccessor.HttpContext.Session;
-
-            if (session.Keys.Contains("Captcha") && session.GetString("Captcha") != data.captcha.Value)
-            {
-                ModelState.AddModelError("Captcha", "Wrong value of sum, please try again.");
-                return
-                    Json(
-                        new
-                        {
-                            success = false,
-                            message = "Wrong value of sum, please try again."
-                        });
-            }
-            //empty the captcha variable
-            session.Remove("Captcha");
-            return Json(new { success = true });
-        }
-
-        /// <summary>
-        /// Renders a Captcha Image with a simple arithmetic question
-        /// </summary>
-        /// <returns>data:image/jpg;base64</returns>
-        [HttpGet]
-        public IActionResult CaptchaImage()
-        {
-            var session = _contextAccessor.HttpContext.Session;
-            string prefix = "";
-            session.Remove("Captcha");
-            var rand = new Random((int)DateTime.Now.Ticks);
-            var allowed = new List<string>() { "plus", "minus" /*,"multiply"*/ };
-            Random random = new Random();
-            int item = random.Next(allowed.Count);
-            string randomBar = allowed[item];
-
-            try
-            {
-                //generate new question
-                int a = rand.Next(10, 99);
-                int b = rand.Next(0, 9);
-                string captcha;
-                switch (randomBar)
-                {
-                    case "plus":
-                        session.SetString("Captcha" + prefix,(a+b).ToString());
-                        captcha = $"{a} + {b} = ?";
-                        break;
-                    case "minus":
-                        session.SetString("Captcha" + prefix,(a-b).ToString());
-                        captcha = $"{a} - {b} = ?";
-                        break;
-                    case "multiply":
-                        session.SetString("Captcha" + prefix,(a*b).ToString());
-                        captcha = $"{a} x {b} = ?";
-                        break;
-                    default:
-                        session.SetString("Captcha" + prefix,(a+b).ToString());
-                        captcha = $"{a} + {b} = ?";
-                        break;
-                }
-
-                using var mem = new MemoryStream();
-                using var bmp = new Bitmap(240, 60);
-                using (var gfx = Graphics.FromImage(bmp))
-                {
-                    gfx.TextRenderingHint = TextRenderingHint.ClearTypeGridFit;
-                    gfx.SmoothingMode = SmoothingMode.AntiAlias;
-                    gfx.FillRectangle(Brushes.White, new Rectangle(0, 0, bmp.Width, bmp.Height));
-
-                    //add noise
-                    int i;
-                    var pen = new Pen(Color.LightYellow);
-                    for (i = 1; i < 10; i++)
-                    {
-                        pen.Color = Color.FromArgb(
-                            (rand.Next(0, 255)),
-                            (rand.Next(0, 255)),
-                            (rand.Next(0, 255)));
-
-                        int r = rand.Next(0, (240 / 3));
-                        int x = rand.Next(0, 240);
-                        int y = rand.Next(0, 60);
-
-                        x -= r;
-                        y -= r;
-                        gfx.DrawEllipse(pen, x, y, r, r);
-                    }
-
-                    //add question
-                    gfx.DrawString(captcha, new Font("Tahoma", 28), Brushes.OrangeRed, 10, 10);
-
-                    //render as Jpeg
-                    bmp.Save(mem, System.Drawing.Imaging.ImageFormat.Jpeg);
-                    //img = File(mem.GetBuffer(), "image/Jpeg");
-
-                    byte[] imageBytes = mem.ToArray();
-                    return File(imageBytes,"image/jpg");
-                }
-
-            }
-            catch (Exception)
-            {
-                return Content("");
-                //throw new HttpException(404, "Captcha image Not found");
-            }
-
+            return ViewComponent("Captcha");
         }
         #endregion
     }

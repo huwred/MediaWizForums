@@ -1,7 +1,7 @@
 ﻿using NPoco;
 using Umbraco.Cms.Infrastructure.Persistence.DatabaseAnnotations;
 
-namespace MediaWiz.Core.Models
+namespace MediaWiz.Forums.Models
 {
     [TableName("ForumPostHitCounter")]
     [PrimaryKey("NodeId", AutoIncrement = false)]

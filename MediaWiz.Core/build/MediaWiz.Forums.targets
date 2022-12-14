@@ -1,29 +1,41 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <MediaWizForumsContentFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\MediaWizards\**\*.*</MediaWizForumsContentFilesPath>
-      <ViewsFolder>$(MSBuildThisFileDirectory)..\Views\**\*.*</ViewsFolder>
+        <MediaWizAssetsFilesPath>$(MSBuildThisFileDirectory)..\staticwebassets\**\*.*</MediaWizAssetsFilesPath>
+        <MediaWizViewsFilesPath>$(MSBuildThisFileDirectory)..\Views\*.*</MediaWizViewsFilesPath>
     </PropertyGroup>
 
-    <Target Name="CopyMediaWizForumsAssets" BeforeTargets="Build">
+    <Target Name="CopyMediaWizForums" BeforeTargets="Build">
         <ItemGroup>
             <MediaWizForumsContentFiles Include="$(MediaWizForumsContentFilesPath)" />
         </ItemGroup>
         <Message Text="Copying MediaWiz.Forums files: $(MediaWizForumsContentFilesPath) - #@(MediaWizForumsContentFiles->Count()) files" Importance="high" />
         <Copy SourceFiles="@(MediaWizForumsContentFiles)" DestinationFiles="@(MediaWizForumsContentFiles->'$(MSBuildProjectDirectory)\App_Plugins\MediaWizards\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
     </Target>
-  <Target Name="CopyViews" BeforeTargets="Build">
+  <Target Name="CopyMediaWizForumViews" BeforeTargets="Build">
     <ItemGroup>
-      <ViewFiles Include="$(ViewsFolder)" />
+      <MediaWizForumsViews Include="$(MediaWizViewsFilesPath)" />
     </ItemGroup>
-    <Message Text="Copying views from: $(ViewsFolder) - #@(ViewFiles->Count()) files"  Importance="high" />
-    <Message Text="Copying views to: $(MSBuildProjectDirectory)\Views\"  Importance="high" />
-    <Copy
-      SourceFiles="@(ViewFiles)"
-      DestinationFiles="@(ViewFiles->'$(MSBuildProjectDirectory)\Views\%(RecursiveDir)%(Filename)%(Extension)')"
-      SkipUnchangedFiles="true"
-      Condition="!Exists('$(MSBuildProjectDirectory)\Views\%(RecursiveDir)%(Filename)%(Extension)')"
-    />
-  </Target>    
+    <Message Text="Copying MediaWiz.Forums Viewa: $(MediaWizViewsFilesPath) - #@(MediaWizForumsViews->Count()) files" Importance="high" />
+    <Copy SourceFiles="@(MediaWizForumsViews)" DestinationFiles="@(MediaWizForumsViews->'$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+  <Target Name="CopyMediaWizStaticAssets" BeforeTargets="Build">
+    <ItemGroup>
+      <MediaWizForumsAssetFiles Include="$(MediaWizAssetsFilesPath)" />
+    </ItemGroup>
+    <Message Text="Copying MediaWiz.Forums asset files: $(MediaWizAssetsFilesPath) - #@(MediaWizForumsAssetFiles->Count()) files" Importance="high" />
+    <Copy SourceFiles="@(MediaWizForumsAssetFiles)" DestinationFiles="@(MediaWizForumsAssetFiles->'$(MSBuildProjectDirectory)\wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
+  </Target>
+
+
+  <Target Name="RemovePartialViews" BeforeTargets="Clean">
+    <ItemGroup>
+       <PartialViewDir Include="$(MSBuildProjectDirectory)\Views\Partials\Forums\"/>
+    </ItemGroup>
+    <Message Text="Remove PartialViews" Importance="high" />
+    <RemoveDir Directories="@(PartialViewDir)" />
+  </Target>
+
     <Target Name="ClearMediaWizForumsAssets" BeforeTargets="Clean">
         <ItemGroup>
             <MediaWizForumsDir Include="$(MSBuildProjectDirectory)\App_Plugins\MediaWizards\" />

@@ -21,6 +21,8 @@ namespace MediaWiz.Forums.Migrations
         private readonly IContentTypeService _contentTypeService;
         private readonly IExamineManager _examine;
         private readonly IMemberService _memberService;
+        private readonly ILocalizationService _localizationService;
+
         public PublishRootBranchPostMigration(
             ILogger<PublishRootBranchPostMigration> logger,
             IContentService contentService,
@@ -31,7 +33,7 @@ namespace MediaWiz.Forums.Migrations
             IShortStringHelper shortStringHelper,
             IExamineManager examine,
             IContentTypeService contentTypeService,
-            IMemberService memberService) : base(context)
+            IMemberService memberService,ILocalizationService localizationService) : base(context)
         {
             _logger = logger;
             _memberGroupService = memberGroupService;
@@ -42,6 +44,7 @@ namespace MediaWiz.Forums.Migrations
             _examine = examine;
             _contentTypeService = contentTypeService;
             _memberService = memberService;
+            _localizationService = localizationService;
         }
 
         protected override void Migrate()
@@ -53,7 +56,6 @@ namespace MediaWiz.Forums.Migrations
                 CreateForumMemberType();
                 UpdatePostCounts();
                 _contentService.SaveAndPublishBranch(contentForum, true);
-
             }
             else
             {
@@ -190,7 +192,6 @@ namespace MediaWiz.Forums.Migrations
 
             return true;
         }
-
         private void AddMemberGroups()
         {
             if (_memberGroupService.GetByName("ForumMember") == null)
@@ -213,7 +214,6 @@ namespace MediaWiz.Forums.Migrations
             }            
 
         }
-
         private long UpdatePostCounts()
         {
             long postcount = 0;
@@ -247,5 +247,44 @@ namespace MediaWiz.Forums.Migrations
             }
 
         }
+        private void AddDictionaryItems()
+        {
+            try
+            {
+                var defLang = _localizationService.GetDefaultLanguageId();
+                ILanguage lang = _localizationService.GetLanguageById(defLang.Value);
+                if(!_localizationService.DictionaryItemExists("Forums.ForumUrl"))
+                {
+                    var newitem = _localizationService.GetDictionaryItemByKey("Forums.ForgotPasswordView") ?? new DictionaryItem("Forums.ForgotPasswordView");
+                    _localizationService.AddOrUpdateDictionaryValue(newitem,lang, "/reset" );
+                    _localizationService.Save(newitem);
+
+                    newitem = _localizationService.GetDictionaryItemByKey("Forums.ForumUrl") ?? new DictionaryItem("Forums.ForumUrl");
+                    _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/" );
+                    _localizationService.Save(newitem);
+
+                    newitem = _localizationService.GetDictionaryItemByKey("ForumAuths.LoginUrl") ?? new DictionaryItem("Forums.LoginUrl");
+                    _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/login" );
+                    _localizationService.Save(newitem);
+
+                    newitem = _localizationService.GetDictionaryItemByKey("Forums.RegisterUrl") ?? new DictionaryItem("Forums.RegisterUrl");
+                    _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/register" );
+                    _localizationService.Save(newitem);
+                    newitem = _localizationService.GetDictionaryItemByKey("Forums.VerifyUrl") ?? new DictionaryItem("Forums.VerifyUrl");
+                    _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/verify" );
+                    _localizationService.Save(newitem);
+                    _localizationService.Save(lang);
+                }
+
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError( e, "Executing AddDictionaryItems");
+
+            }
+
+        }
+
     }
 }

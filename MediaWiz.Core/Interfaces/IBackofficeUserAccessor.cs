@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 
-namespace MediaWiz.Core.Interfaces
+namespace MediaWiz.Forums.Interfaces
 {
     public interface IBackofficeUserAccessor
     {

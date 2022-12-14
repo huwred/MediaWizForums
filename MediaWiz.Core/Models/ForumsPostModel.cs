@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace MediaWiz.Core.Models
+namespace MediaWiz.Forums.Models
 {
     public class ForumsPostModel
     {

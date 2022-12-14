@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace MediaWiz.Core.Models
+namespace MediaWiz.Forums.Models
 {
     public class ForumCacheItem : IComparable
     {

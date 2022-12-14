@@ -5,7 +5,7 @@ using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.Services;
 
-namespace MediaWiz.Core.Events
+namespace MediaWiz.Forums.Events
 {
     public class ForumPostUnPublishEvent : INotificationHandler<ContentUnpublishedNotification>
     {

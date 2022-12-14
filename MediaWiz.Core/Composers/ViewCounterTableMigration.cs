@@ -1,8 +1,8 @@
-﻿using MediaWiz.Core.Models;
+﻿using MediaWiz.Forums.Models;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Infrastructure.Migrations;
 
-namespace MediaWiz.Core.Composers
+namespace MediaWiz.Forums.Composers
 {
     /// <summary>
     /// Creates View Counter table in Umbraco Database

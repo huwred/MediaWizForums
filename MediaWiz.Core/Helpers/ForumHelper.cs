@@ -3,7 +3,7 @@ using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Http;
 
-namespace MediaWiz.Core.Helpers
+namespace MediaWiz.Forums.Helpers
 {
     public class ForumHelper
     {
@@ -11,7 +11,7 @@ namespace MediaWiz.Core.Helpers
         {
             char[] chars = "ABCDEF0123456789".ToCharArray();
             byte[] data = new byte[1];
-            using (RNGCryptoServiceProvider crypto = new RNGCryptoServiceProvider())
+            using (RandomNumberGenerator crypto = RandomNumberGenerator.Create())
             {
                 crypto.GetNonZeroBytes(data);
                 data = new byte[length];

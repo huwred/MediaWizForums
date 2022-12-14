@@ -2,13 +2,13 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>10.3.3</Version>
+    <Version>10.4.0</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
     <PackageId>MediaWiz.Forums</PackageId>
     <Authors>Huw Reddick</Authors>
     <Product>MediaWiz Forums</Product>
-    <Description>MediaWiz Forums for Umbraco CMS. Built for Umbraco 10</Description>
+    <Description>MediaWiz Forums for Umbraco CMS. Built for Umbraco 10+</Description>
     <Title>MediaWizard Forums</Title>
     <Copyright>Huw Reddick</Copyright>
     <PackageProjectUrl>https://umbraco.themediawizards.co.uk</PackageProjectUrl>
@@ -19,10 +19,12 @@
 
 
   <ItemGroup>
-    <PackageReference Include="Umbraco.Cms.Core" Version="10.3.2" />
-    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.3.2" />
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.3.2" />
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.3.2" />
+    <PackageReference Include="Microsoft.Maui.Graphics" Version="7.0.52" />
+    <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.52" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
   </ItemGroup>
 
 	<ItemGroup>
@@ -41,7 +43,21 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Remove="bundleconfig.json" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="bundleconfig.json" />
+	</ItemGroup>
+
+
+	<ItemGroup>
 	  <EmbeddedResource Include="Migrations\package.zip" />
+	</ItemGroup>
+
+
+	<ItemGroup>
+	  <None Include="bundleconfig.json" />
 	</ItemGroup>
 
                     

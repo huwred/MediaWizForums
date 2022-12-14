@@ -4,7 +4,7 @@ using Examine;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Infrastructure.Examine;
 
-namespace MediaWiz.Core.Indexing
+namespace MediaWiz.Forums.Indexing
 {
     public class ForumIndexValueSetBuilder : IValueSetBuilder<IContent>
     {

@@ -1,2 +1,2 @@
 # MediaWizForums
-Forums for Umbraco 10
+Simple Forums for Umbraco ≥ 10. 

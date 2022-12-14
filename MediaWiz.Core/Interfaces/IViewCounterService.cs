@@ -1,6 +1,6 @@
-﻿using MediaWiz.Core.Models;
+﻿using MediaWiz.Forums.Models;
 
-namespace MediaWiz.Core.Interfaces
+namespace MediaWiz.Forums.Interfaces
 {
     public interface IViewCounterService
     {

@@ -1,9 +1,8 @@
 ﻿using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Events;
-using Umbraco.Cms.Web;
 using Umbraco.Cms.Core.Notifications;
 
-namespace MediaWiz.Core.Events
+namespace MediaWiz.Forums.Events
 {
     /// <summary>
     /// Used to add a menu item when the tree renders

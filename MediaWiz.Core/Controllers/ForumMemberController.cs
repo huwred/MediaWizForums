@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using MediaWiz.Core.Helpers;
-using MediaWiz.Core.Interfaces;
+using MediaWiz.Forums.Helpers;
+using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,10 +18,11 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Cms.Web.Common;
+using Umbraco.Cms.Web.Common.Models;
 using Umbraco.Cms.Web.Common.Security;
 using Umbraco.Cms.Web.Website.Models;
 
-namespace MediaWiz.Core.Controllers
+namespace MediaWiz.Forums.Controllers
 {
     public class ForumMemberController : Umbraco.Cms.Web.Website.Controllers.UmbRegisterController
     {
@@ -32,6 +33,7 @@ namespace MediaWiz.Core.Controllers
         private readonly IMemberService _memberService;
         private readonly IMemberManager _memberManager;
         private readonly IUmbracoHelperAccessor _localizationService;
+        private readonly IMemberSignInManager _memberSignInManager;
 
         public ForumMemberController(IMemberManager memberManager, IMemberService memberService, IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IMemberSignInManager memberSignInManager, IScopeProvider scopeProvider,ILogger<ForumMemberController> logger,IHttpContextAccessor httpContextAccessor,IForumMailService mailService,IUmbracoHelperAccessor localizationService) 
             : base(memberManager, memberService, umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider, memberSignInManager, scopeProvider)
@@ -42,6 +44,38 @@ namespace MediaWiz.Core.Controllers
             _memberService = memberService;
             _memberManager = memberManager;
             _localizationService = localizationService;
+            _memberSignInManager = memberSignInManager;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> HandleLoginAsync(LoginModel login)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return CurrentUmbracoPage();
+            }
+
+            if (await _memberManager.ValidateCredentialsAsync(login.Username, login.Password))
+            {
+                var result = await _memberSignInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, true);
+                if (result.Succeeded)
+                {
+                    if (Url.IsLocalUrl(login.RedirectUrl))
+                    {
+                        return Redirect(login.RedirectUrl);
+                    }
+
+                    return RedirectToCurrentUmbracoPage();
+                }
+
+            }
+            else
+            {
+                ModelState.AddModelError(string.Empty, "The username or password provided is incorrect.");
+            }
+            // If there is a specified path to redirect to then use it.
+
+            return CurrentUmbracoPage();
         }
 
         [HttpPost]

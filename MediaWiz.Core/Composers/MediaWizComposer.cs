@@ -1,15 +1,15 @@
-﻿using MediaWiz.Core.Events;
-using MediaWiz.Core.Helpers;
-using MediaWiz.Core.Interfaces;
-//using MediaWiz.Core.Manifest;
-using MediaWiz.Core.Services;
+﻿using MediaWiz.Core.Services;
+using MediaWiz.Forums.Events;
+using MediaWiz.Forums.Helpers;
+using MediaWiz.Forums.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
 using Umbraco.Cms.Core.Composing;
 using Umbraco.Cms.Core.DependencyInjection;
 using Umbraco.Cms.Core.Notifications;
 
 
-namespace MediaWiz.Core.Composers
+
+namespace MediaWiz.Forums.Composers
 {
     public class MediaWizComposer : IComposer
     {

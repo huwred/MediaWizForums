@@ -1,8 +1,8 @@
 ﻿using System;
-using MediaWiz.Core.Models;
+using MediaWiz.Forums.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 
-namespace MediaWiz.Core.Interfaces
+namespace MediaWiz.Forums.Interfaces
 {
     public interface IForumCacheService
     {

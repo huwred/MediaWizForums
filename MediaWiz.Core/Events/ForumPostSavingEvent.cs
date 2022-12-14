@@ -1,12 +1,11 @@
 ﻿using System;
-using MediaWiz.Core.Helpers;
-using MediaWiz.Core.Interfaces;
+using MediaWiz.Forums.Interfaces;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.Security;
 
-namespace MediaWiz.Core.Events
+namespace MediaWiz.Forums.Events
 {
     public class ForumPostSavingEvent : INotificationHandler<ContentSavingNotification>
     {

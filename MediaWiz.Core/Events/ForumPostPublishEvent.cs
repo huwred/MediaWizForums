@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using MediaWiz.Core.Helpers;
-using MediaWiz.Core.Interfaces;
-using MediaWiz.Core.Services;
+using MediaWiz.Forums.Interfaces;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Events;
@@ -15,7 +13,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Extensions;
 
-namespace MediaWiz.Core.Events
+namespace MediaWiz.Forums.Events
 {
     /// <summary>
     /// Post published event for Forum Posts,

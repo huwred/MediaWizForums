@@ -1,6 +1,6 @@
 ﻿using System.Linq;
-using MediaWiz.Core.Interfaces;
-using MediaWiz.Core.Models;
+using MediaWiz.Forums.Interfaces;
+using MediaWiz.Forums.Models;
 using Umbraco.Cms.Infrastructure.Scoping;
 
 

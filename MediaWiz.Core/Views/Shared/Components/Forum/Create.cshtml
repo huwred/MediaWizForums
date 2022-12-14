@@ -1,0 +1,45 @@
+﻿@model MediaWiz.Forums.Models.ForumsForumModel
+@using MediaWiz.Forums.Controllers
+@using Umbraco.Extensions
+
+<div class="modal fade" id="forumModal" tabindex="-1" aria-labelledby="forumModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="forumModalLabel">Create Forum</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            @using (Html.BeginUmbracoForm<ForumsSurfaceController>("CreateForum", FormMethod.Post))
+            {
+                <div class="modal-body">
+                    <div class="mb-3">
+                        @Html.LabelFor(m => Model.Title, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => Model.Title, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(m => Model.Title)
+                    </div>
+
+                    <div class="mb-3">
+                        @Html.LabelFor(m => Model.Introduction, new { @class = "form-label" })
+                        @Html.TextAreaFor(m => Model.Introduction, new { @class = "form-control" })
+                        <div id="introHelp" class="form-text">Enter a brief description for the forum.</div>
+                        @Html.ValidationMessageFor(m => Model.Introduction)
+                    </div>
+                    <div class="mb-3 form-check">
+                        @Html.CheckBoxFor(m => Model.AllowPosts, new { @class = "form-check-input" })
+                        @Html.LabelFor(m => Model.AllowPosts, new { @class = "form-check-label" })
+                    </div>
+                    <div class="mb-3 form-check">
+                        @Html.CheckBoxFor(m => Model.AllowImages, new { @class = "form-check-input" })
+                        @Html.LabelFor(m => Model.AllowImages, new { @class = "form-check-label" })
+                    </div>
+                    @Html.HiddenFor(m=>Model.ParentId)
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-dark">Save changes</button>
+                </div>
+            }
+
+        </div>
+    </div>
+</div>
