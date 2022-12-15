@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using NPoco.fastJSON;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common;
@@ -192,14 +194,17 @@ namespace MediaWiz.Forums.Controllers
 
 
 
-        [Route("sendvalidation/{id?}")]
-        public void ResendValidation(int? id)
+        [Route("sendvalidation")]
+        [HttpPost]
+        public void ResendValidation(JObject jobj)
         {
+            var id = jobj["id"].Value<int>();
+
             if (id == null)
             {
                 return;
             }
-            var member = _memberService.GetById(id.Value);
+            var member = _memberService.GetById(id);
             
             var result =  _mailService.SendVerifyAccount(_umbracoHelper,member.Email,member.GetValue<string>("resetGuid")).Result;
         }

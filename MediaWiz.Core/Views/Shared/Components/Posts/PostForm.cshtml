@@ -1,6 +1,4 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-@inject IMemberManager _memberManager
-@inject IMemberGroupService MemberGroupService
 @using MediaWiz.Forums.Controllers
 @using MediaWiz.Forums.Models
 @using Umbraco.Cms.Core.Models.PublishedContent
@@ -8,10 +6,9 @@
 @using Umbraco.Cms.Core.Services
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
 @using Umbraco.Extensions
-@*
-    render the editor so people can create and comment on something
-    this version uses TinyMCE,
-*@
+
+@inject IMemberManager _memberManager
+@inject IMemberGroupService MemberGroupService
 
 @{
     if (UserCanPostHere(Model))
@@ -59,28 +56,27 @@
                 {
                     <legend>@mode</legend>
                     <div class="form-group">
-                        @Html.LabelFor(m => Post.Title, new { @class = "control-label col-1" })
+                        <label asp-for="@Post.Title" class="control-label col-1"></label>
                         <div class="col-11">
-                            @Html.TextBoxFor(m => Post.Title, new { @class = "form-control" })
-                            @Html.ValidationMessageFor(m => Post.Title)
+                            <input asp-for="@Post.Title" class="form-control" aria_required="true" />
+                            <span asp-validation-for="@Post.Title" class="form-text text-danger"></span>
                         </div>
                     </div>
 
                 }
 
-
                 <div class="form-group">
-                    @Html.LabelFor(m => Post.Body, label, new { @class = "control-lable col-sm-1" })
+                    <label asp-for="@Post.Body" class="control-label col-1"></label>
                     <div class="col-11">
-                        @Html.TextAreaFor(m => Post.Body, 10, 20, new { @class = "form-control new-post" })
-                        @Html.ValidationMessageFor(m => Post.Body)
+                        <textarea asp-for="@Post.Title" class="form-control new-post" aria_required="true" rows="10" cols="20"></textarea>
+                        <span asp-validation-for="@Post.Body" class="form-text text-danger"></span>
                     </div>
                 </div>
+                <input asp-for="@Post.Id" type="hidden" />
+                <input asp-for="@Post.ParentId" type="hidden" />
+                <input asp-for="@Post.AuthorId" type="hidden" />
+                <input asp-for="@Post.IsTopic" type="hidden" />
 
-                @Html.HiddenFor(m => Post.Id)
-                @Html.HiddenFor(m => Post.ParentId)
-                @Html.HiddenFor(m => Post.AuthorId)
-                @Html.HiddenFor(m => Post.IsTopic)
                 <div class="col-11 mt-1">
                     <button type="submit" class="btn btn-dark">@btn</button> <button type="button" class="btn btn-secondary btn-cancel">Cancel</button>
                 </div>

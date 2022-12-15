@@ -17,23 +17,13 @@ namespace MediaWiz.Forums.Controllers
 {
     public class JavascriptSurfaceController : SurfaceController
     {
-
-        private readonly IMemberService _memberService;
-        private readonly IMemberManager _memberManager;
-        private readonly IHttpContextAccessor _httpContext;
         private readonly ILocalizationService _localizationService;
 
-
         public JavascriptSurfaceController(IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider,
-            ILogger logger, IMemberService memberService, IMemberManager memberManager, IHttpContextAccessor contextAccessor, ILocalizationService localizationService) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
+            ILocalizationService localizationService) : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
-
-            _memberService = memberService;
-            _memberManager = memberManager;
-            _httpContext = contextAccessor;
             _localizationService = localizationService;
 
-            
         }
 
         /// <summary>
@@ -42,7 +32,7 @@ namespace MediaWiz.Forums.Controllers
         /// <param name="keys">The Dictionary items to return, default is All</param>
         /// <returns>JavascriptResult</returns>
         [HttpGet]
-        public IActionResult LoadResources(string keys)
+        public IActionResult LoadResources(string keys = null)
         {
             StringBuilder local = new StringBuilder("var local = {};");
             if(keys == null)

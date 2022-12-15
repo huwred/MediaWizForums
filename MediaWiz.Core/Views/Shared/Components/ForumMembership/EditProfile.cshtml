@@ -4,7 +4,6 @@
 @using Umbraco.Extensions
 
 @{
-    
 
     var success = TempData["FormSuccess"] != null;
 
@@ -83,7 +82,7 @@
         <button type="submit" class="btn btn-dark">Update</button>
 
     }
-    @await Component.InvokeAsync("ForumMembership",new {Template = "ChangePassword"})
+    @await Component.InvokeAsync("PasswordManager",new {Template = "ChangePassword"})
 
 }
 else

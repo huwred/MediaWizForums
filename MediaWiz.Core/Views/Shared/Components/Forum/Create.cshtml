@@ -13,26 +13,25 @@
             {
                 <div class="modal-body">
                     <div class="mb-3">
-                        @Html.LabelFor(m => Model.Title, new { @class = "form-label" })
-                        @Html.TextBoxFor(m => Model.Title, new { @class = "form-control" })
-                        @Html.ValidationMessageFor(m => Model.Title)
+                        <label asp-for="@Model.Title" class="form-label"></label>
+                        <input asp-for="@Model.Title" class="form-control" />
+                        <span asp-validation-for="@Model.Title" class="form-text text-danger"></span>
                     </div>
-
                     <div class="mb-3">
-                        @Html.LabelFor(m => Model.Introduction, new { @class = "form-label" })
-                        @Html.TextAreaFor(m => Model.Introduction, new { @class = "form-control" })
+                        <label asp-for="@Model.Introduction" class="form-label"></label>
+                        <textarea asp-for="@Model.Introduction" class="form-control" ></textarea>
                         <div id="introHelp" class="form-text">Enter a brief description for the forum.</div>
-                        @Html.ValidationMessageFor(m => Model.Introduction)
+                        <span asp-validation-for="@Model.Introduction" class="form-text text-danger"></span>
                     </div>
                     <div class="mb-3 form-check">
-                        @Html.CheckBoxFor(m => Model.AllowPosts, new { @class = "form-check-input" })
-                        @Html.LabelFor(m => Model.AllowPosts, new { @class = "form-check-label" })
+                        <input asp-for="@Model.AllowPosts" class="form-check-input" type="checkbox" />
+                        <label asp-for="@Model.AllowPosts" class="form-check-label"></label>
                     </div>
                     <div class="mb-3 form-check">
-                        @Html.CheckBoxFor(m => Model.AllowImages, new { @class = "form-check-input" })
-                        @Html.LabelFor(m => Model.AllowImages, new { @class = "form-check-label" })
+                        <input asp-for="@Model.AllowImages" class="form-check-input" type="checkbox" />
+                        <label asp-for="@Model.AllowImages" class="form-check-label"></label>
                     </div>
-                    @Html.HiddenFor(m=>Model.ParentId)
+                    <input asp-for="@Model.ParentId" type="hidden" />
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

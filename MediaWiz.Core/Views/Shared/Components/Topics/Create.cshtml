@@ -6,10 +6,6 @@
 @inject IMemberManager _memberManager
 @inject IMemberGroupService MemberGroupService
 
-@*
-    allows people to create a new post (if the forum permissions let them)
-*@
-
 @{ var create = Context.Request.Query["create"];
 
     if (Model.Value<bool>("postAtRoot") && MemberCanPost(Model))
@@ -24,7 +20,6 @@
         }
     }
 }
-
 
 @functions { 
     public bool MemberCanPost(IPublishedContent item)

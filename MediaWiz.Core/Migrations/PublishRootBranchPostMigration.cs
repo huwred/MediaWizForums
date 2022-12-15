@@ -53,6 +53,7 @@ namespace MediaWiz.Forums.Migrations
             if (contentForum != null)
             {
                 AddMemberGroups();
+                AddDictionaryItems();
                 CreateForumMemberType();
                 UpdatePostCounts();
                 _contentService.SaveAndPublishBranch(contentForum, true);
@@ -255,22 +256,24 @@ namespace MediaWiz.Forums.Migrations
                 ILanguage lang = _localizationService.GetLanguageById(defLang.Value);
                 if(!_localizationService.DictionaryItemExists("Forums.ForumUrl"))
                 {
-                    var newitem = _localizationService.GetDictionaryItemByKey("Forums.ForgotPasswordView") ?? new DictionaryItem("Forums.ForgotPasswordView");
+                    var parentnode = new DictionaryItem("Forums");
+
+                    var newitem = _localizationService.GetDictionaryItemByKey("Forums.ForgotPasswordView") ?? new DictionaryItem(parentnode.Key,"Forums.ForgotPasswordView");
                     _localizationService.AddOrUpdateDictionaryValue(newitem,lang, "/reset" );
                     _localizationService.Save(newitem);
 
-                    newitem = _localizationService.GetDictionaryItemByKey("Forums.ForumUrl") ?? new DictionaryItem("Forums.ForumUrl");
+                    newitem = _localizationService.GetDictionaryItemByKey("Forums.ForumUrl") ?? new DictionaryItem(parentnode.Key,"Forums.ForumUrl");
                     _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/" );
                     _localizationService.Save(newitem);
 
-                    newitem = _localizationService.GetDictionaryItemByKey("ForumAuths.LoginUrl") ?? new DictionaryItem("Forums.LoginUrl");
+                    newitem = _localizationService.GetDictionaryItemByKey("ForumAuths.LoginUrl") ?? new DictionaryItem(parentnode.Key,"Forums.LoginUrl");
                     _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/login" );
                     _localizationService.Save(newitem);
 
-                    newitem = _localizationService.GetDictionaryItemByKey("Forums.RegisterUrl") ?? new DictionaryItem("Forums.RegisterUrl");
+                    newitem = _localizationService.GetDictionaryItemByKey("Forums.RegisterUrl") ?? new DictionaryItem(parentnode.Key,"Forums.RegisterUrl");
                     _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/register" );
                     _localizationService.Save(newitem);
-                    newitem = _localizationService.GetDictionaryItemByKey("Forums.VerifyUrl") ?? new DictionaryItem("Forums.VerifyUrl");
+                    newitem = _localizationService.GetDictionaryItemByKey("Forums.VerifyUrl") ?? new DictionaryItem(parentnode.Key,"Forums.VerifyUrl");
                     _localizationService.AddOrUpdateDictionaryValue(newitem,lang,"/verify" );
                     _localizationService.Save(newitem);
                     _localizationService.Save(lang);

@@ -1,5 +1,6 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using MediaWiz.Forums.Controllers
+@using MediaWiz.Forums.Extensions
 @using Microsoft.Extensions.Options
 @using Umbraco.Cms.Core.Configuration.Models
 @using Umbraco.Cms.Web.Website.Models
@@ -39,28 +40,28 @@ else
     {
         <hr />
         <div class="mb-3">
-            @Html.LabelFor(m=>registerModel.Name,new{@class="form-label"})
-            @Html.EditorFor(m=>registerModel.Name,new { htmlAttributes = new { @class="form-control",autocomplete="off", aria_required="true"} })
+            <label asp-for="@registerModel.Name" class="form-label"></label>
+            <input asp-for="@registerModel.Name" class="form-control" autocomplete="off" aria_required="true" />
             <span asp-validation-for="@registerModel.Name" class="form-text text-danger"></span>
         </div>
         <div class="mb-3">
-            @Html.LabelFor(m=>registerModel.Username,new{@class="form-label"})
-            @Html.EditorFor(m=>registerModel.Username,new { htmlAttributes = new { @class="form-control",autocomplete="off", aria_required="true"} })
+            <label asp-for="@registerModel.Username" class="form-label"></label>
+            <input asp-for="@registerModel.Username" class="form-control" autocomplete="off" aria_required="true" />
             <span asp-validation-for="@registerModel.Username" class="form-text text-danger"></span>
         </div>
         <div class="mb-3">
-            @Html.LabelFor(m=>registerModel.Email,new{@class="form-label"})
-            @Html.EditorFor(m=>registerModel.Email,new { htmlAttributes = new { @class="form-control",autocomplete="off", aria_required="true"} })
+            <label asp-for="@registerModel.Email" class="form-label"></label>
+            <input asp-for="@registerModel.Email" class="form-control" autocomplete="off" aria_required="true" type="email"/>
             <span asp-validation-for="@registerModel.Email" class="form-text text-danger"></span>
         </div>
         <div class="mb-3">
-            @Html.LabelFor(m=>registerModel.Password,new{@class="form-label"})
-            @Html.EditorFor(m=>registerModel.Password,new { htmlAttributes = new { @class="form-control",autocomplete="new-password", aria_required="true"} })
+            <label asp-for="@registerModel.Password" class="form-label"></label>
+            <input asp-for="@registerModel.Password" class="form-control" autocomplete="new_password" type="password" aria_required="true" />
             <span asp-validation-for="@registerModel.Password" class="form-text text-danger"></span>
         </div>
         <div class="mb-3">
-            @Html.LabelFor(m=>registerModel.ConfirmPassword,new{@class="form-label"})
-            @Html.EditorFor(m=>registerModel.ConfirmPassword,new { htmlAttributes = new { @class="form-control",autocomplete="new-password", aria_required="true"} })
+            <label asp-for="@registerModel.Name" class="form-label"></label>
+            <input asp-for="@registerModel.Name" class="form-control" autocomplete="new-password" type="password" aria_required="true" />
             <span asp-validation-for="@registerModel.ConfirmPassword" class="form-text text-danger"></span>
         </div>
 
@@ -85,9 +86,9 @@ else
                 else
                 {
                     <div class="mb-3">
-                        @Html.LabelFor(m => registerModel.MemberProperties[i].Value, registerModel.MemberProperties[i].Name)
-                        <input asp-for="@registerModel.MemberProperties[i].Value" class="form-control" />
-                        @Html.HiddenFor(m => registerModel.MemberProperties[i].Alias)
+                        <label asp-for="@registerModel.MemberProperties[i].Name" class="form-label"></label>
+                        <input asp-for="@registerModel.MemberProperties[i].Value" class="form-control"/>
+                        <input asp-for="@registerModel.MemberProperties[i].Alias" type="hidden"/>
                         <span asp-validation-for="@registerModel.MemberProperties[i].Value" class="form-text text-danger"></span>
                     </div>
                 }
@@ -99,3 +100,8 @@ else
 
 
 }
+@Html.PartialViewScriptBlock(@<script type="text/javascript">
+    if ("@success".toLowerCase() === "true") {
+        $(".forum-intro").hide();
+    }
+</script>)

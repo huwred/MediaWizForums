@@ -5,13 +5,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="App_Plugins\Bergmania.OpenStreetMap\**" />
-      <Content Remove="App_Plugins\Bergmania.OpenStreetMap\**" />
-      <EmbeddedResource Remove="App_Plugins\Bergmania.OpenStreetMap\**" />
-      <None Remove="App_Plugins\Bergmania.OpenStreetMap\**" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Content Remove="bundleconfig.json" />
     </ItemGroup>
 
@@ -20,6 +13,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <PackageReference Include="MediaWiz.Forums" Version="10.0.0" />
         <PackageReference Include="Umbraco.Cms" Version="10.0.0" />
     </ItemGroup>
 
@@ -29,11 +23,7 @@
       <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) Or $(RuntimeIdentifier.StartsWith('win')) Or ('$(RuntimeIdentifier)' == '' And !$([MSBuild]::IsOSPlatform('osx')))" />
     </ItemGroup>
     <ItemGroup>
-      <Folder Include="App_Plugins\" />
       <Folder Include="wwwroot\" />
-    </ItemGroup>
-    <ItemGroup>
-      <ProjectReference Include="..\MediaWiz.Core\MediaWiz.Forums.csproj" />
     </ItemGroup>
 
 

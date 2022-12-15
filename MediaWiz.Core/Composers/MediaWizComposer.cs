@@ -15,7 +15,7 @@ namespace MediaWiz.Forums.Composers
     {
         public void Compose(IUmbracoBuilder builder)
         {
-            //builder.ManifestFilters().Append<MediaWizManifestFilter>();
+            builder.ManifestFilters().Append<MediaWizManifestFilter>();
             builder.Services.AddScoped<IBackofficeUserAccessor, BackofficeUserAccessor>();
             builder.Services.AddScoped<IForumCacheService, ForumCacheService>();
             builder.Services.AddScoped<IViewCounterService, ForumViewCounterService>();

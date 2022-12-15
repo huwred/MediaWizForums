@@ -48,19 +48,12 @@ namespace MediaWiz.Forums.Events
         public void Handle(ContentPublishedNotification notification)
         {
 
-            List<string> invalidCacheList = new List<string>();
-
             foreach (var item in notification.PublishedEntities)
             {
                 // is a forum post...
                 if (item.ContentType.Alias.Equals("forumPost"))
                 {
-                    // get parent Item.
-                    invalidCacheList = AddParentForumCaches(item, invalidCacheList);
-                    foreach (var cache in invalidCacheList)
-                    {
-                        _appCaches.RuntimeCache.ClearByKey(cache);
-                    }
+
                     var currentUser = _memberManager.GetCurrentMemberAsync().Result;
                     var backofficeUser = _backofficeUserAccessor.BackofficeUser;
                     if (currentUser == null && backofficeUser != null && backofficeUser.IsAuthenticated)
@@ -111,6 +104,8 @@ namespace MediaWiz.Forums.Events
 
                 }
             }
+            
+
         }
         private List<string> AddParentForumCaches(IContent item, List<string> cacheList)
         {
