@@ -1,0 +1,124 @@
+﻿@model MediaWiz.Forums.ViewModels.ProfileViewModel
+
+@using Umbraco.Cms.Web.Website.Controllers
+@using Umbraco.Extensions
+
+@{
+
+    var success = TempData["FormSuccess"] != null;
+
+    if (Model.CurrentUser == null)
+    {
+        Context.Response.Redirect("/forums");
+    }
+}
+
+@if (Model.ProfileModel != null && Model.Username.ToString() == Model.CurrentUser.UserName || string.IsNullOrWhiteSpace(Model.Username.ToString()))
+{
+    if (success)
+    {
+        @* This message will show if profileModel.RedirectUrl is not defined (default) *@
+        <p class="text-success">Profile updated</p>
+    }
+
+    using (Html.BeginUmbracoForm<UmbProfileController>("HandleUpdateProfile", new { RedirectUrl = Model.ProfileModel.RedirectUrl }))
+    {
+        <hr />
+        @if (!string.IsNullOrWhiteSpace(Model.ProfileModel.UserName))
+        {
+            <div class="mb-3">
+                <label asp-for="@Model.ProfileModel.UserName" class="form-label"></label>
+                <input asp-for="@Model.ProfileModel.UserName" class="form-control" disabled="" />
+                <span asp-validation-for="@Model.ProfileModel.UserName" class="form-text text-danger"></span>
+            </div>
+        }
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="mb-3">
+            <label asp-for="@Model.ProfileModel.Name" class="form-label"></label>
+            <input asp-for="@Model.ProfileModel.Name" class="form-control" aria-required="true" />
+            <span asp-validation-for="@Model.ProfileModel.Name" class="form-text text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.ProfileModel.Email" class="form-label"></label>
+            <input asp-for="@Model.ProfileModel.Email" class="form-control" autocomplete="username" aria-required="true" />
+            <span asp-validation-for="@Model.ProfileModel.Email" class="form-text text-danger"></span>
+        </div>
+
+
+
+
+        @if (Model.ProfileModel.MemberProperties != null)
+        {
+            for (var i = 0; i < Model.ProfileModel.MemberProperties.Count; i++)
+            {
+                if (Model.ProfileModel.MemberProperties[i].Alias == "receiveNotifications")
+                {
+                    var checkstate = Model.ProfileModel.MemberProperties[i].Value == "1" ? "checked" : "";
+                    <div class="mb-3">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="@Model.ProfileModel.MemberProperties[i].Value" @checkstate>
+                            <label class="form-check-label" for="flexSwitchCheckDefault">@Html.LabelFor(m => Model.ProfileModel.MemberProperties[i].Value, Model.ProfileModel.MemberProperties[i].Name)</label>
+                        </div>
+
+                        <span asp-validation-for="@Model.ProfileModel.MemberProperties[i].Value" class="form-text text-danger"></span>
+                        <div id="notifyHelp" class="form-text">
+                            Receive an email when someone posts on the forum.
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        @Html.LabelFor(m => Model.ProfileModel.MemberProperties[i].Value, Model.ProfileModel.MemberProperties[i].Name)
+                        <input asp-for="@Model.ProfileModel.MemberProperties[i].Value" class="form-control" />
+                        @Html.HiddenFor(m => Model.ProfileModel.MemberProperties[i].Alias)
+                        <span asp-validation-for="@Model.ProfileModel.MemberProperties[i].Value" class="form-text text-danger"></span>
+                    </div>
+                }
+
+            }
+        }
+
+        <button type="submit" class="btn btn-dark">Update</button>
+
+    }
+    @await Component.InvokeAsync("PasswordManager",new {Template = "ChangePassword"})
+
+}
+else
+{
+
+    if (Model.MemberIdentity != null)
+    {
+        
+
+        <h2>@Model.Username's Profile.</h2>
+        <hr />
+        <div class="mb-3">
+            <label>Name</label>
+            @Html.DisplayTextFor(m => Model.ViewMember.Name)
+        </div>
+
+        @if (Model.ViewMember.Properties != null)
+        {
+            foreach (var property in Model.ViewMember.Properties)
+            {
+                if (property.Alias == "receiveNotifications")
+                {
+                    <div class="mb-3">
+                        <label>@property.Alias</label>
+                        <label>@property.GetValue()</label>
+                    </div>
+                }
+                else
+                {
+                    <div class="mb-3">
+                        <label>@property.Alias</label>
+                        <label>@property.GetValue()</label>
+                    </div>
+                }
+            }
+        }
+    }
+
+}

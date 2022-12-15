@@ -1,0 +1,35 @@
+﻿@model LoginModel
+@using MediaWiz.Forums.Controllers
+@using Umbraco.Cms.Web.Common.Models
+@using Umbraco.Extensions
+
+<div class="login-form">
+
+    @using (Html.BeginUmbracoForm<ForumMemberController>(
+    "HandleLogin", new { RedirectUrl = Model.RedirectUrl }))
+    {
+            <hr />
+            <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="mb-3">
+            <label asp-for="@Model.Username" class="form-label"></label>
+            <input asp-for="@Model.Username" class="form-control" autocomplete="new-password" aria_required="true" />
+            <span asp-validation-for="@Model.Username" class="form-text text-danger"></span>
+        </div>
+        <div class="mb-3">
+            <label asp-for="@Model.Password" class="form-label"></label>
+            <input asp-for="@Model.Password" class="form-control" autocomplete="new-password" aria_required="true" type="password" />
+            <span asp-validation-for="@Model.Password" class="form-text text-danger"></span>
+        </div>
+        <div class="mb-3 form-check">
+            <input asp-for="@Model.RememberMe" class="form-check-input" aria_required="true" type="checkbox" />
+            <label asp-for="@Model.RememberMe" class="form-check-label">
+                @Html.DisplayNameFor(m => Model.RememberMe)
+            </label>
+        </div>
+
+            <button type="submit" class="btn btn-dark">Log in</button>
+
+
+        }
+
+</div>

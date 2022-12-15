@@ -1,0 +1,59 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<MediaWiz.Forums.Models.ForumsPostModel>
+@using MediaWiz.Forums.Controllers
+@using MediaWiz.Forums.Models
+@using Umbraco.Extensions
+
+@{
+    var showTitle = Model.IsTopic;
+    var label = "Message";
+    var btn = "Save";
+    var Post = new ForumsPostModel
+    {
+        Id = Model.Id,
+        Body = Model.Body,
+        Title = Model.Title,
+        AuthorId = Model.AuthorId,
+        ParentId = Model.ParentId,
+        IsTopic = Model.IsTopic,
+        returnPath = Model.returnPath
+    };
+
+    using (Html.BeginUmbracoForm<ForumsSurfaceController>("PostEdit", null, new { @class = "form-horizontal" }))
+    {
+        <fieldset class="container">
+            @if (showTitle)
+            {
+                <div class="form-group">
+                    <label asp-for="@Post.Title" class="control-label col-1"></label>
+                    <div class="col-11">
+                        <input asp-for="@Post.Title" class="form-control" aria_required="true" />
+                        <span asp-validation-for="@Post.Title" class="form-text text-danger"></span>
+                    </div>
+                </div>
+
+            }
+            <div class="form-group">
+                <label asp-for="@Post.Body" class="control-label col-1"></label>
+                <div class="col-11">
+                    <textarea asp-for="@Post.Title" class="form-control new-post" aria_required="true" rows="10" cols="20"></textarea>
+                    <span asp-validation-for="@Post.Body" class="form-text text-danger"></span>
+                </div>
+            </div>
+            <input asp-for="@Post.returnPath" type="hidden" />
+            <input asp-for="@Post.Id" type="hidden" />
+            <input asp-for="@Post.ParentId" type="hidden" />
+            <input asp-for="@Post.AuthorId" type="hidden" />
+            <input asp-for="@Post.IsTopic" type="hidden" />
+
+            @Html.ValidationSummary("PostEdit", true)
+            <div class="form-group">
+                <button type="submit" class="btn btn-dark">@btn</button> <button type="button" class="btn btn-secondary btn-cancel" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </fieldset>
+    }
+
+}
+
+
+
+
