@@ -1,0 +1,115 @@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using MediaWiz.Forums.Controllers
+@using MediaWiz.Forums.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Core.Services
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using Umbraco.Extensions
+
+@inject IMemberManager _memberManager
+@inject IMemberGroupService MemberGroupService
+
+@{
+    if (UserCanPostHere(Model))
+    {
+        var showTitle = (bool)TempData["showTitle"];
+
+        var edit = false;
+        if (TempData["edit"] != null)
+        {
+            edit = (bool)TempData["edit"];
+        }
+
+        var mode = edit ? "Edit Post" : (showTitle ? "Create a new Post" : "Reply");
+        var label = edit ? "Message" : (showTitle ? "Message" : "Reply");
+        var btn = edit ? "Save" : (showTitle ? "Submit" : "Save");
+
+        var Post = new ForumsPostModel();
+        var user = _memberManager.GetCurrentMemberAsync().Result;
+        IPublishedContent member = _memberManager.AsPublishedMember(user);
+        if (edit)
+        {
+            
+            if (member.Id != Model.Value<IPublishedContent>("postAuthor").Id)
+            {
+                <h3>You can't edit this post, it's not yours</h3>
+                return;
+            }
+
+            Post.Id = Model.Id;
+            Post.Body = Model.Value<string>("postBody", "");
+            Post.Title = Model.Value<string>("postTitle", "");
+        }
+
+        Post.AuthorId = member.Id;
+        Post.ParentId = Model.Id;
+        Post.IsTopic = showTitle;
+
+        using (Html.BeginUmbracoForm<ForumsSurfaceController>("PostReply", null, new { @class = "form-horizontal forum-reply-form" }))
+        {
+            <fieldset>
+
+                @Html.ValidationSummary("Reply", true)
+
+                @if (showTitle)
+                {
+                    <legend>@mode</legend>
+                    <div class="form-group">
+                        <label asp-for="@Post.Title" class="control-label col-1"></label>
+                        <div class="col-11">
+                            <input asp-for="@Post.Title" class="form-control" aria_required="true" />
+                            <span asp-validation-for="@Post.Title" class="form-text text-danger"></span>
+                        </div>
+                    </div>
+
+                }
+
+                <div class="form-group">
+                    <label asp-for="@Post.Body" class="control-label col-1"></label>
+                    <div class="col-11">
+                        <textarea asp-for="@Post.Title" class="form-control new-post" aria_required="true" rows="10" cols="20"></textarea>
+                        <span asp-validation-for="@Post.Body" class="form-text text-danger"></span>
+                    </div>
+                </div>
+                <input asp-for="@Post.Id" type="hidden" />
+                <input asp-for="@Post.ParentId" type="hidden" />
+                <input asp-for="@Post.AuthorId" type="hidden" />
+                <input asp-for="@Post.IsTopic" type="hidden" />
+
+                <div class="col-11 mt-1">
+                    <button type="submit" class="btn btn-dark">@btn</button> <button type="button" class="btn btn-secondary btn-cancel">Cancel</button>
+                </div>
+            </fieldset>
+        }
+    }
+}
+
+@functions {
+
+    public bool UserCanPostHere(IPublishedContent item)
+    {
+        if (!_memberManager.IsLoggedIn())
+            return false;
+
+        var canPostGroups = item.Value<string>("canPostGroups");
+
+        // default is any one logged on...
+        if (string.IsNullOrWhiteSpace(canPostGroups))
+            return true;
+
+        // is the user in any of those groups ?
+        var allowedGroupList = new List<string>();
+        foreach (var memberGroupStr in canPostGroups.Split(','))
+        {
+            var memberGroup = MemberGroupService.GetById(Convert.ToInt32(memberGroupStr));
+            if (memberGroup != null)
+            {
+                allowedGroupList.Add(memberGroup.Name);
+            }
+        }
+        return _memberManager.IsMemberAuthorizedAsync(allowGroups: allowedGroupList).Result;
+    }
+
+}
+

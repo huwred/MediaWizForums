@@ -1,0 +1,21 @@
+﻿@using Umbraco.Cms.Core.Security
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject IMemberManager _memberManager
+@{
+    var user = _memberManager.GetCurrentMemberAsync().Result;
+    if ( _memberManager.IsLoggedIn())
+    {
+        <li class="nav-item d-none d-sm-block">
+            <span class="glyphicon glyphicon-star" aria-hidden="true" style="color: gold;"></span>
+            Welcome back<br /><a href="/profile/?user=@user.UserName" rel="no-follow" title="View profile" class="nav-icon">@user.Name</a>
+        </li>
+        <li class="nav-item"><a href="@Url.SurfaceAction("Logout", "ForumsSurface")" class="nav-link" title="Logout"><i class="fs-5 bi-door-closed me-1"></i><span class="d-none d-sm-none d-md-inline">Logout</span></a></li>
+    }
+    else
+    {
+        <li class="nav-item"><a href="@Umbraco.GetDictionaryValue(" Forums.LoginUrl"," /login")" class="nav-link" title="Login"><i class="fs-5 bi-door-open me-1"></i><span class="d-none d-sm-none d-md-inline">Login</span></a></li>
+        <li class="nav-item"><a href="@Umbraco.GetDictionaryValue(" Forums.RegisterUrl"," /register")" class="nav-link" title="Register"><i class="fs-5 bi-person-badge me-1"></i><span class="d-none d-sm-none d-md-inline">Register</span></a></li>
+        <li class="nav-item"><a href="/ForgotPassword" class="nav-link" title="Forgot Password"><i class="fs-5 bi-file-lock me-1"></i><span class="d-none d-sm-none d-md-inline">Forgot&nbsp;Password</span></a></li>
+    }
+}

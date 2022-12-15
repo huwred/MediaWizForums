@@ -1,0 +1,63 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Version>10.0.0</Version>
+    <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
+    <ContentTargetFolders>.</ContentTargetFolders>
+    <PackageId>MediaWiz.Forums</PackageId>
+    <Owners>Huw Reddick</Owners>
+    <Authors>Huw Reddick</Authors>
+    <Product>MediaWiz Forums</Product>
+    <Description>MediaWiz Forums for Umbraco CMS. Built for Umbraco 10+</Description>
+    <Title>MediaWizard Forums</Title>
+    <Copyright>Huw Reddick</Copyright>
+    <PackageProjectUrl>https://umbraco.themediawizards.co.uk</PackageProjectUrl>
+    <PackageTags>umbraco-marketplace umbraco plugin package</PackageTags>
+    <RepositoryUrl>https://github.com/huwred/MediaWizForums</RepositoryUrl>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+  </PropertyGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Maui.Graphics" Version="7.0.52" />
+    <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.52" />
+    <PackageReference Include="Umbraco.Cms.Core" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
+  </ItemGroup>
+
+	<ItemGroup>
+    <Content Include="App_Plugins\MediaWizards\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+    <None Include="Assets\**">
+      <Pack>true</Pack>
+      <PackagePath>wwwAssets</PackagePath>
+    </None>
+    <None Include="views\**">
+      <Pack>true</Pack>
+      <PackagePath>Views</PackagePath>
+    </None>
+    <None Include="build\**">
+      <Pack>true</Pack>
+      <PackagePath>buildTransitive</PackagePath>
+    </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Remove="Views\Shared\Components\_ViewImports.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <EmbeddedResource Include="Migrations\package.zip" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\" />
+	</ItemGroup>
+                  
+
+</Project>

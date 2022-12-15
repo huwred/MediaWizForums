@@ -1,0 +1,38 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@{
+    int pagenum = ViewBag.Page;
+    if (pagenum == 0)
+    {
+        pagenum = 1;
+    }
+    int totalPages = ViewBag.TotalPages;
+    var querystring = !String.IsNullOrWhiteSpace(Context.Request.QueryString.ToString()
+        .Replace("&page=" + pagenum, "")
+        .Replace("?page=" + pagenum, "")) ? Context.Request.QueryString.ToString()
+            .Replace("&page=" + pagenum, "")
+            .Replace("?page=" + pagenum, "") + "&" : "?";
+}
+<ul class="pagination list-unstyled">
+    @if (pagenum > 1)
+    {
+        <li class="page-link"><a href="@($"{querystring}page={(pagenum - 1)}")">Prev</a></li>
+    }
+    @for (var p = 1; p < totalPages + 1; p++)
+    {
+        <li class="page-link @(p == pagenum ? "active" : string.Empty)">
+            @if (p == pagenum)
+            {
+                @p
+            }
+            else
+            {
+                <a href="@($"{querystring}page={p}")">@p</a>
+            }
+                
+        </li>
+    }
+    @if (pagenum < totalPages)
+    {
+        <li class="page-link"><a href="@($"{querystring}page={(pagenum + 1)}")">Next</a></li>
+    }
+</ul>
