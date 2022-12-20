@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Examine;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.Extensions.Logging;
+using NPoco;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Models;
@@ -11,6 +13,7 @@ using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Extensions;
 
 namespace MediaWiz.Forums.Events
@@ -21,7 +24,7 @@ namespace MediaWiz.Forums.Events
     /// </summary>
     public class ForumPostPublishedEvent : INotificationHandler<ContentPublishedNotification>
     {
-        private readonly AppCaches _appCaches;
+        private readonly IExamineManager _examineManager;
         private readonly IContentService _contentService;
         private readonly IContentTypeService _contentType;
         private readonly ILogger<ForumPostPublishedEvent> _logger;
@@ -30,12 +33,16 @@ namespace MediaWiz.Forums.Events
         private readonly IMemberManager _memberManager;
         private readonly IMemberService _memberService;
         private readonly IForumMailService _mailService;
+        private readonly IIndexRebuilder _indexRebuilder;
+        private readonly IAppPolicyCache _runtimeCache;
 
         public ForumPostPublishedEvent(ILogger<ForumPostPublishedEvent> logger,AppCaches appCaches,IContentService contentService,IContentTypeService contentType,
-            IForumMailService mailService,
-            IUmbracoContextFactory context,IBackofficeUserAccessor backofficeUserAccessor, IMemberManager memberManager,IMemberService memberService)
+        IForumMailService mailService,
+            IUmbracoContextFactory context,IBackofficeUserAccessor backofficeUserAccessor, 
+            IMemberManager memberManager,IMemberService memberService,IIndexRebuilder indexRebuilder,
+            IExamineManager examineManager)
         {
-            _appCaches = appCaches;
+            _examineManager = examineManager;
             _contentService = contentService;
             _contentType = contentType;
             _context = context;
@@ -44,16 +51,20 @@ namespace MediaWiz.Forums.Events
             _backofficeUserAccessor = backofficeUserAccessor;
             _memberService = memberService;
             _mailService = mailService;
+            _indexRebuilder = indexRebuilder;
+
+            _runtimeCache = appCaches.RuntimeCache;
+
         }
         public void Handle(ContentPublishedNotification notification)
         {
-
+            List<string> invalidCacheList = new List<string>();
             foreach (var item in notification.PublishedEntities)
             {
                 // is a forum post...
                 if (item.ContentType.Alias.Equals("forumPost"))
                 {
-
+                    
                     var currentUser = _memberManager.GetCurrentMemberAsync().Result;
                     var backofficeUser = _backofficeUserAccessor.BackofficeUser;
                     if (currentUser == null && backofficeUser != null && backofficeUser.IsAuthenticated)
@@ -85,6 +96,11 @@ namespace MediaWiz.Forums.Events
                             {
                                 // if we have a parent post, then this is a reply 
                                 postRoot = post.Parent;
+                                invalidCacheList.Add($"Topic_{parent.Id}");
+                            }
+                            else
+                            {
+                                invalidCacheList.Add($"forum_{parent.Id}");
                             }
                             _logger.LogInformation("Sending Notification for new post for {0}", postRoot.Name);
 
@@ -104,42 +120,11 @@ namespace MediaWiz.Forums.Events
 
                 }
             }
-            
-
-        }
-        private List<string> AddParentForumCaches(IContent item, List<string> cacheList)
-        {
-            var parent = _contentService.GetParent(item);
-            var forumType = _contentType.Get("forum");
-            var postType = _contentType.Get("forumPost");
-
-            if (parent != null && forumType != null)
+            foreach (var cache in invalidCacheList)
             {
-                parent.UpdateDate = DateTime.Now;
-                _contentService.SaveAndPublish(parent);
-                if (parent.ContentTypeId == forumType.Id || parent.ContentTypeId == forumType.Id)
-                {
-                    var cache = $"forum_{parent.Id}";
-                    if (!cacheList.Contains(cache))
-                        cacheList.Add(cache);
-                    
-                    cacheList = AddParentForumCaches(parent, cacheList);
-                }
-                else if (parent.ContentTypeId == postType.Id || parent.ContentTypeId == postType.Id)
-                {
-                    var cache = $"Topic_{parent.Id}";
-                    if (!cacheList.Contains(cache))
-                        cacheList.Add(cache);
-
-                    cacheList = AddParentForumCaches(parent, cacheList);
-                }
-                else
-                {
-                    cacheList = AddParentForumCaches(parent, cacheList);
-                }
+                _runtimeCache.ClearByKey(cache);
             }
-
-            return cacheList;
+            RebuildIndex();
         }
         private List<string> GetRecipients(IPublishedContent item)
         {
@@ -178,6 +163,38 @@ namespace MediaWiz.Forums.Events
                 }
             }
             return string.Empty;
+        }
+        private void RebuildIndex()
+        {
+
+            bool validated = ValidateIndex("ForumIndex", out var index);
+            if (!validated)
+                return;
+
+            validated = ValidatePopulator(index);
+            if (!validated)
+                return;
+
+            _indexRebuilder.RebuildIndex(index.Name);
+        }
+        private bool ValidateIndex(string indexName, out IIndex index)
+        {
+            if (!_examineManager.TryGetIndex(indexName, out index))
+            {
+                _logger.LogError("ForumIndexRefreshComponent | | Message: {0}", $"No index found by name < ForumIndex >");
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool ValidatePopulator(IIndex index)
+        {
+            if (_indexRebuilder.CanRebuild(index.Name))
+                return true;
+
+            _logger.LogError( $"The index {index.Name} cannot be rebuilt because it does not have an associated {typeof(IIndexPopulator)}");
+            return false;
         }
 
     }

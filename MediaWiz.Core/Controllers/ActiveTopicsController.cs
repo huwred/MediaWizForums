@@ -41,16 +41,17 @@ namespace MediaWiz.Forums.Controllers
             }
 
             int pageIndex = page - 1;
+            if(pageIndex < 0) {pageIndex = 0;}
             int pageSize = CurrentPage.Value<int>("intPageSize");
 
             if (_examineManager.TryGetIndex("ForumIndex", out var index))
             {
+                
                 var searcher = index.Searcher;
 
                 results = searcher.CreateQuery("content")
-                    //.NodeTypeAlias("forumPost").And()
                     .Field("posttype", "1")
-                    .OrderByDescending(new SortableField[] { new SortableField("updateDate") })
+                    .OrderByDescending(new SortableField[] { new SortableField("lastpost") })
                     .Execute(/*maxResults: pageSize * (pageIndex + 1)*/);
             }
 
@@ -58,7 +59,8 @@ namespace MediaWiz.Forums.Controllers
             {
                 var pagedResults = results.Skip(pageIndex * pageSize).Take(pageSize);
                 var totalResults = results.TotalItemCount;
-                var pagedResultsAsContent = _publishedContentQuery.Content(pagedResults.Select(x => x.Id));
+                var ids = pagedResults.Select(x => x.Id);
+                var pagedResultsAsContent = _publishedContentQuery.Content(ids);
 
                 SearchViewModel searchPageViewModel = new SearchViewModel(CurrentPage, new PublishedValueFallback(_serviceContext, _variationContextAccessor))
                 {

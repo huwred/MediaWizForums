@@ -2,6 +2,7 @@
         {
             tools: "code undo redo | styleselect | bullist numlist | indent outdent | link codesample emoticons",
             returnUrl: "",
+            currLang: getLang(),
             editPost: function(postId) {
                 $.ajax({
                     type: "GET",
@@ -25,7 +26,15 @@
                     del.fail(function (result) { alert("sorry, there was an error deleting this post"); });
                 }
             },
-
+            markAnswer: function(postId) {
+                if (window.confirm("Are you sure you want to mark this post as the answer?")) {
+                    var locking = $.get("/markanswer/" + postId);
+                    locking.done(function(data, status) {
+                        location.reload();
+                    });
+                    locking.fail(function (result) { alert("sorry, there was an error marking this post as the answer" + result); });
+                }
+            },
             lockPost: function(postId) {
                 if (window.confirm("Are you sure you want to lock/unlock this post?")) {
                     var locking = $.get("/lockpost/" + postId);
@@ -131,7 +140,12 @@
                 e.preventDefault();
                 MediaWiz.lockPost($(this).data("postid"));
             });
+            $(".post-answer").on("click",function (e) {
 
+                e.stopPropagation();
+                e.preventDefault();
+                MediaWiz.markAnswer($(this).data("postid"));
+            });
             $(".post-edit").on("click",function (e) {
                 e.stopPropagation();
                 e.preventDefault();
@@ -154,6 +168,11 @@
                 tinymce.remove("#partial-form textarea");
             });
         });
+        function getLang() {
+            if (navigator.languages != undefined) 
+                return navigator.languages[0]; 
+            return navigator.language;
+        }
         function goToTheEnd() {
             var ed=tinyMCE.activeEditor;
             var root=ed.dom.getRoot();  // This gets the root node of the editor window
@@ -167,3 +186,17 @@
             // And collapse the selection to the end to put the caret there:
             ed.selection.collapse(false);
         }
+        $( "li.reply" ).hover(
+            function() {
+                $(this).find(".tool-label").show();
+            }, function() {
+                $(this).find(".tool-label").hide();
+            }
+        );
+        $( "li.topic" ).hover(
+            function() {
+                $(this).find(".tool-label").show();
+            }, function() {
+                $(this).find(".tool-label").hide();
+            }
+        );

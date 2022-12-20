@@ -1,7 +1,9 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using MediaWiz.Forums.Interfaces
 @using Umbraco.Extensions
-@inject IViewCounterService viewCounter
+@using MediaWiz.Forums.Helpers
+@using Umbraco.Cms.Core.Models.PublishedContent
+@inject IViewCounterService _viewCounter
 @inject IForumCacheService _cacheService
 
 @{
@@ -16,55 +18,16 @@
         <div>
             <div class="wiz-topics">
                 <div class="d-flex flex-row flex-wrap mb-3 p-2 color-white bg-secondary">
-                    <div class="col-8 col-sm-5">Topic</div>
+                    <div class="col-8">Topic</div>
                     <div class="col-2">Replies</div>
                     <div class="col-2">Views</div>
-                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">&nbsp;</div>
                 </div>
-                <div class="wiz-body p-2">
+                <div class="wiz-body m-0 mb-2">
                     @foreach (var post in posts.Skip((pagenum - 1) * pageSize).Take(pageSize)
                     .OrderByDescending(x => x.Value<int>("stickyness"))
                     .ThenByDescending(x => _cacheService.GetPost(x, "Topic_" + x.Id).latestPost))
                     {
-                        var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id);
-                        if (post.IsVisible())
-                        {
-                            string locked = post.Value<bool>("allowReplies") ? "" : "locked";
-                            var views = viewCounter.GetViewCount(post.Id)?.Views ?? 0;
-                            <div class="d-flex flex-row flex-wrap topic @locked" id="topic-@post.Id">
-                                <div class="col-8 col-sm-5">
-                                    <a class="wiz-topic-permalink" href="@post.Url()">@post.Value("postTitle")</a>
-                                    <span class="wiz-topic-meta">
-                                        <span class="wiz-topic-content">@post.Value("postBody")</span>
-                                    </span>
-                                </div>
-                                <div class="col-2">@(cacheInfo.Count)</div>
-                                <div class="col-2">@views</div>
-                                <div class="col-12 col-sm flex-shrink-0 flex-grow-1">
-                                    <span class="wiz-topic-started-by">Created by @post.Value("postCreator")</span>
-                                    @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
-                                    {
-                                        <span>
-                                            <br /><a href="@cacheInfo.lastPostUrl" title="Jump to latest reply">last post</a>&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
-                                        </span>
-                                    }
-
-                                </div>
-                            </div>
-                        }
-                        else
-                        {
-                            <div class="d-flex flex-row topic type-topic">
-                                @if (post.Value<bool>("deletedByAuthor"))
-                                {
-                                    <span class="alert alert-warning d-flex">post deleted by author</span>
-                                }
-                                else
-                                {
-                                    <span class="alert alert-warning d-flex">post has been removed</span>
-                                }
-                            </div>
-                        }
+                        DisplayPost(post);
                     }
                 </div>
             </div>
@@ -76,24 +39,59 @@
     }
     else if (Model.HasValue("postAtRoot") && Model.Value<int?>("postAtRoot") == 1)
     {
-        <div class="">
-            <table class="table table-responsive" style="display: block;">
-                <thead class="table-responsive">
-                    <tr class="d-flex">
-                        <th scope="col" class="col-sm-12">Posts</th>
-                    </tr>
-                </thead>
-                <tbody class="table-responsive">
-                    <tr class="d-flex">
-                        <td class="wiz-topic-title col-sm-12">
-                            No posts yet, be the first to make one.
-                        </td>
-
-                    </tr>
-                </tbody>
-            </table>
+        <div>
+            <div class="wiz-topics">
+                <div class="d-flex flex-row flex-wrap mb-3 p-2 color-white bg-secondary">
+                    <div class="col-8">Topic</div>
+                    <div class="col-2">Replies</div>
+                    <div class="col-2">Views</div>
+                </div>
+                <div class="wiz-body m-0 mb-2">
+                    <div class="d-flex wiz-topic-title col-sm-12">
+                        <p>No posts yet, be the first to make one.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     }
 }
+@{
+    void DisplayPost(IPublishedContent post)
+    {
 
+        var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id);
+        var views = _viewCounter.GetViewCount(post.Id)?.Views ?? 0;
+
+        @if (post.IsVisible())
+        {
+            string locked = post.Value<bool>("allowReplies") ? "" : "locked";
+            string solved = post.Value<bool>("answer") ? "solved" : "";
+
+            <div class="d-flex flex-row flex-wrap topic @locked @solved p-6" id="topic-@post.Id">
+                <div class="col-8 p-4">
+                    <a class="wiz-topic-permalink " href="@post.Url()" style="display: block" title="@post.Value("postTitle")">@post.Value("postTitle")</a>
+                    <span class="wiz-topic-meta">
+
+                        @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
+                        {
+                            <span class="wiz-topic-started-by">
+                                last post&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
+                                @ForumHelper.GetRelativeDate(cacheInfo.latestPost) <a href="@cacheInfo.lastPostUrl" title="Jump to latest post"><i class="bi bi-chevron-double-right"></i></a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="wiz-topic-started-by">topic created by <a href="/profile/?user=@post.Value("postCreator")">@post.Value("postCreator")</a> @ForumHelper.GetRelativeDate(post.CreateDate)</span>
+                        }
+                    </span>
+                </div>
+                <div class="col-2 pt-4">@(cacheInfo.Count)</div>
+                <div class="col-2 pt-4">@views</div>
+
+            </div>
+        }
+
+    }
+
+}
 

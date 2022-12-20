@@ -28,17 +28,15 @@
     </div>
 </div>
 <div>
-
     @{
 
         if (Model.PagedResult.Any())
         {
             <div class="wiz-topics">
-                <div class="d-flex flex-row flex-wrap mb-3 p-2 bg-secondary color-white ">
-                    <div class="col-8 col-sm-5">Topic</div>
+                <div class="d-flex flex-row flex-wrap mb-3 p-2 color-white bg-secondary">
+                    <div class="col-8">Topic</div>
                     <div class="col-2">Replies</div>
-                    <div class="col-2 flex-shrink-0">Views</div>
-                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">Last post</div>
+                    <div class="col-2">Views</div>
                 </div>
                 <div class="wiz-body">
                     @foreach (var result in Model.PagedResult)
@@ -65,51 +63,34 @@
 @{
     void DisplayPost(IPublishedContent post, bool showTitle = true)
     {
-
-        var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id);
+        var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id,new TimeSpan(0,0,30));
         var views = _viewCounter.GetViewCount(post.Id)?.Views ?? 0;
-        var topicClass = post.Value<bool>("postType") ? "topic" : "reply";
 
         @if (post.IsVisible())
         {
             string locked = post.Value<bool>("allowReplies") ? "" : "locked";
-            <div class="d-flex flex-row flex-wrap @topicClass @locked p-3" id="topic-@post.Id">
-                <div class="col-8 col-sm-5">
-                    <a class="wiz-topic-permalink" href="@post.Url()">@post.Value("postTitle")</a>
+            string solved = post.Value<bool>("answer") ? "solved" : "";
+
+            <div class="d-flex flex-row flex-wrap topic @locked @solved p-6" id="topic-@post.Id">
+                <div class="col-8 p-4">
+                    <a class="wiz-topic-permalink " href="@post.Url()" style="display: block" title="@post.Value("postTitle")">@post.Value("postTitle")</a>
                     <span class="wiz-topic-meta">
-                        <span class="wiz-topic-content" style="display: block;">@post.Value("postBody")</span>
+                        @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
+                        {
+                            <span class="wiz-topic-started-by">
+                                last post&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
+                                @ForumHelper.GetRelativeDate(cacheInfo.latestPost) <a href="@cacheInfo.lastPostUrl" title="Jump to latest post"><i class="bi bi-chevron-double-right"></i></a>
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="wiz-topic-started-by">topic created by <a href="/profile/?user=@post.Value("postCreator")">@post.Value("postCreator")</a> @ForumHelper.GetRelativeDate(post.CreateDate)</span>
+                        }
                     </span>
                 </div>
-                <div class="col-2">@(cacheInfo.Count)</div>
-                <div class="col-2">@views</div>
-                <div class="col-12 col-sm flex-shrink-0 flex-grow-1">
-                    <span class="wiz-topic-started-by">Created by @post.Value("postCreator") </span>
-                    @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
-                    {
-                        <span>
-                            <br /><a href="@cacheInfo.lastPostUrl" title="Jump to latest reply">last post</a>&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
-                        </span>
-                    }
-                    <br/>@ForumHelper.GetRelativeDate(post.UpdateDate)
-                </div>
+                <div class="col-2 pt-4">@(cacheInfo.Count)</div>
+                <div class="col-2 pt-4">@views</div>
             </div>
         }
-        else
-        {
-            // hidden posts are deleted
-            <div class="d-flex flex-row flex-wrap post-deleted">
-                @if (post.Value<bool>("deletedByAuthor"))
-                {
-                    <div class="flex-fill alert alert-warning">post deleted by author</div>
-                }
-                else
-                {
-                    <div class="flex-fill alert alert-warning">post has been removed</div>
-
-                }
-            </div>
-        }
-
     }
-
 }

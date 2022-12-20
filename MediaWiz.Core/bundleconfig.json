@@ -1,0 +1,20 @@
+[
+  {
+    "outputFileName": "Assets/css/forums.min.css",
+    "inputFiles": [
+      "Assets/css/forums.css"
+    ]
+  },
+  {
+    "outputFileName": "Assets/scripts/mediawiz.forums.min.js",
+    "inputFiles": [
+      "Assets/scripts/mediawiz.forums.js"
+    ]
+  },
+  {
+    "outputFileName": "Assets/css/site.min.css",
+    "inputFiles": [
+      "Assets/css/site.css"
+    ]
+  }
+]

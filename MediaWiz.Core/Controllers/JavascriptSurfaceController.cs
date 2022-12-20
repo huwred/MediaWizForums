@@ -12,6 +12,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Web.Website.Controllers;
+using Umbraco.Extensions;
 
 namespace MediaWiz.Forums.Controllers
 {
@@ -47,7 +48,8 @@ namespace MediaWiz.Forums.Controllers
                         foreach(var descendantItem in descendantDictionaryItems)
                         {
                             var translation = _localizationService.GetDictionaryItemByKey(descendantItem.ItemKey);
-                            local.AppendLine($"local.{descendantItem.ItemKey.Replace(".","")} = \"{HttpUtility.HtmlEncode(translation)}\";");
+
+                            local.AppendLine($"local.{descendantItem.ItemKey.Replace(".","")} = \"{HttpUtility.HtmlEncode(translation.GetDefaultValue())}\";");
                         }
                     }
                 }

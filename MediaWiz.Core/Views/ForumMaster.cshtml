@@ -98,6 +98,7 @@
         var MediaWiz = MediaWiz || { };
         MediaWiz.returnUrl = '@TempData["returnUrl"]';
         MediaWiz.tools = MediaWiz.tools + "| emoticons ";
+        MediaWiz.currLang = getLang();
         if ('@allowimages' === 'True') {
             MediaWiz.tools = MediaWiz.tools + "| image ";
         }

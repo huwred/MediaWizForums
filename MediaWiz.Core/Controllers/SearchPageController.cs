@@ -87,8 +87,8 @@ namespace MediaWiz.Forums.Controllers
                     textFields.Add("author");
                     break;
                 default:
-                    textFields.Add("title");
-                    searchIn = "Subject";
+                    textFields.Add("message");
+                    searchIn = "Message";
                     break;
             }
 

@@ -66,9 +66,9 @@
                 }
 
                 <div class="form-group">
-                    <label asp-for="@Post.Body" class="control-label col-1"></label>
-                    <div class="col-11">
-                        <textarea asp-for="@Post.Title" class="form-control new-post" aria_required="true" rows="10" cols="20"></textarea>
+                    <label class="control-label col-1">&nbsp;</label>
+                    <div class="col ms-5">
+                        <textarea asp-for="@Post.Body" class="form-control new-post" aria_required="true" rows="10" cols="20"></textarea>
                         <span asp-validation-for="@Post.Body" class="form-text text-danger"></span>
                     </div>
                 </div>
@@ -77,7 +77,7 @@
                 <input asp-for="@Post.AuthorId" type="hidden" />
                 <input asp-for="@Post.IsTopic" type="hidden" />
 
-                <div class="col-11 mt-1">
+                <div class="col ms-5 p-2">
                     <button type="submit" class="btn btn-dark">@btn</button> <button type="button" class="btn btn-secondary btn-cancel">Cancel</button>
                 </div>
             </fieldset>

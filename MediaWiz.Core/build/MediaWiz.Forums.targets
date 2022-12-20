@@ -17,7 +17,7 @@
       <ItemGroup>
         <MediaWizForumsViews Include="$(MediaWizViewsFilesPath)" />
       </ItemGroup>
-      <Message Text="Copying MediaWiz.Forums Views: $(MediaWizViewsFilesPath) - #@(MediaWizForumsViews->Count()) files" Importance="high" />
+      <Message Text="Copying MediaWiz.Forums Tempate Views: $(MediaWizViewsFilesPath) - #@(MediaWizForumsViews->Count()) files" Importance="high" />
       <Copy SourceFiles="@(MediaWizForumsViews)" DestinationFiles="@(MediaWizForumsViews->'$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)')" SkipUnchangedFiles="true" 
             Condition="%(Filename)!='' AND (!Exists('$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) &gt; $([System.IO.File]::GetLastWriteTime('$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)').Ticks))" />
     </Target>
@@ -26,7 +26,7 @@
       <ItemGroup>
         <MediaWizForumsAssetFiles Include="$(MediaWizAssetsFilesPath)" />
       </ItemGroup>
-      <Message Text="Copying MediaWiz.Forums asset files: $(MediaWizAssetsFilesPath) - #@(MediaWizForumsAssetFiles->Count()) files" Importance="high" />
+      <Message Text="Copying MediaWiz.Forums static web asset files: $(MediaWizAssetsFilesPath) - #@(MediaWizForumsAssetFiles->Count()) files" Importance="high" />
       <Copy SourceFiles="@(MediaWizForumsAssetFiles)" DestinationFiles="@(MediaWizForumsAssetFiles->'$(MSBuildProjectDirectory)\wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" />
     </Target>
 

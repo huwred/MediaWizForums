@@ -417,15 +417,7 @@ a.blogpost {
     margin: 0 0 10px;
 }
 
-.wiz-body a:visited {
-    color:gray !important;
-}
-.wiz-body a:active {
-	color: yellowgreen !important;
-}
-.wiz-body a:hover {
-	color: yellowgreen !important;
-}
+
 /* __________ Widget Meta __________ */
 .widget_meta li {
 	position: relative;

@@ -127,6 +127,42 @@ namespace MediaWiz.Forums.Controllers
             return false;
         }
 
+        [Route("markanswer/{id?}")]
+        [HttpGet]
+        public bool MarkAsAnswer(int? id)
+        {
+            if (id != null)
+            {
+                var post = _contentService.GetById(id.Value);
+
+                if (post != null)
+                {
+                    var author = post.GetValue<string>("postAuthor");
+                    var currentMember =  _memberManager.GetCurrentMemberAsync().Result;
+
+                    if (author != "0" && author != currentMember.Id)
+                    {
+                        if (post.HasProperty("answer"))
+                        {
+                            post.SetValue("answer", true);
+                            _contentService.SaveAndPublish(post);
+                            var parentTopic = _contentService.GetById(post.ParentId);
+                            if (parentTopic != null)
+                            {
+                                parentTopic.SetValue("answer", true);
+                                _contentService.SaveAndPublish(parentTopic);
+                            }
+                            return true;
+                        }
+
+
+                    }
+
+                }
+            }
+
+            return false;
+        }
         [Route("lockpost/{id?}")]
         public bool LockPost(int? id)
         {

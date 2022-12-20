@@ -24,33 +24,33 @@
     var forums = Model.Children.Where(x => x.IsDocumentType("Forum") && x.IsVisible() && (x.Value<int?>("membersOnly") != 1 || (x.Value<int?>("membersOnly") == 1 && _memberManager.IsLoggedIn()))).ToList();
     if (forums.Any())
     {
-    <div>
-                <div id="forums-list-0" class="wiz-forums">
-                    <div class="d-flex flex-row flex-wrap mb-3 p-2 bg-secondary color-white">
-                        <div class="col-8 col-sm-5">Forum</div>
-                        <div class="col-2">Topics</div>
-                        <div class="col-2">Posts</div>
-                        <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">Last Post</div>
-                    </div>
-                    <div class="wiz-body p-2">
-                        @foreach (var forum in forums)
+        <div>
+            <div id="forums-list-0" class="wiz-forums">
+                <div class="d-flex flex-row flex-wrap mb-3 p-2 bg-secondary color-white">
+                    <div class="col-8 col-sm-5">Forum</div>
+                    <div class="col-2">Topics</div>
+                    <div class="col-2">Posts</div>
+                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">Latest Post</div>
+                </div>
+                <div class="wiz-body p-2">
+                    @foreach (var forum in forums)
                     {
                         if (CanView(forum))
                         {
                             var cacheInfo = _cacheService.GetPost(forum, "forum_" + forum.Id);
-                                <div id="forum-@forum.Id" class="d-flex flex-row flex-wrap forum type-forum">
-                                    <div class="col-8 col-sm-5">
-                                        <a class="wiz-forum-title" href="@forum.Url()">@forum.Value("forumTitle")</a>
-                                        <div class="p-2">@forum.Value("forumDescription")</div>
-                                        @if (forum.HasValue("canPostGroups"))
-                                    {
-                                            <span class="text-muted small">(Posting restricted to @PostRestriction(forum))</span>
-                                    }
-                                    </div>
-                                    <div class="col-2">@cacheInfo.TopicCount</div>
-                                    <div class="col-2">@cacheInfo.Count</div>
-                                    <div class="col-12 col-sm flex-shrink-0 flex-grow-1">
-                                        @if (cacheInfo.latestPost > DateTime.MinValue)
+                            <div id="forum-@forum.Id" class="d-flex flex-row flex-wrap forum type-forum">
+                                <div class="col-8 col-sm-5">
+                                    <a class="wiz-forum-title" href="@forum.Url()">@forum.Value("forumTitle")</a>
+                                    <div class="p-2">@forum.Value("forumDescription")</div>
+                                    @if (forum.HasValue("canPostGroups"))
+                                {
+                                        <span class="text-muted small">(Posting restricted to @PostRestriction(forum))</span>
+                                }
+                                </div>
+                                <div class="col-2">@cacheInfo.TopicCount</div>
+                                <div class="col-2">@cacheInfo.Count</div>
+                                <div class="col-12 col-sm flex-shrink-0 flex-grow-1">
+                                    @if (cacheInfo.latestPost > DateTime.MinValue)
                                     {
                                         <p class="wiz-topic-meta">
                                             <a href="@cacheInfo.lastPostUrl#post_@cacheInfo.Id" title="Jump to latest post">@ForumHelper.GetRelativeDate(cacheInfo.latestPost)</a>
@@ -60,25 +60,23 @@
                                             </a>
                                         </p>
                                     }
-
-                                    </div>
                                 </div>
+                            </div>
                         }
                     }
-                    </div>
-                    @if (roles.Contains("ForumAdministrator"))
-                {
-                        <div class="d-flex flex-row text-right">
-                            @if (TempData["ForumSaveResult"] != null)
-                        {
-                            var result = (PublishResult)TempData["ForumSaveResult"];
-                                @result.Success
-                        }
-                        </div>
-                }
-
                 </div>
-    </div>
+                @if (roles.Contains("ForumAdministrator"))
+                {
+                    <div class="d-flex flex-row text-right">
+                        @if (TempData["ForumSaveResult"] != null)
+                    {
+                        var result = (PublishResult)TempData["ForumSaveResult"];
+                            @result.Success
+                    }
+                    </div>
+                }
+            </div>
+        </div>
     }
 }
 

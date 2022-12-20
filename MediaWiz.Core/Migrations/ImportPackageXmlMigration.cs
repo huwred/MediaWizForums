@@ -1,5 +1,6 @@
 ﻿using MediaWiz.Forums.Extensions;
 using Microsoft.Extensions.Options;
+using Smidge;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.PropertyEditors;
@@ -37,18 +38,17 @@ namespace MediaWiz.Forums.Migrations
 
         protected override void Migrate()
         {
-            //register the views as templates first
-            _fileService.CreateTemplateWithIdentity("ForumMaster", "forumMaster",null);
-            var master = _fileService.GetTemplate("forumMaster");
-            
-            if (master != null)
+            //register the views as templates before importing the package
+            var master = _fileService.GetTemplate("forumMaster") ?? _fileService.CreateTemplateWithIdentity("ForumMaster", "forumMaster",null);
+            var forumTemplates = new[] { "forum", "forumPost", "login", "members", "profile", "register", "reset", "verify", "searchPage", "activeTopics" };
+            foreach (var template in forumTemplates)
             {
-                var templatesToFind = new[] { "forum", "forumPost", "login", "members", "profile", "register", "reset", "verify", "searchPage", "activeTopics" };
-                foreach (var template in templatesToFind)
+                var found = _fileService.GetTemplate(template);
+                if (found == null)
                 {
                     _fileService.CreateTemplateWithIdentity(template.FirstCharToUpper(), template,null,master);
                 }
-
+                    
             }
             //Now the templates are registered we can import the package xml, but first lets remove the empty templates
             ImportPackage.FromEmbeddedResource<ImportPackageXmlMigration>().Do();

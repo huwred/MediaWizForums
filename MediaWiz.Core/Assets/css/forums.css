@@ -28,7 +28,6 @@ div.wiz-reply-header {
     margin: 0;
     overflow: hidden;
     padding: 4px;
-    border-top: 1px solid #ddd;
     clear: both
 }
 
@@ -120,11 +119,19 @@ fieldset ul.wiz-admin-links {
     padding: 5px !important
 }
 
-#mediawiz-forums a, #mediawiz-forums a:hover {
+#mediawiz-forums a {
+    color: #111;
+    text-decoration: none;
     box-shadow: none;
     border: none;
     transition: none
 }
+    #mediawiz-forums a.btn { color: #fff;}
+
+        #mediawiz-forums a:hover {
+        color: #111;
+        text-decoration: underline;
+    }
 
 #mediawiz-forums ul, #mediawiz-forums.mediawiz-wrapper ul {
     background: 0 0;
@@ -146,9 +153,28 @@ fieldset ul.wiz-admin-links {
     width: 100%;
     box-sizing: border-box
 }
-
+#mediawiz-forums div.reply,  #mediawiz-forums div.wiz-reply-header {
+    background-color:#f4f4f4;
+}
+#mediawiz-forums div.wiz-reply-footer {
+    margin-bottom: 0.9em;
+}
+    #mediawiz-forums div.reply.solution, #mediawiz-forums div.wiz-reply-footer.solution, #mediawiz-forums div.wiz-reply-header.solution {
+        background-color: #a4bda4;
+    }
+.wiz-reply-post-date {
+    margin-right: .3em;
+    float: right;
+}
+.wiz-author-name {
+    margin-left:.3em;
+}
 #mediawiz-forums div.wiz-reply-header {
-    background-color: #f4f4f4
+    background-color: #f4f4f4;
+    margin-bottom: .7em;
+}
+.tool-label {
+    font-size:0.6em;
 }
 
 #mediawiz-forums ul.status-closed, #mediawiz-forums ul.status-closed a {
@@ -186,9 +212,22 @@ fieldset ul.wiz-admin-links {
     background-color: #333;
     color: white;
 }
+#mediawiz-forums li.topic {
+    margin-top: 0.6em;
+}
+.wiz-topics > div.wiz-body > div.topic {
+    background-color: #eee;
+    margin-bottom: 0.3em;
+    
+}
 
 #mediawiz-forums li.topic.locked .wiz-reply-header {
     background-color: darkred;
+}
+.wiz-topics > div.wiz-body > div.solved {
+    background-color: #8fbc8f;
+    margin-bottom: 0.3em;
+    border: 1px solid #777;
 }
 
 #mediawiz-forums li.topic.locked div.wiz-topic-meta:before {
@@ -205,7 +244,8 @@ fieldset ul.wiz-admin-links {
 #mediawiz-forums div.wiz-reply-author {
     float: left;
     text-align: center;
-    width: 125px
+    width: 6%;
+    background-color: #fff;
 }
 
 #mediawiz-forums div.wiz-reply-author img.avatar {
@@ -240,27 +280,15 @@ fieldset ul.wiz-admin-links {
 }
 
 #mediawiz-forums li.wiz-header .wiz-reply-content, #mediawiz-forums li.wiz-header .wiz-topic-content {
-    margin-left: 140px;
+
     padding: 0;
     text-align: left
 }
 
 #mediawiz-forums div.wiz-reply-content, #mediawiz-forums div.wiz-topic-content {
-    margin-left: 12.5%;
-    padding: 12px 12px 12px 0;
     text-align: left;
     position: relative
 }
-
-/*#mediawiz-forums div.wiz-reply-content::after, #mediawiz-forums div.wiz-topic-content::after {
-    clear: both;*/
-    /*content: ".";*/
-    /*display: block;
-    float: none;
-    height: 0;
-    font-size: 0;
-    visibility: hidden
-}*/
 
 #mediawiz-forums div.wiz-reply-content a, #mediawiz-forums div.wiz-topic-content a {
     background: 0 0;
@@ -285,7 +313,7 @@ fieldset ul.wiz-admin-links {
 }
 
 #mediawiz-forums div.wiz-reply-content ol, #mediawiz-forums div.wiz-reply-content ul, #mediawiz-forums div.wiz-topic-content ol, #mediawiz-forums div.wiz-topic-content ul {
-    margin: 0 15px 15px;
+    margin: 0 15px 0;
     padding: 0
 }
 
@@ -346,7 +374,12 @@ span.wiz-admin-links a, span.wiz-admin-links a:visited, ul.wiz-admin-links a, ul
     color: goldenrod;
     font-weight: 400;
     /*font-size: 10px;*/
-    text-transform: uppercase;
+    /*text-transform: uppercase;*/
+    text-decoration: none
+}
+
+ul.wiz-admin-links a:hover {
+    font-weight: 900;
     text-decoration: none
 }
 
@@ -362,7 +395,10 @@ span.wiz-admin-links a, span.wiz-admin-links a:visited, ul.wiz-admin-links a, ul
     line-height: 1;
     padding-bottom: 10px
 }
-
+.wiz-topic-started-by {
+    font-size: smaller;
+    color: #cccccc;
+}
 
 @media only screen and (max-width:480px) {
     span.wiz-admin-links {
