@@ -102,7 +102,8 @@ namespace MediaWiz.Forums.Controllers
                 var searcher = index.Searcher;
                 //var value = "" + query + "*";
                 var search = searcher.CreateQuery("content")
-
+                    .Field("contentType","forumPost").And()
+                    //.Field("postType","1").And()
                     .GroupedOr(textFields.ToArray(), query);
 
                 results = search.Execute();

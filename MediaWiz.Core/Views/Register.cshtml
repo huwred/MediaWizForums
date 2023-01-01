@@ -20,7 +20,7 @@
 
 @section ForumScripts
 {
-    <script type="text/javascript" src="/umbraco/surface/JavascriptSurface/LoadResources/?keys=Forums.CaptchaErr"></script>
+    <script type="text/javascript" src="/umbraco/surface/JavascriptSurface/LoadResources/?keys=Forums.CaptchaErrMsg"></script>
 
     <script type="text/javascript">
         $.fn.clearValidation = function(){var v = $(this).validate();$('[name]',this).each(function(){v.successList.push(this);v.showErrors();});v.resetForm();v.reset();};
@@ -40,7 +40,7 @@
                     $("#register-form-id").clearValidation(); 
                 } else {
                     $("#Captcha").val("");
-                    $("#Captcha").attr("placeholder", local.ForumsCaptchaErr);
+                    $("#Captcha").attr("placeholder", local.ForumsCaptchaErrMsg);
                 }
             });
         });

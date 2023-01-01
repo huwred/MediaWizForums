@@ -173,8 +173,18 @@ fieldset ul.wiz-admin-links {
     background-color: #f4f4f4;
     margin-bottom: .7em;
 }
+ul.wiz-admin-links li a {
+    text-decoration: none !important;
+}
+
+ul.wiz-admin-links li a:hover {
+    text-decoration: none;
+    font-weight: bold !important;
+    color: #0000cd !important;
+}
+
 .tool-label {
-    font-size:0.6em;
+    font-size: 0.7em;
 }
 
 #mediawiz-forums ul.status-closed, #mediawiz-forums ul.status-closed a {
@@ -399,7 +409,10 @@ ul.wiz-admin-links a:hover {
     font-size: smaller;
     color: #cccccc;
 }
-
+#menu .nav-link {
+    padding-left: 0 !important;
+    color: #111;
+}
 @media only screen and (max-width:480px) {
     span.wiz-admin-links {
         float: none;

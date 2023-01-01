@@ -1,5 +1,233 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<Umbraco.Cms.Core.Models.PublishedContent.IPublishedContent>
+
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using MediaWiz.Forums.Helpers
+@using MediaWiz.Forums.Interfaces
+@using Umbraco.Extensions
+@inject Umbraco.Cms.Core.Security.IMemberManager _memberManager
+@inject IForumCacheService _cacheService
 @{
+    bool TopicIslocked = !Model.Value<bool>("allowReplies");
+    
+    var post = Model;
+
+    var topicClass = post.Value<bool>("postType") ? "topic" : "reply";
+    if (TopicIslocked)
+    {
+        topicClass += " locked";
+    }
+    var solved = string.Empty;
+    if (post.Value<bool>("answer") && !post.Value<bool>("postType"))
+    {
+        solved = "solution";
+    }
+    IList<string> roles = new List<string>();
+    var user = _memberManager.GetCurrentMemberAsync().Result;
+    if (user != null)
+    {
+        roles = _memberManager.GetRolesAsync(user).Result;
+    }
+
+
+    <li class="@topicClass mt-3" style="overflow: auto">
+
+        @if (post.IsVisible() || roles.Contains("ForumAdministrator"))
+        {
+            var alertwarning = "";
+            var author = post.Value<IPublishedContent>("postAuthor");
+            @if (!post.IsVisible())
+            {
+                alertwarning = "alert-warning";
+            }
+
+            <div class="@topicClass @solved" style="overflow: auto">
+
+                <div class="d-flex wiz-reply-content" id="content_@post.Id" style="overflow: auto;">
+                    <div class="w-2 align-self-stretch d-flex bg-white">
+                        <a href="/profile/?user=@post.Value("postCreator")" title="View @post.Value("postCreator")'s profile" class="wiz-author-link">
+                            <span>
+                                @{
+                                    DisplayAvatar(author);
+                                }
+                            </span>
+                        </a>
+
+                        <div class="wiz-author-role">
+                            @{
+                                DisplayRole(author);
+                            }
+                        </div>
+                    </div>
+                    <div class="flex-grow-1">
+                        <div id="post_@post.Id" class="wiz-reply-header @solved">
+
+                            <span class="wiz-topic-meta @alertwarning">
+                                <span class="wiz-author-name mr-3">@post.Value("postCreator")</span>
+                                @if (author != null)
+                                {
+                                    <span>@author.Value("postCount") posts</span>
+                                }
+                                <span class="wiz-reply-post-date" title="@post.CreateDate">@post.CreateDate.ToString("MMM dd, yyyy @ HH:mm")</span>
+                                @if (post.Value<DateTime>("editDate").ToLocalTime() > post.CreateDate.AddSeconds(10))
+                                {
+                                    var edited = post.Value<DateTime>("editDate");
+                                    <span class="text-danger" title="@edited.ToLocalTime()">- last edited @ForumHelper.GetRelativeDate(edited.ToLocalTime())</span>
+                                }
+
+                            </span>
+                        </div>
+                        <div id="postcontent_@post.Id" class="p-3">
+                            @post.Value("postBody")
+                        </div>
+                        <div class="align-self-bottom" style="overflow: auto">
+                            <ul class="wiz-admin-links list-inline" style="white-space: nowrap;">
+                                @{
+                                    DisplayPostTools(post);
+                                }
+                                <li class="list-inline-item"><a href="#post_@post.Id" title="Direct link to post"><i class="fs-5 bi-link-45deg"></i><span class="tool-label" style="display: none;">Copy link</span></a> </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+        else if (roles.Contains("ForumAdministrator"))
+        {
+                // hidden posts are deleted
+            <div class="wiz-reply-header post-deleted">
+                @if (post.Value<bool>("deletedByAuthor"))
+                {
+                    <div class="alert alert-warning">post deleted by author</div>
+                }
+                else
+                {
+                    <div class="alert alert-warning">post has been removed</div>
+
+                }
+            </div>
+        }
+    </li>
+}
+@{
+    void DisplayAvatar(IPublishedContent author)
+    {
+        int authorId = author?.Id ?? -1;
+        if (authorId > 0)
+        {
+            var memberById = _memberManager.FindByIdAsync(authorId.ToString()).Result;
+            <img width="40" height="40" src="@ForumHelper.GravatarURL(memberById.Email)" class="avatar rounded-circle" alt="author's Avatar" />
+
+        }
+        else
+        {
+            <img width="40" height="40" src="@ForumHelper.GravatarURL("")" class="avatar rounded-circle" alt="author's Avatar" />
+        }
+    }
+
+    void DisplayRole(IPublishedContent author)
+    {
+        int authorId = author?.Id ?? -1;
+
+        if (authorId > 0)
+        {
+            var memberById = _memberManager.FindByIdAsync(authorId.ToString()).Result;
+            if (author != null)
+            {
+                var roles = _memberManager.GetRolesAsync(memberById).Result;
+                foreach (var role in roles)
+                {
+                    if (role == "ForumAdministrator")
+                    {
+                        <p>Admin</p>
+                    }
+                }
+            }
+        }
+
+    }
+
+    void DisplayPostTools(IPublishedContent post)
+    {
+        var isLoggedIn = Context.User?.Identity?.IsAuthenticated ?? false;
+        var lastpostDate = post.CreateDate;
+
+        if (!isLoggedIn)
+        {
+            return;
+        }
+        int authorId = post.Value<IPublishedContent>("postAuthor")?.Id ?? -1;
+        IList<string> roles = new List<string>();
+        var user = _memberManager.GetCurrentMemberAsync().Result;
+        if (user != null)
+        {
+            roles = _memberManager.GetRolesAsync(user).Result;
+        }
+        if ((TopicIslocked || user == null) && !roles.Contains("ForumAdministrator"))
+        {
+            return;
+        }
+        if (TopicIslocked && !roles.Contains("ForumAdministrator"))
+        {
+            return;
+        }
+        var isSolved = Model.Value<bool>("answer");
+        if (!Model.Value<bool>("postType")) //must be a reply so check the topic hasn't been marked as resolved
+        {
+            isSolved = Model.Parent.Value<bool>("answer");
+            var cacheInfo = _cacheService.GetPost(post, "Topic_" + Model.Parent.Id);
+            lastpostDate = cacheInfo.latestPost;
+        }
+        if (user != null)
+        {
+            var memberById = _memberManager.FindByIdAsync(user.Id).Result;
+            IPublishedContent member = _memberManager.AsPublishedMember(memberById);
+
+            <li class="list-inline-item">
+                <a class="post-quote" data-postid="@post.Id" title="Reply with Quote" href="#">
+                    <i class="fs-5 bi-chat-quote" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Quote</span>
+                </a>
+            </li>
+            @if (!post.Value<bool>("postType") && !isSolved)
+            {
+                <li class="list-inline-item">
+                    <a href="#" class="post-answer" data-postid="@post.Id" title="Mark as solution">
+                        <i class="fs-5 bi-check-circle" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Mark as solution</span>
+                    </a>
+                </li>
+            }
+            if ((member.Id == authorId) || roles.Contains("ForumAdministrator"))
+            {
+                @if (post.CreateDate >= lastpostDate || roles.Contains("ForumAdministrator"))
+                {
+                    <li class="list-inline-item">
+                        <a class="post-delete" data-postid="@post.Id" title="Delete Post" href="#">
+                            <i class="fs-5 bi-trash" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Delete</span>
+                        </a>
+                    </li>
+                    <li class="list-inline-item">
+                        <a href="#" class="post-edit" data-postid="@post.Id" data-bs-toggle="modal" data-bs-target="#editPostModal" title="Edit Post">
+                            <i class="fs-5 bi-pencil" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Edit</span>
+                        </a>
+                    </li>
+                }
+
+                @if (post.Value<bool>("postType") && (roles.Contains("ForumAdministrator") || roles.Contains("ForumModerator")))
+                {
+                    <li class="list-inline-item">
+                        <a class="post-lock" data-postid="@post.Id" href="#" rel="nofollow" title="Lock/Unlock Post">
+                            @if (TopicIslocked)
+                            {
+                                <i class="fs-5 bi-unlock " aria-hidden="true"></i> <span class="tool-label" style="display: none;">Unlock</span>
+                            }
+                            else
+                            {
+                                <i class="fs-5 bi-lock" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Lock</span>
+                            }
+                        </a>
+                    </li>
+                }
+            }
+        }
+    }
 }

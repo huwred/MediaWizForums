@@ -126,7 +126,7 @@
                 e.stopPropagation();
                 e.preventDefault();
 
-                tinymce.activeEditor.setContent("<blockquote>" + $("#content_" + $(this).data("postid")).html() + "</blockquote><br/> ");
+                tinymce.activeEditor.setContent("<blockquote>" + $("#postcontent_" + $(this).data("postid")).html() + "</blockquote><br/> ");
                 goToTheEnd();
             });
             $(".post-delete").on("click", function(e) {

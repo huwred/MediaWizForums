@@ -117,7 +117,7 @@ namespace MediaWiz.Forums.Controllers
             {
                 var umbracoHelper = _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<UmbracoHelper>();
                 
-                TempData["FormSuccess"] = await _mailService.SendVerifyAccount(umbracoHelper,member.Email,resetGuid);;
+                TempData["FormSuccess"] = await _mailService.SendVerifyAccount(member.Email,resetGuid);;
             }
             catch (Exception e)
             {

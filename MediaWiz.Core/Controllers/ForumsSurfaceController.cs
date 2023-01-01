@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using MediaWiz.Forums.Extensions;
 using MediaWiz.Forums.Interfaces;
 using MediaWiz.Forums.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -39,9 +40,8 @@ namespace MediaWiz.Forums.Controllers
         private readonly IMemberManager _memberManager;
 
         private readonly IContentService _contentService;
-        private readonly ILogger _logger;
         private readonly IForumMailService _mailService;
-        private readonly UmbracoHelper _umbracoHelper;
+
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly ILocalizationService _localizationService;
         
@@ -51,8 +51,7 @@ namespace MediaWiz.Forums.Controllers
             IPublishedContentQuery publishedContentQuery,
             IMemberManager memberManager,
             IContentService contentService,
-            ILogger<ForumsSurfaceController> logger,
-            IForumMailService mailService,IUmbracoHelperAccessor umbracoHelper,IHttpContextAccessor httpContextAccessor,ILocalizationService localizationService) 
+            IForumMailService mailService,IHttpContextAccessor httpContextAccessor,ILocalizationService localizationService) 
             : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
             _memberService = memberService;
@@ -60,9 +59,8 @@ namespace MediaWiz.Forums.Controllers
             _signInManager = signInManager;
             _publishedContentQuery = publishedContentQuery;
             _contentService = contentService;
-            _logger = logger;
             _mailService = mailService;
-            umbracoHelper.TryGetUmbracoHelper(out _umbracoHelper);
+
             _contextAccessor = httpContextAccessor;
             _localizationService = localizationService;
         }
@@ -258,14 +256,14 @@ namespace MediaWiz.Forums.Controllers
                 _memberService.Save(member);
 
                 // send email, do not wait as we want it to run in background....
-                _mailService.SendResetPassword(_umbracoHelper,member.Email,encodedToken);
+                await _mailService.SendResetPassword(member.Email,encodedToken);
 
                 TempData["ResetSent"] = true;
             }
             else
             {
                 ModelState.AddModelError("ForgotPasswordForm", 
-                    _umbracoHelper.GetDictionaryValue("Forums.Error.NoUser", "No user found"));
+                    _localizationService.GetDictionaryItemOrDefault("Forums.Error.NoUser","No user found"));
                 return ViewComponent("PasswordManager", new { Model = model , Template = "ForgotPassword"});
             }
 

@@ -234,15 +234,15 @@ namespace MediaWiz.Forums.Controllers
         [HttpPost]
         public void ResendValidation(JObject jobj)
         {
-            var id = jobj["id"].Value<int>();
+            var id = jobj["id"].Value<int?>();
 
             if (id == null)
             {
                 return;
             }
-            var member = _memberService.GetById(id);
+            var member = _memberService.GetById(id.Value);
             
-            var result =  _mailService.SendVerifyAccount(_umbracoHelper,member.Email,member.GetValue<string>("resetGuid")).Result;
+            var result =  _mailService.SendVerifyAccount(member.Email,member.GetValue<string>("resetGuid")).Result;
         }
         #endregion
 

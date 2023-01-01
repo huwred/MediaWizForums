@@ -39,6 +39,7 @@ namespace MediaWiz.Forums.Indexing
                 {
                     //["name"] = content.Name,
                     ["id"] = content.Id,
+                    ["contentType"] = content.ContentType.Alias,
                     ["message"] = content.GetValue<string>("forumDescription") ?? content.GetValue<string>("postBody"),
                     ["author"] = content.GetValue<string>("postCreator"),
                     ["title"] = content.GetValue<string>("forumTitle") ?? content.GetValue<string>("postTitle"),

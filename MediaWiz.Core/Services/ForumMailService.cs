@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
+using MediaWiz.Forums.Extensions;
 using MediaWiz.Forums.Helpers;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,8 @@ namespace MediaWiz.Core.Services
         private readonly IHttpContextAccessor _httpContext;
         private readonly ILocalizationService _localisation;
         private readonly IMemberService _memberService;
+
+
         public ForumMailService(IHttpContextAccessor httpContext, IOptions<GlobalSettings> globalSettings,IEmailSender emailSender, 
             ILocalizationService localisation,ILogger<MailMessage> logger,IMemberService memberService,IOptions<ContentSettings> contentSettings,
             IOptions<HostingSettings> hostingSettings)
@@ -43,7 +46,14 @@ namespace MediaWiz.Core.Services
             _fromEmail = globalSettings.Value.Smtp?.From != null ? globalSettings.Value.Smtp.From : contentSettings.Value.Notifications.Email;
         }
 
-        public async Task<bool> SendVerifyAccount(UmbracoHelper umbraco, string email, string guid)
+        /// <summary>
+        /// Sends an email for new members to verify their account
+        /// </summary>
+        /// <param name="umbraco"></param>
+        /// <param name="email"></param>
+        /// <param name="guid"></param>
+        /// <returns></returns>
+        public async Task<bool> SendVerifyAccount(string email, string guid)
         {
             try
             {
@@ -51,15 +61,15 @@ namespace MediaWiz.Core.Services
 
                 var test = ForumHelper.GetAbsoluteUri(_httpContext.HttpContext.Request);
                 string baseURL = test.AbsoluteUri.Replace(test.AbsolutePath, string.Empty);
-                var resetUrl = baseURL + umbraco.GetDictionaryValue("Forums.VerifyUrl","/verify").TrimEnd('/') + "/?verifyGUID=" + guid;
+                var resetUrl = baseURL + _localisation.GetDictionaryItemOrDefault("Forums.VerifyUrl","/verify").TrimEnd('/') + "/?verifyGUID=" + guid;
 
-                var messageBody = umbraco.GetDictionaryValue("Forums.VerifyBody",$@"<h2>Verify your account</h2>
+                var messageBody = _localisation.GetDictionaryItemOrDefault("Forums.VerifyBody",$@"<h2>Verify your account</h2>
             <p>in order to use your account, you first need to verify your email address using the link below.</p>
             <p><a href='{resetUrl}'>Verify your account</a></p>");
 
 
                 EmailMessage message = new EmailMessage(_fromEmail, email,
-                    umbraco.GetDictionaryValue("Forums.VerifySubject", "Verifiy your account"), messageBody, true);
+                    _localisation.GetDictionaryItemOrDefault("Forums.VerifySubject", "Verifiy your account"), messageBody, true);
 
 
                 await _emailSender.SendAsync(message, emailType: "Contact");
@@ -117,7 +127,7 @@ namespace MediaWiz.Core.Services
             }
         }
 
-        public async Task SendResetPassword(UmbracoHelper umbraco, string email, string guid)
+        public async Task SendResetPassword(string email, string guid)
         {
             try
             {
@@ -129,14 +139,14 @@ namespace MediaWiz.Core.Services
                     string baseURL = test.AbsoluteUri.Replace(test.AbsolutePath, string.Empty);
                     var resetUrl = baseURL + "/forgotpassword/?id=" + member.Id + "&token=" + guid;
 
-                    var messageBody = umbraco.GetDictionaryValue("Forums.ResetBody",$@"<p>Hi {member.Name},</p>
+                    var messageBody = _localisation.GetDictionaryItemOrDefault("Forums.ResetBody",$@"<p>Hi {member.Name},</p>
                     <p>Someone requested a password reset for your account on {_hostingSettings.SiteName}.</p>
                     <p>If this wasn't you then you can ignore this email, otherwise, please click the following password reset link to continue:</p>
                     <p>Please go to <a href='{resetUrl}'>here</a> to reset your password</p>
                     <p>&nnbsp;</p>
                     <p>Kind regards,<br/>The {_hostingSettings.SiteName} Team</p>");
 
-                    EmailMessage message = new EmailMessage(_fromEmail,email,umbraco.GetDictionaryValue("Forums.ResetSubject", $@"Password reset requested for {_hostingSettings.SiteName}"),messageBody,true);
+                    EmailMessage message = new EmailMessage(_fromEmail,email,_localisation.GetDictionaryItemOrDefault("Forums.ResetSubject", $@"Password reset requested for {_hostingSettings.SiteName}"),messageBody,true);
 
                     try
                     {
@@ -175,7 +185,6 @@ namespace MediaWiz.Core.Services
 
             return template.ReplaceMany(parameters);
         }
-
 
         private void AllDone(object sender, AsyncCompletedEventArgs e)
         {

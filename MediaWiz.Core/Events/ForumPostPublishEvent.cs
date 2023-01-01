@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Examine;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.Extensions.Logging;
-using NPoco;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Events;
-using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.Security;
@@ -36,11 +33,10 @@ namespace MediaWiz.Forums.Events
         private readonly IIndexRebuilder _indexRebuilder;
         private readonly IAppPolicyCache _runtimeCache;
 
-        public ForumPostPublishedEvent(ILogger<ForumPostPublishedEvent> logger,AppCaches appCaches,IContentService contentService,IContentTypeService contentType,
-        IForumMailService mailService,
-            IUmbracoContextFactory context,IBackofficeUserAccessor backofficeUserAccessor, 
-            IMemberManager memberManager,IMemberService memberService,IIndexRebuilder indexRebuilder,
-            IExamineManager examineManager)
+        public ForumPostPublishedEvent(
+        ILogger<ForumPostPublishedEvent> logger,AppCaches appCaches,IContentService contentService,IContentTypeService contentType,
+        IForumMailService mailService, IUmbracoContextFactory context,IBackofficeUserAccessor backofficeUserAccessor, 
+        IMemberManager memberManager,IMemberService memberService,IIndexRebuilder indexRebuilder, IExamineManager examineManager)
         {
             _examineManager = examineManager;
             _contentService = contentService;
@@ -124,7 +120,12 @@ namespace MediaWiz.Forums.Events
             {
                 _runtimeCache.ClearByKey(cache);
             }
-            RebuildIndex();
+
+            if (invalidCacheList.Any())
+            {
+                RebuildIndex();
+            }
+            
         }
         private List<string> GetRecipients(IPublishedContent item)
         {

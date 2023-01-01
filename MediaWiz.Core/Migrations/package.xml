@@ -1,0 +1,1366 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<umbPackage>
+  <info>
+    <package>
+      <name>MediaWiz Forums</name>
+    </package>
+  </info>
+  <Documents>
+    <DocumentSet importMode="root">
+      <forum id="1089" key="6e08726b-67b8-41f5-994f-f46a451b15e5" parentID="-1" level="1" creatorID="-1" sortOrder="1" createDate="2022-05-28T14:25:48" updateDate="2022-12-15T23:10:14" nodeName="Forums" urlName="forums" path="-1,1089" isDoc="" nodeType="1063" nodeTypeAlias="forum" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+        <umbracoNaviHide>0</umbracoNaviHide>
+        <hideChildrenFromNav>1</hideChildrenFromNav>
+        <forumTitle><![CDATA[MediaWizards Forums for Umbraco]]></forumTitle>
+        <forumDescription><![CDATA[<p>Thank you for installing the MediaWizards forum package. We hope you enjoy this great tool to support your organization!</p>
+<p>Many thanks go out to <a>Kevin Jump</a> for the original source code and to all the members of Our Umbraco at <a>http://our.umbraco.com/forum</a> for helping to test.</p>]]></forumDescription>
+        <postAtRoot>0</postAtRoot>
+        <isActive>1</isActive>
+        <allowImages>1</allowImages>
+        <intPageSize><![CDATA[10]]></intPageSize>
+        <membersOnly>0</membersOnly>
+        <forum id="1090" key="0823dc89-42e9-4fcc-a2d6-dea2652c3496" parentID="1089" level="2" creatorID="-1" sortOrder="0" createDate="2022-05-28T14:27:03" updateDate="2022-12-10T20:43:31" nodeName="Test Forum" urlName="test-forum" path="-1,1089,1090" isDoc="" nodeType="1063" nodeTypeAlias="forum" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          <umbracoNaviHide>0</umbracoNaviHide>
+          <hideChildrenFromNav>1</hideChildrenFromNav>
+          <forumTitle><![CDATA[Test Forum]]></forumTitle>
+          <forumDescription><![CDATA[<p>This forum gives you a chance to become more familiar with how this product responds to different features and keeps testing in one place instead of posting tests all over. Happy Posting!</p>]]></forumDescription>
+          <postAtRoot>1</postAtRoot>
+          <isActive>1</isActive>
+          <allowImages>1</allowImages>
+          <intPageSize><![CDATA[10]]></intPageSize>
+          <membersOnly>0</membersOnly>
+          <forumPost id="1290" key="e7e38b9c-dc96-4be1-9372-2124358bfd60" parentID="1090" level="3" creatorID="-1" sortOrder="0" createDate="2022-12-07T16:56:04" updateDate="2022-12-07T16:56:04" nodeName="test Post" urlName="test-post" path="-1,1089,1090,1290" isDoc="" nodeType="1067" nodeTypeAlias="forumPost" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+            <postTitle><![CDATA[test Post]]></postTitle>
+            <postBody><![CDATA[<p>Just a test for quotes</p>]]></postBody>
+            <postAuthor><![CDATA[1179]]></postAuthor>
+            <postType>1</postType>
+            <postCreator><![CDATA[Huw Reddick]]></postCreator>
+            <allowReplies>1</allowReplies>
+            <intPageSize><![CDATA[10]]></intPageSize>
+            <forumPost id="1291" key="5c196dd2-b5da-4cd7-8764-5af30550a6d6" parentID="1290" level="4" creatorID="-1" sortOrder="0" createDate="2022-12-07T16:59:04" updateDate="2022-12-07T16:59:04" nodeName="reply_20221207045904" urlName="reply_20221207045904" path="-1,1089,1090,1290,1291" isDoc="" nodeType="1067" nodeTypeAlias="forumPost" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+              <postBody><![CDATA[<blockquote>
+<p>Just a test for quotes</p>
+</blockquote>
+<p>Reply with quote</p>]]></postBody>
+              <postAuthor><![CDATA[1179]]></postAuthor>
+              <postType>0</postType>
+              <postCreator><![CDATA[Huw Reddick]]></postCreator>
+              <allowReplies>1</allowReplies>
+            </forumPost>
+          </forumPost>
+        </forum>
+        <forumAuthHolder id="1091" key="d77b7ba5-943c-497e-90c0-601a2d7af388" parentID="1089" level="2" creatorID="-1" sortOrder="1" createDate="2022-05-28T14:27:35" updateDate="2022-12-10T20:43:21" nodeName="Membership" urlName="membership" path="-1,1089,1091" isDoc="" nodeType="1070" nodeTypeAlias="forumAuthHolder" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          <title><![CDATA[Membership Holder page, does not do anything.]]></title>
+          <umbracoNaviHide>1</umbracoNaviHide>
+          <register id="1092" key="9d96ec77-ae97-4acb-a57c-cc184691fcb8" parentID="1091" level="3" creatorID="-1" sortOrder="0" createDate="2022-05-28T14:29:08" updateDate="2022-09-28T16:52:36" nodeName="Register" urlName="register" path="-1,1089,1091,1092" isDoc="" nodeType="1080" nodeTypeAlias="register" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+            <title><![CDATA[Create a new account.]]></title>
+            <message><![CDATA[<p>Registration is not required to view current topics on the Forum; however, if you wish to post a new topic or reply to an existing topic registration is required. Registration is free and only takes a few minutes. The only required fields are your Username, which may be your real name or a nickname, and a valid email address.</p>
+<p> </p>
+<p>The information you provide during registration is not outsourced or used for any advertising by us. If you believe someone is sending you advertisements as a result of the information you provided through your registration, please notify us immediately.</p>
+<p> </p>]]></message>
+            <umbracoUrlAlias><![CDATA[register,forum/register]]></umbracoUrlAlias>
+            <umbracoNaviHide>0</umbracoNaviHide>
+            <useCaptcha>1</useCaptcha>
+            <defaultMembership><![CDATA[1095]]></defaultMembership>
+          </register>
+          <login id="1096" key="db6422b9-ce53-4fb7-aefb-96e66a4404d4" parentID="1091" level="3" creatorID="-1" sortOrder="1" createDate="2022-05-28T14:34:35" updateDate="2022-09-28T16:52:38" nodeName="Login" urlName="login" path="-1,1089,1091,1096" isDoc="" nodeType="1074" nodeTypeAlias="login" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+            <title><![CDATA[Forum Login]]></title>
+            <message><![CDATA[<p>Don't have an account? You can register for one <a href="/register" title="Register">here</a></p>
+<p> </p>]]></message>
+            <umbracoUrlAlias><![CDATA[login,forum/login]]></umbracoUrlAlias>
+            <umbracoNaviHide>0</umbracoNaviHide>
+          </login>
+          <profile id="1097" key="b4000556-9a74-41d4-8d09-f5a11cf22919" parentID="1091" level="3" creatorID="-1" sortOrder="2" createDate="2022-05-28T14:35:11" updateDate="2022-09-28T16:52:38" nodeName="Profile" urlName="profile" path="-1,1089,1091,1097" isDoc="" nodeType="1078" nodeTypeAlias="profile" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+            <title><![CDATA[Update your account.]]></title>
+            <message><![CDATA[<p>If you change your email address an email will be sent to the new address to validate it is real, your account will be locked until you use the verification link.</p>]]></message>
+            <umbracoUrlAlias><![CDATA[profile,forum/profile]]></umbracoUrlAlias>
+            <umbracoNaviHide>0</umbracoNaviHide>
+          </profile>
+          <verify id="1128" key="bbcd4837-bbb1-4d38-9818-3f3f5579595f" parentID="1091" level="3" creatorID="-1" sortOrder="4" createDate="2022-05-31T16:56:16" updateDate="2022-09-28T16:52:38" nodeName="Verify" urlName="verify" path="-1,1089,1091,1128" isDoc="" nodeType="1084" nodeTypeAlias="verify" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+            <title><![CDATA[Email validation]]></title>
+            <message><![CDATA[<p>Thank you for registering.</p>]]></message>
+            <umbracoUrlAlias><![CDATA[verify, forums/verify]]></umbracoUrlAlias>
+            <umbracoNaviHide>0</umbracoNaviHide>
+          </verify>
+          <reset id="1171" key="8e645940-c2fb-4df8-b1bb-dcd2c00e978e" parentID="1091" level="3" creatorID="-1" sortOrder="5" createDate="2022-06-03T18:06:44" updateDate="2022-09-28T16:52:38" nodeName="Reset" urlName="reset" path="-1,1089,1091,1171" isDoc="" nodeType="1082" nodeTypeAlias="reset" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+            <title><![CDATA[Forgot your password?]]></title>
+            <message><![CDATA[<p>An email will be sent to your email address to validate it is real, please use the link in the email to reset your password.</p>]]></message>
+            <umbracoUrlAlias><![CDATA[forgotpassword,forums/forgotpassword]]></umbracoUrlAlias>
+            <umbracoNaviHide>0</umbracoNaviHide>
+            <useCaptcha>1</useCaptcha>
+            <postMessage><![CDATA[<p>Please create a new password using the form below.</p>]]></postMessage>
+          </reset>
+        </forumAuthHolder>
+        <searchPage id="1102" key="e8aca891-2080-4a11-a5de-ec206fa97f2c" parentID="1089" level="2" creatorID="-1" sortOrder="2" createDate="2022-05-29T08:48:25" updateDate="2022-12-10T20:45:20" nodeName="Search" urlName="search" path="-1,1089,1102" isDoc="" nodeType="1086" nodeTypeAlias="searchPage" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          <umbracoNaviHide>1</umbracoNaviHide>
+          <hideChildrenFromNav>0</hideChildrenFromNav>
+          <umbracoUrlName><![CDATA[forumsearch]]></umbracoUrlName>
+          <title><![CDATA[Search the Forums]]></title>
+          <intPageSize><![CDATA[25]]></intPageSize>
+        </searchPage>
+        <activeTopics id="1105" key="d9962b88-c85f-4c67-ae7b-ebccefe41336" parentID="1089" level="2" creatorID="-1" sortOrder="3" createDate="2022-05-29T13:00:46" updateDate="2022-12-10T20:42:26" nodeName="Active Topics" urlName="active-topics" path="-1,1089,1105" isDoc="" nodeType="1104" nodeTypeAlias="activeTopics" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          <umbracoNaviHide>1</umbracoNaviHide>
+          <hideChildrenFromNav>0</hideChildrenFromNav>
+          <title><![CDATA[Active Topics]]></title>
+          <intPageSize><![CDATA[25]]></intPageSize>
+        </activeTopics>
+        <members id="1129" key="84513b4c-3b6d-4f31-8c07-9708226f882d" parentID="1089" level="2" creatorID="-1" sortOrder="4" createDate="2022-06-01T09:21:41" updateDate="2022-12-10T20:42:40" nodeName="Members" urlName="members" path="-1,1089,1129" isDoc="" nodeType="1072" nodeTypeAlias="members" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          <umbracoNaviHide>1</umbracoNaviHide>
+          <hideChildrenFromNav>0</hideChildrenFromNav>
+          <title><![CDATA[Forum members]]></title>
+          <message><![CDATA[<p>Current members on the forum.</p>]]></message>
+          <intPageSize><![CDATA[25]]></intPageSize>
+        </members>
+      </forum>
+    </DocumentSet>
+  </Documents>
+  <DocumentTypes>
+    <DocumentType>
+      <Info>
+        <Name>ActiveTopics</Name>
+        <Alias>activeTopics</Alias>
+        <Key>91c67ab6-5120-4628-a27c-4c5093d116b8</Key>
+        <Icon>icon-bulleted-list color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Compositions>
+          <Composition>forumCommon</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>activeTopics</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>activeTopics</DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Title</Name>
+          <Alias>title</Alias>
+          <Key>5b17d93f-41fe-43f2-aa9f-d5f51bc379b7</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Int PageSize</Name>
+          <Alias>intPageSize</Alias>
+          <Key>334ecce6-9f98-42c3-a967-e03af7d36390</Key>
+          <Type>Umbraco.Slider</Type>
+          <Definition>cc9c0125-73ed-4bbe-b431-ad7cdcfa93b8</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>77</Id>
+          <Key>1d68a95c-196d-44f0-892b-c0de5d50c3ad</Key>
+          <Type>Group</Type>
+          <Caption>General</Caption>
+          <Alias>general</Alias>
+          <SortOrder>0</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>Forum</Name>
+        <Alias>forum</Alias>
+        <Key>02d090f0-26c5-49e8-b1cf-adb8c8e9cc06</Key>
+        <Icon>icon-folders color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>True</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Compositions>
+          <Composition>forumCommon</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>forum</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>forum</DefaultTemplate>
+      </Info>
+      <Structure>
+        <DocumentType>forum</DocumentType>
+        <DocumentType>forumPost</DocumentType>
+        <DocumentType>forumAuthHolder</DocumentType>
+        <DocumentType>members</DocumentType>
+        <DocumentType>searchPage</DocumentType>
+        <DocumentType>activeTopics</DocumentType>
+      </Structure>
+      <GenericProperties>
+        <GenericProperty>
+          <Name>ForumTitle</Name>
+          <Alias>forumTitle</Alias>
+          <Key>e201e3ab-c36e-4d2d-873e-6036bd17d110</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Forum Description</Name>
+          <Alias>forumDescription</Alias>
+          <Key>99866e98-dee0-438b-b119-0b6f66557c02</Key>
+          <Type>Umbraco.TinyMCE</Type>
+          <Definition>ca90c950-0aff-4e72-b976-a30b1ac57dad</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Post At Root</Name>
+          <Alias>postAtRoot</Alias>
+          <Key>569a5474-d72e-4b86-8425-50ce9b8ce463</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Can users post at this level (or is this a container for other forums?)]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Is Active</Name>
+          <Alias>isActive</Alias>
+          <Key>2b87aef2-2a88-40a3-b2d7-2310c084a296</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Allow Images</Name>
+          <Alias>allowImages</Alias>
+          <Key>7410735c-e575-4b6e-9f50-887f0cf8d00a</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Allow image uploads in posts]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Page Size</Name>
+          <Alias>intPageSize</Alias>
+          <Key>1bb5c900-cdc9-4ec0-81d6-6b06e9477156</Key>
+          <Type>Umbraco.Slider</Type>
+          <Definition>d62b131a-74c3-4f33-bf9a-3e1f5882fae9</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>3</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Number of posts to show on a page]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Members Only</Name>
+          <Alias>membersOnly</Alias>
+          <Key>434c27ce-de58-4570-ae72-e9f4845d80f2</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="authorisation">Authorisation</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Restricted Posting</Name>
+          <Alias>canPostGroup</Alias>
+          <Key>ebaa714e-0011-4e32-8f47-9b869ac4b7c1</Key>
+          <Type>Umbraco.MemberGroupPicker</Type>
+          <Definition>d1acd2f4-5ba8-440f-af31-e1ee16eb5fb6</Definition>
+          <Tab Alias="authorisation">Authorisation</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Only members of these groups can post in this forum (default is everyone)]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Restricted Viewing</Name>
+          <Alias>canViewGroup</Alias>
+          <Key>0e11ab12-dbba-4736-90cd-de5f22d66d74</Key>
+          <Type>Umbraco.MemberGroupPicker</Type>
+          <Definition>d1acd2f4-5ba8-440f-af31-e1ee16eb5fb6</Definition>
+          <Tab Alias="authorisation">Authorisation</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Only members of these groups can view posts in this forum (default is everyone)]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>58</Id>
+          <Key>1aacf359-9064-47d9-a2e6-7f72abd7f12e</Key>
+          <Type>Tab</Type>
+          <Caption>General</Caption>
+          <Alias>general</Alias>
+          <SortOrder>0</SortOrder>
+        </Tab>
+        <Tab>
+          <Id>59</Id>
+          <Key>13d044c3-0e7e-4477-8a72-221eea7a2ca6</Key>
+          <Type>Tab</Type>
+          <Caption>Settings</Caption>
+          <Alias>settings</Alias>
+          <SortOrder>1</SortOrder>
+        </Tab>
+        <Tab>
+          <Id>60</Id>
+          <Key>33b725a1-0260-4e06-9790-67f99e6a5794</Key>
+          <Type>Tab</Type>
+          <Caption>Authorisation</Caption>
+          <Alias>authorisation</Alias>
+          <SortOrder>2</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>Forum Post</Name>
+        <Alias>forumPost</Alias>
+        <Key>e64c7727-979d-4baa-9a28-8fc8cfbdc3c3</Key>
+        <Icon>icon-article color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Compositions>
+          <Composition>forumCommon</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>forumPost</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>forumPost</DefaultTemplate>
+      </Info>
+      <Structure>
+        <DocumentType>forumPost</DocumentType>
+      </Structure>
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Post Title</Name>
+          <Alias>postTitle</Alias>
+          <Key>d4a7d567-57f2-4eed-a8bf-587347f9c3ea</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Post Body</Name>
+          <Alias>postBody</Alias>
+          <Key>ad771e9a-b868-4437-80a7-521b0b92ecfe</Key>
+          <Type>Umbraco.TinyMCE</Type>
+          <Definition>ca90c950-0aff-4e72-b976-a30b1ac57dad</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Post Author</Name>
+          <Alias>postAuthor</Alias>
+          <Key>865f122d-5e62-4bc9-9021-e7226445c18f</Key>
+          <Type>Umbraco.MemberPicker</Type>
+          <Definition>1ea2e01f-ebd8-4ce1-8d71-6b1149e63548</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Member who made the post]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Post Type</Name>
+          <Alias>postType</Alias>
+          <Key>c5f9ff26-71ee-4e05-823c-8c97cfd663d5</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>4d4c1220-72c9-42be-bf25-0c44dfdd5d1a</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>3</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Post Creator</Name>
+          <Alias>postCreator</Alias>
+          <Key>2af528c0-12c5-4ca0-99e9-d0b818abe2a8</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="postInfo1">Post Info</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Name of the user who created the post, stored in case the Member is deleted.]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Last Modified</Name>
+          <Alias>editDate</Alias>
+          <Key>fb6a82af-0bd3-4638-9590-edc4bdddbcf1</Key>
+          <Type>Umbraco.DateTime</Type>
+          <Definition>5046194e-4237-453c-a547-15db3a07c4e1</Definition>
+          <Tab Alias="postInfo1">Post Info</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Deleted By Author</Name>
+          <Alias>deletedByAuthor</Alias>
+          <Key>b8a9fbfb-5f4c-4107-97e9-c64bc95b6aac</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="postInfo1">Post Info</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Set if the author deleted the post, otherwise assume it was an Administrator or Moderator]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Allow Replies</Name>
+          <Alias>allowReplies</Alias>
+          <Key>08c53285-f7db-4345-b19c-6939ed9e5c76</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Stickiness</Name>
+          <Alias>stickiness</Alias>
+          <Key>f53c7306-1627-4b0d-a52a-1fed9b13d092</Key>
+          <Type>Umbraco.Integer</Type>
+          <Definition>2e6d3631-066e-44b8-aec4-96f09099b2b5</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[How sticky (to the top) is this post - the higher the better]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Page Size</Name>
+          <Alias>intPageSize</Alias>
+          <Key>3723ca7d-3f68-4e37-96fd-8992d256bb55</Key>
+          <Type>Umbraco.Slider</Type>
+          <Definition>d62b131a-74c3-4f33-bf9a-3e1f5882fae9</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>61</Id>
+          <Key>d110fd7c-5ce2-422d-8a86-97ff5726b38c</Key>
+          <Type>Tab</Type>
+          <Caption>General</Caption>
+          <Alias>general</Alias>
+          <SortOrder>0</SortOrder>
+        </Tab>
+        <Tab>
+          <Id>62</Id>
+          <Key>bfc541c8-18c5-499f-b5e8-5eb2933c3164</Key>
+          <Type>Tab</Type>
+          <Caption>Post Info</Caption>
+          <Alias>postInfo1</Alias>
+          <SortOrder>2</SortOrder>
+        </Tab>
+        <Tab>
+          <Id>63</Id>
+          <Key>151a483d-4f62-42cb-bb87-0924ad377aa6</Key>
+          <Type>Tab</Type>
+          <Caption>Settings</Caption>
+          <Alias>settings</Alias>
+          <SortOrder>3</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>ForumMembership</Name>
+        <Alias>forumAuthHolder</Alias>
+        <Key>bee5d6dc-43b2-45a4-b41d-06c53d591f25</Key>
+        <Icon>icon-users color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Compositions />
+        <AllowedTemplates />
+        <DefaultTemplate></DefaultTemplate>
+      </Info>
+      <Structure>
+        <DocumentType>login</DocumentType>
+        <DocumentType>profile</DocumentType>
+        <DocumentType>register</DocumentType>
+        <DocumentType>reset</DocumentType>
+        <DocumentType>verify</DocumentType>
+      </Structure>
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Title</Name>
+          <Alias>title</Alias>
+          <Key>324ef3ec-7515-4550-9b6f-d2c3827863ca</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>True</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Message</Name>
+          <Alias>message</Alias>
+          <Key>2c71e5e4-e998-446a-8f39-d40b1ce8f265</Key>
+          <Type>Umbraco.TinyMCE</Type>
+          <Definition>ca90c950-0aff-4e72-b976-a30b1ac57dad</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Umbraco Url Alias</Name>
+          <Alias>umbracoUrlAlias</Alias>
+          <Key>fdc3fa86-a599-4cd9-a8ed-74b855321080</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="common">Common</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Umbraco Navi Hide</Name>
+          <Alias>umbracoNaviHide</Alias>
+          <Key>0f3b8b88-efaa-49ba-9b78-63698ff5fa25</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="common">Common</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>67</Id>
+          <Key>0d0afe49-05e3-4512-b7e0-899504792b20</Key>
+          <Type>Group</Type>
+          <Caption>General</Caption>
+          <Alias>general</Alias>
+          <SortOrder>0</SortOrder>
+        </Tab>
+        <Tab>
+          <Id>76</Id>
+          <Key>d6850f06-4090-4730-8beb-484ee2eab956</Key>
+          <Type>Group</Type>
+          <Caption>Common</Caption>
+          <Alias>common</Alias>
+          <SortOrder>1</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>ForumSearchPage</Name>
+        <Alias>searchPage</Alias>
+        <Key>49fe2244-5d29-47ad-95ef-dc9e89ee99ac</Key>
+        <Icon>icon-search color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Compositions>
+          <Composition>forumCommon</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>searchPage</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>searchPage</DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Title</Name>
+          <Alias>title</Alias>
+          <Key>2eb17990-6545-4e39-b89b-f4e97395787d</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="content">Content</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Page Size</Name>
+          <Alias>intPageSize</Alias>
+          <Key>bdfba470-207f-457d-a4b5-d04519ed3764</Key>
+          <Type>Umbraco.Slider</Type>
+          <Definition>cc9c0125-73ed-4bbe-b431-ad7cdcfa93b8</Definition>
+          <Tab Alias="content">Content</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>69</Id>
+          <Key>10af1cb1-5737-4ba8-91f8-269e3b3593c9</Key>
+          <Type>Group</Type>
+          <Caption>Content</Caption>
+          <Alias>content</Alias>
+          <SortOrder>0</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>Login</Name>
+        <Alias>login</Alias>
+        <Key>faa4e87c-3fe5-4b63-b34e-5fe6715ed371</Key>
+        <Icon>icon-logout color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Master>forumAuthHolder</Master>
+        <Compositions>
+          <Composition>forumAuthHolder</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>login</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>login</DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties />
+      <Tabs />
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>Members</Name>
+        <Alias>members</Alias>
+        <Key>7abcaa17-9cac-44a5-8e00-8b11c9bf3d16</Key>
+        <Icon>icon-users-alt color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description>Display List of Forum Members</Description>
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Compositions>
+          <Composition>forumCommon</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>members</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>members</DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Title</Name>
+          <Alias>title</Alias>
+          <Key>b56a6862-074d-4cdd-86ff-035be62f81f1</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="content">Content</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>True</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Message</Name>
+          <Alias>message</Alias>
+          <Key>374dffce-764f-413a-8511-b6d1f3fb9702</Key>
+          <Type>Umbraco.TinyMCE</Type>
+          <Definition>ca90c950-0aff-4e72-b976-a30b1ac57dad</Definition>
+          <Tab Alias="content">Content</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Page Size</Name>
+          <Alias>intPageSize</Alias>
+          <Key>f520f0a4-e9db-418a-9a99-8eb0257bfb25</Key>
+          <Type>Umbraco.Slider</Type>
+          <Definition>d62b131a-74c3-4f33-bf9a-3e1f5882fae9</Definition>
+          <Tab Alias="content">Content</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>68</Id>
+          <Key>dca16563-f06b-4879-8db9-5e7ca24e4a68</Key>
+          <Type>Group</Type>
+          <Caption>Content</Caption>
+          <Alias>content</Alias>
+          <SortOrder>0</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>Profile</Name>
+        <Alias>profile</Alias>
+        <Key>bd44899a-b77e-4bc7-8fbb-c9522e799ca0</Key>
+        <Icon>icon-umb-users color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Master>forumAuthHolder</Master>
+        <Compositions>
+          <Composition>forumAuthHolder</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>profile</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>profile</DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties />
+      <Tabs />
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>Register</Name>
+        <Alias>register</Alias>
+        <Key>37df6cfd-7490-4587-b594-1d75a7c7508e</Key>
+        <Icon>icon-umb-members color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Master>forumAuthHolder</Master>
+        <Compositions>
+          <Composition>forumAuthHolder</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>register</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>register</DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Use Captcha</Name>
+          <Alias>useCaptcha</Alias>
+          <Key>a9d0162e-90ee-4000-b898-eae99f12b658</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Domain Whitelist</Name>
+          <Alias>domainWhitelist</Alias>
+          <Key>84848688-3263-4510-be85-cb38390e3384</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="defaults">Defaults</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Domain Blacklist</Name>
+          <Alias>domainBlacklist</Alias>
+          <Key>8e741304-9279-4f2f-a5d4-a5bb29a818de</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="defaults">Defaults</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Do not allow these domains to register]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Default Membership</Name>
+          <Alias>defaultMembership</Alias>
+          <Key>8d127c03-b9cc-4929-9bcb-85bfed159fd0</Key>
+          <Type>Umbraco.MemberGroupPicker</Type>
+          <Definition>d1acd2f4-5ba8-440f-af31-e1ee16eb5fb6</Definition>
+          <Tab Alias="defaults">Defaults</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[Member groups to assign when registerring]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>80</Id>
+          <Key>83124184-0702-40c8-9388-fa94ac54650d</Key>
+          <Type>Group</Type>
+          <Caption>General</Caption>
+          <Alias>general</Alias>
+          <SortOrder>0</SortOrder>
+        </Tab>
+        <Tab>
+          <Id>75</Id>
+          <Key>23c42252-a512-46ca-86b6-ab86efbbce03</Key>
+          <Type>Group</Type>
+          <Caption>Defaults</Caption>
+          <Alias>defaults</Alias>
+          <SortOrder>1</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>Reset</Name>
+        <Alias>reset</Alias>
+        <Key>e563b965-641d-4bf0-932c-af0922b06e27</Key>
+        <Icon>icon-refresh color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Master>forumAuthHolder</Master>
+        <Compositions>
+          <Composition>forumAuthHolder</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>reset</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>reset</DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Use Captcha</Name>
+          <Alias>useCaptcha</Alias>
+          <Key>c136adb8-656a-4b35-a321-ef6e0b9a5b9e</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>PostMessage</Name>
+          <Alias>postMessage</Alias>
+          <Key>daf37422-1826-437b-bb3e-059b0ce7da19</Key>
+          <Type>Umbraco.TinyMCE</Type>
+          <Definition>ca90c950-0aff-4e72-b976-a30b1ac57dad</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>3</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>78</Id>
+          <Key>177b3c5b-57ab-45b1-8aa3-ef89870d713e</Key>
+          <Type>Group</Type>
+          <Caption>General</Caption>
+          <Alias>general</Alias>
+          <SortOrder>0</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType>
+      <Info>
+        <Name>Verify</Name>
+        <Alias>verify</Alias>
+        <Key>e36c0acf-53bd-44d7-9888-ab320523a318</Key>
+        <Icon>icon-check color-deep-purple</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>False</IsElement>
+        <Variations>Nothing</Variations>
+        <Master>forumAuthHolder</Master>
+        <Compositions>
+          <Composition>forumAuthHolder</Composition>
+        </Compositions>
+        <AllowedTemplates>
+          <Template>verify</Template>
+        </AllowedTemplates>
+        <DefaultTemplate>verify</DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties />
+      <Tabs />
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType Folders="Compositions" FolderKeys="793b05ff-b1b8-43bf-abec-8366f124c6ed">
+      <Info>
+        <Name>ForumCommon</Name>
+        <Alias>forumCommon</Alias>
+        <Key>8a9597b1-741d-4623-80f1-2ff7198dcc0a</Key>
+        <Icon>icon-defrag</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>True</IsElement>
+        <Variations>Nothing</Variations>
+        <Compositions />
+        <AllowedTemplates />
+        <DefaultTemplate></DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Umbraco Navi Hide</Name>
+          <Alias>umbracoNaviHide</Alias>
+          <Key>972ce6e7-463c-4e55-9e49-1c7af8efd6eb</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="umbNav/navigation">Navigation</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Hide Children From Nav</Name>
+          <Alias>hideChildrenFromNav</Alias>
+          <Key>2c124069-4c9c-4737-9e9d-09096629a89d</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="umbNav/navigation">Navigation</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Umbraco Url Alias</Name>
+          <Alias>umbracoUrlAlias</Alias>
+          <Key>1697604e-8a3d-4e37-a39c-2431978b72f8</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="umbNav/navigation">Navigation</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>98</Id>
+          <Key>8e6cf32a-cd26-4b99-b8ac-2fceebae82e0</Key>
+          <Type>Group</Type>
+          <Caption>Navigation</Caption>
+          <Alias>umbNav/navigation</Alias>
+          <SortOrder>-1</SortOrder>
+        </Tab>
+        <Tab>
+          <Id>97</Id>
+          <Key>d46201f4-a47c-4fee-a7cd-4d4d0b0aaf8d</Key>
+          <Type>Tab</Type>
+          <Caption>UmbNav</Caption>
+          <Alias>umbNav</Alias>
+          <SortOrder>99</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+  </DocumentTypes>
+  <MediaTypes />
+  <Templates />
+  <Stylesheets />
+  <Scripts />
+  <PartialViews>
+    <View path="Navigation\_TopNavigation.cshtml"><![CDATA[@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var site = (IPublishedContent)Umbraco.ContentAtRoot().FirstOrDefault();
+    var children = site.Children().Where(x => x.IsVisible());
+    var siblings = site.Siblings();
+}
+
+<!-- create your responsive navbar -->
+<nav class=" navbar-expand-lg navbar navbar-light bg-white" id="myNavbar">
+    <!-- next is where your logo goes -->
+    <img src="/media/mg0ikgou/wizard.png?width=75&height=75" alt="MediaWizards Logo" />
+    <a href="@site.Url()" class="navbar-brand" title="@site.Value("siteName")">@site.Value("siteName")</a>
+    <!-- next is your mobile burger menu toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- now we go to the main bit of the nav -->
+    <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            <!-- un comment the following line if you want to add the root node name to the top navigation
+            <li class="nav-item px-4"><a class="nav-link @Html.Raw(Model.Id == site.Id ? "navi-link--active" : "")" href="@site.Url()">@site.Name</a></li>-->
+
+            @foreach (var item in children)
+            {
+                if (item.Children().Any(x => x.IsVisible()) && !item.Value<bool>("hideChildrenFromNav"))
+                {
+                    <li class="nav-item px-4 dropdown">
+                        <a class="nav-link dropdown-toggle @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="#" id="@($"{item.Name.Replace(" ", "")}Dropdown")" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Name</a>
+                        <div class="dropdown-menu" aria-labelledby="@($"{item.Name.Replace(" ", "")}Dropdown")">
+                            @foreach (var child in item.Children().Where(x => x.IsVisible()))
+                            {
+                                <a class="dropdown-item" href="@child.Url()">@child.Name</a>
+                            }
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item px-4"><a class="nav-link @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@item.Url()">@item.Name</a></li>
+                }
+            }
+            @foreach (var item in siblings)
+            {
+                if (item.Children().Any(x => x.IsVisible()) && !item.Value<bool>("hideChildrenFromNav"))
+                {
+                    <li class="nav-item px-4 dropdown">
+                        <a class="nav-link dropdown-toggle @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="#" id="@($"{item.Name.Replace(" ", "")}Dropdown")" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Name</a>
+                        <div class="dropdown-menu" aria-labelledby="@($"{item.Name.Replace(" ", "")}Dropdown")">
+                            @foreach (var child in item.Children().Where(x => x.IsVisible()))
+                            {
+                                <a class="dropdown-item" href="@child.Url()">@child.Name</a>
+                            }
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item px-4"><a class="nav-link @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@item.Url()">@item.Name</a></li>
+                }
+            }
+        </ul>
+    </div>
+</nav>]]></View>
+  </PartialViews>
+  <Macros>
+    <macro>
+      <name>Latest Forum Posts</name>
+      <key>36e8062f-55cb-41c5-8dab-7084651ad4ad</key>
+      <alias>LatestForumPosts</alias>
+      <macroSource>~/Views/MacroPartials/Latest Forum Posts.cshtml</macroSource>
+      <useInEditor>True</useInEditor>
+      <dontRender>False</dontRender>
+      <refreshRate>0</refreshRate>
+      <cacheByMember>False</cacheByMember>
+      <cacheByPage>False</cacheByPage>
+      <properties>
+        <property key="84dfdf55-7f59-42d9-83d5-fc7b1ca7d89c" name="NumberOfPosts" alias="numberOfPosts" sortOrder="1" propertyType="Umbraco.Integer" />
+        <property key="b94a9fd9-112b-4850-84c6-bae3a837a4a4" name="Select starting page" alias="startNodeId" sortOrder="0" propertyType="Umbraco.ContentPicker" />
+      </properties>
+    </macro>
+  </Macros>
+  <MacroPartialViews>
+    <View path="Latest Forum Posts.cshtml"><![CDATA[@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedContentQuery PublishedContentQuery
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+
+
+@{
+    var startNodeId = Model?.MacroParameters["startNodeId"]; 
+    var numberOfPosts = 3;
+    if (Model.MacroParameters["numberOfPosts"] != null)
+    {
+        int.TryParse((string)Model.MacroParameters["numberOfPosts"], out numberOfPosts);
+    }
+    
+    if (startNodeId != null)
+    {
+    @* Get the starting page *@
+        var startNode = PublishedContentQuery.Content(startNodeId);
+        var selection = startNode.DescendantsOrSelf()
+            .Where(x => x.IsVisible(PublishedValueFallback) && x.Value<bool>("postType"))
+            .OrderByDescending(o=>o.Value("editDate"))
+            .ThenByDescending(o => o.CreateDate).Take(numberOfPosts).ToArray();
+
+if (selection.Length > 0)
+{
+            <div class="sidebar">
+                <span class="wiz-forum-title">&nbsp;Latest forum posts</span>
+                <ul class="wiz-topics">
+                    <li class="wiz-body">
+                        @foreach (var item in selection)
+                        {
+                            var editdate = item.Value<DateTime>("editDate");
+                            <ul class="topic">
+                                <li class="wiz-topic-content">
+                                    <a class="wiz-topic-permalink" href="@item.Url(PublishedUrlProvider)">@item.Value("postTitle")</a>
+                                    <span class="wiz-topic-meta">@item.Value("postBody")</span>
+                                    <span class="wiz-topic-header">Created by @item.Value("postCreator") on <span class="wiz-topic-permalink">@item.CreateDate.ToLongDateString() at @item.CreateDate.ToLocalTime().ToShortTimeString()</span>
+                                        @if (editdate == DateTime.MinValue)
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            <span><br />Latest post @editdate.ToLocalTime().ToLongDateString() at @editdate.ToLocalTime().ToShortTimeString()</span>
+                                        }
+                                        
+                                    </span>
+                                </li>
+                            </ul>
+                        }
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+}
+
+]]></View>
+  </MacroPartialViews>
+  <DictionaryItems />
+  <Languages />
+  <DataTypes>
+    <DataType Name="Forum - Member Group Picker" Id="Umbraco.MemberGroupPicker" Definition="d1acd2f4-5ba8-440f-af31-e1ee16eb5fb6" DatabaseType="Ntext" Configuration="{}" />
+    <DataType Name="Forum - Page Size - Search" Id="Umbraco.Slider" Definition="cc9c0125-73ed-4bbe-b431-ad7cdcfa93b8" DatabaseType="Nvarchar" Configuration="{&quot;enableRange&quot;:false,&quot;initVal1&quot;:25.0,&quot;initVal2&quot;:0.0,&quot;minVal&quot;:10.0,&quot;maxVal&quot;:100.0,&quot;step&quot;:5.0}" />
+    <DataType Name="Forum - Page Size - Topics" Id="Umbraco.Slider" Definition="d62b131a-74c3-4f33-bf9a-3e1f5882fae9" DatabaseType="Nvarchar" Configuration="{&quot;enableRange&quot;:false,&quot;initVal1&quot;:10.0,&quot;initVal2&quot;:0.0,&quot;minVal&quot;:10.0,&quot;maxVal&quot;:100.0,&quot;step&quot;:5.0}" />
+    <DataType Name="Forum - Post Type - Toggle" Id="Umbraco.TrueFalse" Definition="4d4c1220-72c9-42be-bf25-0c44dfdd5d1a" DatabaseType="Integer" Configuration="{&quot;default&quot;:true,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Topic&quot;,&quot;labelOff&quot;:&quot;Reply&quot;}" />
+    <DataType Name="Forum - Resolved - Toggle" Id="Umbraco.TrueFalse" Definition="dc500a08-593c-44bd-9e46-905d859c9adb" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Answered&quot;,&quot;labelOff&quot;:&quot;Not Answered&quot;}" />
+    <DataType Name="List View - Members" Id="Umbraco.ListView" Definition="aa2c52a0-ce87-4e65-a47c-7df09358585d" DatabaseType="Nvarchar" Configuration="{&quot;pageSize&quot;:10,&quot;orderBy&quot;:&quot;username&quot;,&quot;orderDirection&quot;:&quot;asc&quot;,&quot;includeProperties&quot;:[{&quot;alias&quot;:&quot;username&quot;,&quot;isSystem&quot;:1},{&quot;alias&quot;:&quot;email&quot;,&quot;isSystem&quot;:1},{&quot;alias&quot;:&quot;updateDate&quot;,&quot;header&quot;:&quot;Last edited&quot;,&quot;isSystem&quot;:1}],&quot;layouts&quot;:[{&quot;name&quot;:&quot;List&quot;,&quot;path&quot;:&quot;views/propertyeditors/listview/layouts/list/list.html&quot;,&quot;icon&quot;:&quot;icon-list&quot;,&quot;isSystem&quot;:1,&quot;selected&quot;:true},{&quot;name&quot;:&quot;Grid&quot;,&quot;path&quot;:&quot;views/propertyeditors/listview/layouts/grid/grid.html&quot;,&quot;icon&quot;:&quot;icon-thumbnails-small&quot;,&quot;isSystem&quot;:1,&quot;selected&quot;:true}],&quot;bulkActionPermissions&quot;:{&quot;allowBulkPublish&quot;:true,&quot;allowBulkUnpublish&quot;:true,&quot;allowBulkCopy&quot;:true,&quot;allowBulkMove&quot;:true,&quot;allowBulkDelete&quot;:true},&quot;showContentFirst&quot;:false,&quot;useInfiniteEditor&quot;:false}" />
+  </DataTypes>
+  <MediaItems/>
+</umbPackage>

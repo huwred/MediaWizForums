@@ -1,11 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<MediaWiz.Forums.ViewModels.SearchViewModel>
-@using MediaWiz.Forums.Helpers
 @using MediaWiz.Forums.Interfaces
-@using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Extensions
 
-@inject IViewCounterService _viewCounter
-@inject IForumCacheService _cacheService;
 @{
     Layout = "ForumMaster.cshtml";
 
@@ -28,69 +24,32 @@
     </div>
 </div>
 <div>
-    @{
+    @if (Model.PagedResult.Any())
+    {
+        <div class="wiz-topics">
+            <div class="d-flex flex-row flex-wrap mb-3 p-2 color-white bg-secondary">
+                <div class="col-8">Topic</div>
+                <div class="col-2">Replies</div>
+                <div class="col-2">Views</div>
+            </div>
+            <div class="wiz-body">
+                @foreach (var result in Model.PagedResult)
+                {
+                    var post = Umbraco.Content(result.Id);
+                    @await Component.InvokeAsync("Posts",new {Template = "DisplayTopic",Model = post,showTitle = true})
 
-        if (Model.PagedResult.Any())
-        {
-            <div class="wiz-topics">
-                <div class="d-flex flex-row flex-wrap mb-3 p-2 color-white bg-secondary">
-                    <div class="col-8">Topic</div>
-                    <div class="col-2">Replies</div>
-                    <div class="col-2">Views</div>
-                </div>
-                <div class="wiz-body">
-                    @foreach (var result in Model.PagedResult)
-                    {
-                        var post = Umbraco.Content(result.Id);
-                        DisplayPost(post);
-                    }
-                    @if (totalPages > 1)
-                    {
-                        @await Component.InvokeAsync("Navigation",new {Template = "PagerView", Model = Model})
-                    }
-                </div>
-
+                }
+                @if (totalPages > 1)
+                {
+                    @await Component.InvokeAsync("Navigation",new {Template = "PagerView", Model = Model})
+                }
             </div>
 
-        }
-        else
-        {
-            <p>No active Topics </p>
-        }
+        </div>
+
+    }
+    else
+    {
+        <p>No active Topics </p>
     }
 </div>
-
-@{
-    void DisplayPost(IPublishedContent post, bool showTitle = true)
-    {
-        var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id,new TimeSpan(0,0,30));
-        var views = _viewCounter.GetViewCount(post.Id)?.Views ?? 0;
-
-        @if (post.IsVisible())
-        {
-            string locked = post.Value<bool>("allowReplies") ? "" : "locked";
-            string solved = post.Value<bool>("answer") ? "solved" : "";
-
-            <div class="d-flex flex-row flex-wrap topic @locked @solved p-6" id="topic-@post.Id">
-                <div class="col-8 p-4">
-                    <a class="wiz-topic-permalink " href="@post.Url()" style="display: block" title="@post.Value("postTitle")">@post.Value("postTitle")</a>
-                    <span class="wiz-topic-meta">
-                        @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
-                        {
-                            <span class="wiz-topic-started-by">
-                                last post&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
-                                @ForumHelper.GetRelativeDate(cacheInfo.latestPost) <a href="@cacheInfo.lastPostUrl" title="Jump to latest post"><i class="bi bi-chevron-double-right"></i></a>
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="wiz-topic-started-by">topic created by <a href="/profile/?user=@post.Value("postCreator")">@post.Value("postCreator")</a> @ForumHelper.GetRelativeDate(post.CreateDate)</span>
-                        }
-                    </span>
-                </div>
-                <div class="col-2 pt-4">@(cacheInfo.Count)</div>
-                <div class="col-2 pt-4">@views</div>
-            </div>
-        }
-    }
-}

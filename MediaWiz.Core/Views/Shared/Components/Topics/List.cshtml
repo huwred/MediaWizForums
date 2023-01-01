@@ -27,7 +27,9 @@
                     .OrderByDescending(x => x.Value<int>("stickyness"))
                     .ThenByDescending(x => _cacheService.GetPost(x, "Topic_" + x.Id).latestPost))
                     {
-                        DisplayPost(post);
+                        @await Component.InvokeAsync("Posts",new {Template = "DisplayTopic",Model = post,showTitle = true})
+
+                        //DisplayPost(post);
                     }
                 </div>
             </div>
@@ -55,43 +57,5 @@
         </div>
     }
 }
-@{
-    void DisplayPost(IPublishedContent post)
-    {
 
-        var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id);
-        var views = _viewCounter.GetViewCount(post.Id)?.Views ?? 0;
-
-        @if (post.IsVisible())
-        {
-            string locked = post.Value<bool>("allowReplies") ? "" : "locked";
-            string solved = post.Value<bool>("answer") ? "solved" : "";
-
-            <div class="d-flex flex-row flex-wrap topic @locked @solved p-6" id="topic-@post.Id">
-                <div class="col-8 p-4">
-                    <a class="wiz-topic-permalink " href="@post.Url()" style="display: block" title="@post.Value("postTitle")">@post.Value("postTitle")</a>
-                    <span class="wiz-topic-meta">
-
-                        @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
-                        {
-                            <span class="wiz-topic-started-by">
-                                last post&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
-                                @ForumHelper.GetRelativeDate(cacheInfo.latestPost) <a href="@cacheInfo.lastPostUrl" title="Jump to latest post"><i class="bi bi-chevron-double-right"></i></a>
-                            </span>
-                        }
-                        else
-                        {
-                            <span class="wiz-topic-started-by">topic created by <a href="/profile/?user=@post.Value("postCreator")">@post.Value("postCreator")</a> @ForumHelper.GetRelativeDate(post.CreateDate)</span>
-                        }
-                    </span>
-                </div>
-                <div class="col-2 pt-4">@(cacheInfo.Count)</div>
-                <div class="col-2 pt-4">@views</div>
-
-            </div>
-        }
-
-    }
-
-}
 

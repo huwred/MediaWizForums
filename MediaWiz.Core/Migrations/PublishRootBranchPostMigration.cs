@@ -49,13 +49,15 @@ namespace MediaWiz.Forums.Migrations
 
         protected override void Migrate()
         {
+            _logger.LogInformation("PublishRootBranchPostMigration");
             var contentForum = _contentService.GetRootContent().FirstOrDefault(x => x.ContentType.Alias == "forum");
             if (contentForum != null)
             {
                 AddForumMemberType();
                 AddMemberGroups();
-                //AddDictionaryItems();
+                AddAnswerProperty();
                 UpdatePostCounts();
+                //AddDictionaryItems();
                 //Make sure the Forum root has been published
                 _contentService.SaveAndPublishBranch(contentForum, true);
             }
@@ -65,6 +67,36 @@ namespace MediaWiz.Forums.Migrations
             }
         }
 
+        private void AddAnswerProperty()
+        {
+            try
+            {
+                var dataTypeDefinitions = _dataTypeService.GetAll().ToArray(); //.ToArray() because arrays are fast and easy.
+                var truefalse = dataTypeDefinitions.FirstOrDefault(p => p.EditorAlias.ToLower() == "umbraco.truefalse" && p.Name.Contains("Resolved")); //we want the TrueFalse data type.
+                
+                var forumPost = _contentTypeService.Get("forumPost");
+                if (forumPost != null && truefalse != null)
+                {
+                    if (!forumPost.PropertyTypes.Any(p => p.Alias == "answer"))
+                    {
+                        forumPost.AddPropertyType(new PropertyType(_shortStringHelper, truefalse)
+                        {
+                            Name = "Answer",
+                            Alias = "answer",
+                            Description = "Marked as solution/resolved."
+                        });
+                        _contentTypeService.Save(forumPost);
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,"Adding Ansered property");
+                throw;
+            }
+
+        }
         private bool AddForumMemberType()
         {
             // do things on install

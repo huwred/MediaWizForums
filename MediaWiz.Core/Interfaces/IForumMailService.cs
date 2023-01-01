@@ -8,8 +8,8 @@ namespace MediaWiz.Forums.Interfaces
     public interface IForumMailService
     {
 
-        Task SendResetPassword(UmbracoHelper umbraco, string email, string guid);
-        Task<bool> SendVerifyAccount(UmbracoHelper umbraco, string email, string guid);
+        Task SendResetPassword(string email, string guid);
+        Task<bool> SendVerifyAccount(string email, string guid);
 
         void SendNotificationEmail(IPublishedContent root, IPublishedContent post, object author,List<string> recipients, bool newPost);
 

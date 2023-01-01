@@ -17,9 +17,7 @@
     <RepositoryUrl>https://github.com/huwred/MediaWizForums</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageIcon>wizard.png</PackageIcon>
   </PropertyGroup>
-
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Maui.Graphics" Version="7.0.52" />
@@ -35,10 +33,6 @@
       <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
       <CopyToPublishDirectory>Always</CopyToPublishDirectory>
     </Content>
-    <None Include="Assets\**">
-      <Pack>true</Pack>
-      <PackagePath>wwwAssets</PackagePath>
-    </None>
     <None Include="views\**">
       <Pack>true</Pack>
       <PackagePath>Views</PackagePath>
@@ -48,23 +42,18 @@
       <PackagePath>buildTransitive</PackagePath>
     </None>
     <Content Remove="bundleconfig.json" />
-    <Content Remove="Views\Shared\Components\Posts\DIsplayPost.cshtml" />
-    <None Include="bundleconfig.json" />
     <None Include="docs\readme.md" Pack="true" PackagePath="\" />
-    <None Include="Assets\wizard.png" Pack="true" PackagePath="\" />
+    <None Include="wwwroot\**" />
 	</ItemGroup>
 
 	<ItemGroup>
+    <None Remove="Migrations\package.xml" />
+    <None Remove="Views\mediawizMaster.cshtml" />
     <None Remove="Views\Shared\Components\_ViewImports.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <EmbeddedResource Include="Migrations\package.zip" />
+	  <EmbeddedResource Include="Migrations\package.xml" />
 	</ItemGroup>
-
-	<ItemGroup>
-	  <Folder Include="wwwroot\" />
-	</ItemGroup>
-                  
 
 </Project>

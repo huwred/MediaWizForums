@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using Umbraco.Cms.Core.Manifest;
 
 namespace MediaWiz.Forums.Helpers
 {
-    internal class MediaWizManifestFilter: IManifestFilter
+    /// <summary>
+    /// Loads the manifest for the resend validation email controller
+    /// </summary>
+    internal class EmailValidationManifestFilter: IManifestFilter
     {
         public void Filter(List<PackageManifest> manifests)
         {
