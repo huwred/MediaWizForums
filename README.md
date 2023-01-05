@@ -7,6 +7,12 @@ Simple Forum add on for Umbraco ≥ 10.
 
 Tested in v10 and v11 of Umbraco
 
+### 10.4.1 ###
+Added 'mark as answered' to posts
+Update to Custom ForumIndex fields + Rebuild on publish post
+Chaged DisplayPost Razor function into ViewComponent
+Fixed issue with tinyMCE initialisation in modal popup
+
 - - - -
 
 **Admin user for the test site**
