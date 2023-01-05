@@ -11,3 +11,4 @@ Tested in v10 and v11 of Umbraco
 Added 'mark as answered' to posts
 Update to Custom ForumIndex fields + Rebuild on publish post
 Chaged DisplayPost Razor function into ViewComponent
+Fixed issue with tinyMCE initialisation in modal popup

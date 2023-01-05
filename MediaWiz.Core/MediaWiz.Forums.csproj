@@ -17,6 +17,10 @@
     <RepositoryUrl>https://github.com/huwred/MediaWizForums</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageReleaseNotes>Added 'mark as answered' to posts
+Update to Custom ForumIndex fields + Rebuild on publish post
+Chaged DisplayPost Razor function into ViewComponent
+Fixed issue with tinyMCE initialisation in modal popup</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -58,6 +62,13 @@
 
 	<ItemGroup>
 	  <EmbeddedResource Include="Migrations\package.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="readme.md">
+	    <Pack>True</Pack>
+	    <PackagePath>\</PackagePath>
+	  </None>
 	</ItemGroup>
 
 </Project>
