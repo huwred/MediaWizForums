@@ -41,9 +41,13 @@
       <Pack>true</Pack>
       <PackagePath>buildTransitive</PackagePath>
     </None>
-    <Content Remove="bundleconfig.json" />
+    <None Include="bundleconfig.json" />
     <None Include="docs\readme.md" Pack="true" PackagePath="\" />
     <None Include="wwwroot\**" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Content Remove="bundleconfig.json" />
 	</ItemGroup>
 
 	<ItemGroup>

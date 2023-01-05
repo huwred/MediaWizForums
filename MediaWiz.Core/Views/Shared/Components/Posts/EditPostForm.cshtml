@@ -32,9 +32,17 @@
 
             }
             <div class="form-group">
-                <label asp-for="@Post.Body" class="control-label col-1"></label>
+                @if (showTitle)
+                {
+                    <label class="control-label col-1">Message</label>
+                }
+                else
+                {
+                    <label asp-for="@Post.Body" class="control-label col-1"></label>
+                }
+
                 <div class="col-11">
-                    <textarea asp-for="@Post.Title" class="form-control new-post" aria_required="true" rows="10" cols="20"></textarea>
+                    <textarea asp-for="@Post.Body" class="edit-post form-control" aria_required="true" rows="20" cols="20" id="Edit_Post_Body"></textarea>
                     <span asp-validation-for="@Post.Body" class="form-text text-danger"></span>
                 </div>
             </div>
@@ -52,7 +60,6 @@
     }
 
 }
-
 
 
 

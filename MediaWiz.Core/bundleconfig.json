@@ -16,5 +16,11 @@
     "inputFiles": [
       "Assets/css/site.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/forums.min.css",
+    "inputFiles": [
+      "wwwroot/css/forums.css"
+    ]
   }
 ]

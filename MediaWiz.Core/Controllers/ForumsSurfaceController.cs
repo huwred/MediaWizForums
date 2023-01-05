@@ -68,7 +68,7 @@ namespace MediaWiz.Forums.Controllers
         public IActionResult EditPost(int id)
         {
 
-            return ViewComponent("Topics", new { Template = "EditPostForm", Id = id });
+            return ViewComponent("Posts", new { Template = "EditPostForm", Id = id });
 
         }
 

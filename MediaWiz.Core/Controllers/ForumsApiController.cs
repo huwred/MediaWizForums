@@ -140,7 +140,7 @@ namespace MediaWiz.Forums.Controllers
                     var author = post.GetValue<string>("postAuthor");
                     var currentMember =  _memberManager.GetCurrentMemberAsync().Result;
 
-                    if (author != "0" && author != currentMember.Id)
+                    if (currentMember != null)
                     {
                         if (post.HasProperty("answer"))
                         {
@@ -254,6 +254,8 @@ namespace MediaWiz.Forums.Controllers
         public async Task<IActionResult> TinyMceUpload(int? id)
         {
             var path = "/forumuploads";
+            var currentMember =  _memberManager.GetCurrentMemberAsync().Result;
+            path = path + "/" + currentMember.Id;
 
             var file = _httpContextAccessor.HttpContext.Request.Form.Files;
             var loc = await SaveFileAsync(path, file[0]);
@@ -280,7 +282,19 @@ namespace MediaWiz.Forums.Controllers
             const int megabyte = 1024 * 1024;
             string[] extensions = { ".gif", ".jpg", ".png", ".svg", ".webp" };
             //var fs = new PhysicalFileSystem("~" + targetFolder);
-
+            if (!file.ContentType.StartsWith("image/"))
+            {
+                throw new InvalidOperationException("Invalid MIME content type.");
+            }
+            var extension = Path.GetExtension(file.FileName.ToLowerInvariant());
+            if (!extensions.Contains(extension))
+            {
+                throw new InvalidOperationException("Invalid file extension.");
+            }            
+            if (file.Length > (8 * megabyte))
+            {
+                throw new InvalidOperationException("File size (8MB) limit exceeded.");
+            }            
             var _fileSystem = _mediaFileManager.FileSystem;
 
             if (!_fileSystem.DirectoryExists(_fileSystem.GetFullPath(targetFolder)))
@@ -288,30 +302,14 @@ namespace MediaWiz.Forums.Controllers
                 Directory.CreateDirectory(_fileSystem.GetFullPath(targetFolder));
             }
 
-            if (!file.ContentType.StartsWith("image/"))
-            {
-                throw new InvalidOperationException("Invalid MIME content type.");
-            }
-
-            var extension = Path.GetExtension(file.FileName.ToLowerInvariant());
-            if (!extensions.Contains(extension))
-            {
-                throw new InvalidOperationException("Invalid file extension.");
-            }
-            
-            if (file.Length > (8 * megabyte))
-            {
-                throw new InvalidOperationException("File size limit exceeded.");
-            }
-
             var fileName = Guid.NewGuid() + extension;
-            var path = Path.Combine(_fileSystem.GetFullPath(targetFolder), fileName);
+            var path = Path.Combine(_fileSystem.GetFullPath(targetFolder), file.FileName);
             await using (Stream fileStream = new FileStream(path, FileMode.Create)) {
                 await file.CopyToAsync(fileStream);
             }
 
 
-            return Combine(targetFolder, fileName);
+            return Combine(targetFolder, file.FileName);
         }
         public static string Combine(string uri1, string uri2)
         {

@@ -102,7 +102,10 @@
                             padding: 0 15px;
                             color: #777;
                         }
-                          `
+                        .mce-content-body img {
+                            max-width: 99% !important;
+                            height: auto;
+                        }  `
                 });
                 document.addEventListener("focusin",
                     (e) => {
@@ -150,6 +153,7 @@
                 e.stopPropagation();
                 e.preventDefault();
                 MediaWiz.editPost($(this).data("postid"));
+
             });
 
             $(".lock-user").on("click",function(e) {
@@ -160,7 +164,7 @@
 
             $("#editPostModal").on("show.bs.modal",function() {
                 setTimeout(function() {
-                    MediaWiz.InitTinyMce("textarea.edit-body");
+                    MediaWiz.InitTinyMce("#partial-form textarea");
                 }, 300);
             });
 

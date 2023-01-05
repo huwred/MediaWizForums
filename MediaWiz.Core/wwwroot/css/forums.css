@@ -413,8 +413,12 @@ ul.wiz-admin-links a:hover {
     padding-left: 0 !important;
     color: #111;
 }
+.mce-content-body img {
+    max-width: 99% !important;
+    height: auto;
+}
 @media only screen and (max-width:480px) {
-    span.wiz-admin-links {
+    span .wiz-admin-links {
         float: none;
         clear: both
     }
