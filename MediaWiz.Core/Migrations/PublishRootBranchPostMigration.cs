@@ -55,7 +55,6 @@ namespace MediaWiz.Forums.Migrations
             {
                 AddForumMemberType();
                 AddMemberGroups();
-                AddAnswerProperty();
                 UpdatePostCounts();
                 //AddDictionaryItems();
                 //Make sure the Forum root has been published
@@ -65,6 +64,7 @@ namespace MediaWiz.Forums.Migrations
             {
                 _logger.LogWarning("The Forum is already installed");
             }
+            AddAnswerProperty();
         }
 
         private void AddAnswerProperty()
@@ -75,16 +75,20 @@ namespace MediaWiz.Forums.Migrations
                 var truefalse = dataTypeDefinitions.FirstOrDefault(p => p.EditorAlias.ToLower() == "umbraco.truefalse" && p.Name.Contains("Resolved")); //we want the TrueFalse data type.
                 
                 var forumPost = _contentTypeService.Get("forumPost");
+                var chack = forumPost.PropertyGroups;
                 if (forumPost != null && truefalse != null)
                 {
                     if (!forumPost.PropertyTypes.Any(p => p.Alias == "answer"))
                     {
-                        forumPost.AddPropertyType(new PropertyType(_shortStringHelper, truefalse)
+                        var answerPropertyType = new PropertyType(_shortStringHelper, truefalse)
                         {
                             Name = "Answer",
                             Alias = "answer",
-                            Description = "Marked as solution/resolved."
-                        });
+                            Description = "Marked as solution/resolved.",
+
+                        };
+                        
+                        forumPost.AddPropertyType(answerPropertyType,"general");
                         _contentTypeService.Save(forumPost);
                     }
 

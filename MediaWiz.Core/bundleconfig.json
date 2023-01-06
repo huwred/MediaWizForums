@@ -22,5 +22,17 @@
     "inputFiles": [
       "wwwroot/css/forums.css"
     ]
+  },
+  {
+    "outputFileName": "wwwroot/css/site.min.css",
+    "inputFiles": [
+      "wwwroot/css/site.css"
+    ]
+  },
+  {
+    "outputFileName": "wwwroot/scripts/mediawiz.forums.min.js",
+    "inputFiles": [
+      "wwwroot/scripts/mediawiz.forums.js"
+    ]
   }
 ]

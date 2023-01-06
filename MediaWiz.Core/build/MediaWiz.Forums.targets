@@ -9,7 +9,7 @@
         <ItemGroup>
             <MediaWizForumsAppPluginFiles Include="$(MediaWizForumsAppPluginsFilesPath)" />
         </ItemGroup>
-        <Message Text="Copying MediaWiz.Forums App_Plugins: $(MediaWizForumsAppPluginsFilesPath) - #@(MediaWizForumsContentFiles->Count()) files" Importance="high" />
+        <Message Text="Copying MediaWiz.Forums App_Plugins: $(MediaWizForumsAppPluginsFilesPath) - #@(MediaWizForumsAppPluginFiles->Count()) files" Importance="high" />
         <Copy SourceFiles="@(MediaWizForumsAppPluginFiles)" DestinationFiles="@(MediaWizForumsAppPluginFiles->'$(MSBuildProjectDirectory)\App_Plugins\MediaWizards\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
     </Target>
 

@@ -361,9 +361,12 @@ MigrationBackup/
 
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
-/MediaWiz.Core/umbraco
-/MediaWiz.Core/wwwroot/umbraco
-/MediaWiz.Package/umbraco
-/MediaWiz.Package/wwwroot/umbraco
+
+# Umbraco folders
+umbraco
+wwwroot/umbraco
 /MediaWiz.TestSite/appsettings.Development.json
 /MediaWiz.Assets
+/MediaWiz.TestSite/MediaWiz.TestSite.csproj
+/MediaWiz.Test/MediaWiz.Test.csproj
+/MediaWiz.TestSite/MediaWiz.TestSite.csproj

@@ -60,8 +60,8 @@ else
             <span asp-validation-for="@registerModel.Password" class="form-text text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="@registerModel.Name" class="form-label"></label>
-            <input asp-for="@registerModel.Name" class="form-control" autocomplete="new-password" type="password" aria_required="true" />
+            <label asp-for="@registerModel.ConfirmPassword" class="form-label"></label>
+            <input asp-for="@registerModel.ConfirmPassword" class="form-control" autocomplete="new-password" type="password" aria_required="true" />
             <span asp-validation-for="@registerModel.ConfirmPassword" class="form-text text-danger"></span>
         </div>
 

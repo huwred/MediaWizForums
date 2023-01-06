@@ -93,7 +93,7 @@
         <searchPage id="1102" key="e8aca891-2080-4a11-a5de-ec206fa97f2c" parentID="1089" level="2" creatorID="-1" sortOrder="2" createDate="2022-05-29T08:48:25" updateDate="2022-12-10T20:45:20" nodeName="Search" urlName="search" path="-1,1089,1102" isDoc="" nodeType="1086" nodeTypeAlias="searchPage" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
           <umbracoNaviHide>1</umbracoNaviHide>
           <hideChildrenFromNav>0</hideChildrenFromNav>
-          <umbracoUrlName><![CDATA[forumsearch]]></umbracoUrlName>
+          <umbracoUrlAlias><![CDATA[forumsearch]]></umbracoUrlAlias>
           <title><![CDATA[Search the Forums]]></title>
           <intPageSize><![CDATA[25]]></intPageSize>
         </searchPage>

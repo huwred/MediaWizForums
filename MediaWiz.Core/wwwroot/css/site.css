@@ -417,7 +417,15 @@ a.blogpost {
     margin: 0 0 10px;
 }
 
-
+.wiz-body a:visited {
+    color:gray !important;
+}
+.wiz-body a:active {
+	color: yellowgreen !important;
+}
+.wiz-body a:hover {
+	color: yellowgreen !important;
+}
 /* __________ Widget Meta __________ */
 .widget_meta li {
 	position: relative;
@@ -676,10 +684,26 @@ p.caption {
     margin-left: 0.5rem;
 }
 
+figcaption {
+    margin-top: 0.3rem;
+    font-style: italic;
+    color: #999999;
+}
 
+/* Over-ride some stuff*/
+.umb-block-grid {
+    --my-container-padding: 0 10px;
+}
 
+@container (min-width: 720px) {
+    .umb-block-grid__layout-container {
+        --my-container-padding: 0 10px;
+    }
+}
 
-
+section {
+    padding: var(--section-padding, 10px 0);
+}
 
 
 

@@ -1,9 +1,17 @@
 ﻿@using Umbraco.Cms.Core.Security
 @using Umbraco.Extensions
+@using Microsoft.Extensions.Options
+@using Umbraco.Cms.Core.Configuration.Models
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @inject IMemberManager _memberManager
+@inject IOptions<GlobalSettings> globalSettings
 @{
+    var _hostingSettings = globalSettings.Value;
     var user = _memberManager.GetCurrentMemberAsync().Result;
+    if (_hostingSettings.Smtp == null)
+    {
+        <li class="nav-item text-danger">Email is not configured</li>
+    }
     if ( _memberManager.IsLoggedIn())
     {
         <li class="nav-item d-none d-sm-block">
@@ -15,7 +23,10 @@
     else
     {
         <li class="nav-item"><a href="@Umbraco.GetDictionaryValue(" Forums.LoginUrl"," /login")" class="nav-link" title="Login"><i class="fs-5 bi-door-open me-1"></i><span class="d-none d-sm-none d-md-inline">Login</span></a></li>
-        <li class="nav-item"><a href="@Umbraco.GetDictionaryValue(" Forums.RegisterUrl"," /register")" class="nav-link" title="Register"><i class="fs-5 bi-person-badge me-1"></i><span class="d-none d-sm-none d-md-inline">Register</span></a></li>
-        <li class="nav-item"><a href="/ForgotPassword" class="nav-link" title="Forgot Password"><i class="fs-5 bi-file-lock me-1"></i><span class="d-none d-sm-none d-md-inline">Forgot&nbsp;Password</span></a></li>
+        @if (_hostingSettings.Smtp != null)
+        {
+            <li class="nav-item"><a href="@Umbraco.GetDictionaryValue(" Forums.RegisterUrl"," /register")" class="nav-link" title="Register"><i class="fs-5 bi-person-badge me-1"></i><span class="d-none d-sm-none d-md-inline">Register</span></a></li>
+            <li class="nav-item"><a href="/ForgotPassword" class="nav-link" title="Forgot Password"><i class="fs-5 bi-file-lock me-1"></i><span class="d-none d-sm-none d-md-inline">Forgot&nbsp;Password</span></a></li>
+        }
     }
 }

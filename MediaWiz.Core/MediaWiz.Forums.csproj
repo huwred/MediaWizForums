@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>10.4.1</Version>
+    <Version>10.4.2-rc</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ContentTargetFolders>.</ContentTargetFolders>
     <PackageId>MediaWiz.Forums</PackageId>
@@ -17,10 +17,7 @@
     <RepositoryUrl>https://github.com/huwred/MediaWizForums</RepositoryUrl>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>Added 'mark as answered' to posts
-Update to Custom ForumIndex fields + Rebuild on publish post
-Chaged DisplayPost Razor function into ViewComponent
-Fixed issue with tinyMCE initialisation in modal popup</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixed main template content</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>
@@ -56,7 +53,6 @@ Fixed issue with tinyMCE initialisation in modal popup</PackageReleaseNotes>
 
 	<ItemGroup>
     <None Remove="Migrations\package.xml" />
-    <None Remove="Views\mediawizMaster.cshtml" />
     <None Remove="Views\Shared\Components\_ViewImports.cshtml" />
 	</ItemGroup>
 

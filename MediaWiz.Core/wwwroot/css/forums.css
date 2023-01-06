@@ -417,6 +417,17 @@ ul.wiz-admin-links a:hover {
     max-width: 99% !important;
     height: auto;
 }
+.delete-member-file {
+    cursor: pointer;
+}
+#mediawiz-forums div.wiz-reply-content img:before, #mediawiz-forums div.wiz-topic-content img:before {
+    content: ' ';
+    display: block;
+    position: absolute;
+    height: 50px;
+    width: 50px;
+    background-image: url('../not-found.jpg');
+}
 @media only screen and (max-width:480px) {
     span .wiz-admin-links {
         float: none;

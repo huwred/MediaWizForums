@@ -81,18 +81,22 @@
                     plugins: "link lists anchor codesample image code emoticons",
                     toolbar: MediaWiz.tools,
                     file_picker_types: "image",
-                    images_upload_url: "/forumupload",
+                    images_upload_url: "/forumuploads",
                     images_reuse_filename: true,
                     statusbar: false,
                     menubar: false,
-                    relative_urls: false,
-                    remove_script_host: false,
+                    relative_urls : false,
+                    remove_script_host : true,
+                    document_base_url : window.location.protocol + "//" + window.location.host + "/",
                     convert_urls: true,
                     init_instance_callback: function(editor) {
-                        editor.on("OpenWindow",
-                            function(e) {
-                                $('[role=tab]:contains("General")').hide();
-                            });
+                        //editor.on("OpenWindow",
+                        //    function(e) {
+                        //        $('[role=tab]:contains("General")').removeClass("mce-active");
+                        //        $('#' + $('[role=tab]:contains("General")').attr("aria-controls")).hide();
+                        //        $('[role=tab]:contains("Upload")').addClass("mce-active");
+                        //        $('#' + $('[role=tab]:contains("Upload")').attr("aria-controls")).show();
+                        //    });
                     },
                     content_css: false,
                     content_style: `
@@ -105,7 +109,8 @@
                         .mce-content-body img {
                             max-width: 99% !important;
                             height: auto;
-                        }  `
+                        } 
+                    `
                 });
                 document.addEventListener("focusin",
                     (e) => {

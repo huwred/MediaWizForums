@@ -1,8 +1,12 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text.Encodings.Web;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Web;
 using MediaWiz.Forums.Interfaces;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
@@ -11,9 +15,12 @@ using Newtonsoft.Json.Linq;
 using NPoco.fastJSON;
 using Umbraco.Cms.Core.IO;
 using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Cms.Web.Common.Security;
+using Umbraco.Extensions;
+using IHostingEnvironment = Umbraco.Cms.Core.Hosting.IHostingEnvironment;
 
 namespace MediaWiz.Forums.Controllers
 {
@@ -36,14 +43,15 @@ namespace MediaWiz.Forums.Controllers
         private readonly MediaFileManager _mediaFileManager;
         private readonly IMemberService _memberService;
         private readonly IForumMailService _mailService;
-        private readonly UmbracoHelper _umbracoHelper;
+        private readonly IWebHostEnvironment _hostingEnvironment;
 
         public object TempData { get; private set; }
 
         public ForumsApiController(MediaFileManager mediaFileManager, ILogger<ForumsApiController> logger,
             IHttpContextAccessor httpContextAccessor,  IContentService contentservice,MemberManager memberManager, 
             ILocalizationService localizationService, IMemberService memberService,IForumMailService forumMailService,
-            IUmbracoHelperAccessor umbracoHelper)
+            IUmbracoHelperAccessor umbracoHelper,
+            IWebHostEnvironment hostingEnvironment)
         {
             _memberManager = memberManager;
             _localizationService = localizationService;
@@ -53,7 +61,8 @@ namespace MediaWiz.Forums.Controllers
             _contentService = contentservice;
             _memberService = memberService;
             _mailService = forumMailService;
-            umbracoHelper.TryGetUmbracoHelper(out _umbracoHelper);
+            _hostingEnvironment = hostingEnvironment;
+
         }
 
         /// <summary>
@@ -261,13 +270,55 @@ namespace MediaWiz.Forums.Controllers
             var loc = await SaveFileAsync(path, file[0]);
             var data = new upload()
             {
-                location = "/media" + loc
+                location = "/media" + loc + "?width=800"
             };
             var test = Newtonsoft.Json.JsonConvert.SerializeObject(data);
             return Content(test);
             
         }
 
+        [Route("memberfiles/{id?}")]
+        public async Task<IActionResult> GetMemberFiles(int? id)
+        {
+            string wwwroot = _hostingEnvironment.MapPathWebRoot("~/");
+            string folderPath = _hostingEnvironment.MapPathWebRoot("~/media/forumuploads/" + id);
+            string[] files = Directory.GetFiles(folderPath);
+            var content = "No files uploaded";
+            if (files.Any())
+            {
+                
+                content = @"<ul class=""image-gallery list-unstyled"">";
+                foreach (var file in files)
+                {
+                    var imgpath = file.Replace(wwwroot, "") + "?width=120";
+                    content += @$"<li class=""d-flex p-2"" data-id=""{id}""><img src=""{imgpath}"" width=""120"" /><i title=""Delete file"" class=""fs-4 bi-trash delete-member-file"" data-id=""{HttpUtility.HtmlEncode(imgpath)}""></i></li>";
+                }
+
+                content += "</ul>";
+            }
+            return Content(content);
+        }
+
+        [Route("deletefile/{id?}")]
+        public IActionResult DeleteFile(string id)
+        {
+            try
+            {
+                var file = _hostingEnvironment.MapPathWebRoot("~" + id.Split('?')[0]);
+                System.IO.File.Delete(file);
+                var memberidMatch = Regex.Match(id, @"(\\[0-9]+\\)");
+                if (memberidMatch.Success)
+                {
+                    return Content(memberidMatch.Value.Replace("\\",""));
+                }                
+                return Content("");
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,"Member File delete error {0}",id);
+                return Content(e.Message);
+            }
+        }
         /// <summary>
         /// Saves the contents of an uploaded image file.
         /// </summary>
