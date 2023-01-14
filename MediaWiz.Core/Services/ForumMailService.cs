@@ -61,15 +61,15 @@ namespace MediaWiz.Core.Services
 
                 var test = ForumHelper.GetAbsoluteUri(_httpContext.HttpContext.Request);
                 string baseURL = test.AbsoluteUri.Replace(test.AbsolutePath, string.Empty);
-                var resetUrl = baseURL + _localisation.GetDictionaryItemOrDefault("Forums.VerifyUrl","/verify").TrimEnd('/') + "/?verifyGUID=" + guid;
+                var resetUrl = baseURL + _localisation.GetOrCreateDictionaryValue("Forums.VerifyUrl","/verify").TrimEnd('/') + "/?verifyGUID=" + guid;
 
-                var messageBody = _localisation.GetDictionaryItemOrDefault("Forums.VerifyBody",$@"<h2>Verify your account</h2>
+                var messageBody = _localisation.GetOrCreateDictionaryValue("Forums.VerifyBody",$@"<h2>Verify your account</h2>
             <p>in order to use your account, you first need to verify your email address using the link below.</p>
             <p><a href='{resetUrl}'>Verify your account</a></p>");
 
 
                 EmailMessage message = new EmailMessage(_fromEmail, email,
-                    _localisation.GetDictionaryItemOrDefault("Forums.VerifySubject", "Verifiy your account"), messageBody, true);
+                    _localisation.GetOrCreateDictionaryValue("Forums.VerifySubject", "Verifiy your account"), messageBody, true);
 
 
                 await _emailSender.SendAsync(message, emailType: "Contact");
@@ -139,14 +139,14 @@ namespace MediaWiz.Core.Services
                     string baseURL = test.AbsoluteUri.Replace(test.AbsolutePath, string.Empty);
                     var resetUrl = baseURL + "/forgotpassword/?id=" + member.Id + "&token=" + guid;
 
-                    var messageBody = _localisation.GetDictionaryItemOrDefault("Forums.ResetBody",$@"<p>Hi {member.Name},</p>
+                    var messageBody = _localisation.GetOrCreateDictionaryValue("Forums.ResetBody",$@"<p>Hi {member.Name},</p>
                     <p>Someone requested a password reset for your account on {_hostingSettings.SiteName}.</p>
                     <p>If this wasn't you then you can ignore this email, otherwise, please click the following password reset link to continue:</p>
                     <p>Please go to <a href='{resetUrl}'>here</a> to reset your password</p>
                     <p>&nnbsp;</p>
                     <p>Kind regards,<br/>The {_hostingSettings.SiteName} Team</p>");
 
-                    EmailMessage message = new EmailMessage(_fromEmail,email,_localisation.GetDictionaryItemOrDefault("Forums.ResetSubject", $@"Password reset requested for {_hostingSettings.SiteName}"),messageBody,true);
+                    EmailMessage message = new EmailMessage(_fromEmail,email,_localisation.GetOrCreateDictionaryValue("Forums.ResetSubject", $@"Password reset requested for {_hostingSettings.SiteName}"),messageBody,true);
 
                     try
                     {

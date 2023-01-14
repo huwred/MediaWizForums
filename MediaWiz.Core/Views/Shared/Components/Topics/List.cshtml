@@ -9,6 +9,7 @@
 @{
     int.TryParse(Context.Request.Query["page"], out var pagenum);
     var posts = Model.Children.Where(x => x.IsDocumentType("Forumpost")).ToList();
+    
     var pageSize = Model.HasValue("intPageSize") ? Convert.ToInt32(Model.Value("intPageSize")) : 5;
     var totalPages = (int)Math.Ceiling((double)posts.Count() / (double)pageSize);
     ViewBag.Page = pagenum;
@@ -24,7 +25,7 @@
                 </div>
                 <div class="wiz-body m-0 mb-2">
                     @foreach (var post in posts.Skip((pagenum - 1) * pageSize).Take(pageSize)
-                    .OrderByDescending(x => x.Value<int>("stickyness"))
+                    .OrderByDescending(x => x.Value<int>("stickiness"))
                     .ThenByDescending(x => _cacheService.GetPost(x, "Topic_" + x.Id).latestPost))
                     {
                         @await Component.InvokeAsync("Posts",new {Template = "DisplayTopic",Model = post,showTitle = true})

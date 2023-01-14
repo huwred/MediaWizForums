@@ -98,7 +98,7 @@
                 }
                 @await Component.InvokeAsync("PasswordManager",new {Template = "ChangePassword"})
         </div>
-        <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab">
+        <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" data-id="@Model.CurrentUser.Id">
 
         </div>
     </div>

@@ -10,5 +10,19 @@ Tested in v10 and v11 of Umbraco
 ### 10.4.1 ###
 Added 'mark as answered' to posts
 Update to Custom ForumIndex fields + Rebuild on publish post
-Chaged DisplayPost Razor function into ViewComponent
-Fixed issue with tinyMCE initialisation in modal popup
+Changed DisplayPost Razor function into ViewComponent
+Fixed issue with tinyMCE initialisation in modal popups
+
+### 10.4.2 ###
+Fixed issue with tinyMCE image uploads
+Fixed issue with sorting, stickiness values
+
+Added 'My Files' section to members profile page
+Added Config section to appsettings.json
+```
+  "MediaWizOptions": {
+    "MaxFileSize": 8,  - Maximum file size in MB
+    "AllowedFiles": [ ".gif", ".jpg", ".png", ".svg", ".webp" ], - Allowed image file extensions
+    "UniqueFilenames": true - if true uses random guid for filename, if false uses name of uploaded file
+  }
+```

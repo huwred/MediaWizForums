@@ -5,12 +5,16 @@ using System.Text.Encodings.Web;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Web;
+using MediaWiz.Forums.Extensions;
+using MediaWiz.Forums.Helpers;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using NPoco.fastJSON;
 using Umbraco.Cms.Core.IO;
@@ -34,7 +38,8 @@ namespace MediaWiz.Forums.Controllers
     /// </summary>
     public class ForumsApiController : UmbracoApiController
     {
-        
+        private const string uploadFolder = "forumuploads";
+
         private readonly IContentService _contentService;
         private readonly MemberManager _memberManager;
         private readonly ILocalizationService _localizationService;
@@ -44,13 +49,18 @@ namespace MediaWiz.Forums.Controllers
         private readonly IMemberService _memberService;
         private readonly IForumMailService _mailService;
         private readonly IWebHostEnvironment _hostingEnvironment;
+        private readonly IOptions<ForumConfigOptions> _forumOptions;
+        private string[] AllowedFiles => _forumOptions.Value.AllowedFiles;
+        private int MaxFileSize => _forumOptions.Value.MaxFileSize;
+        private bool UniqueFilenames => _forumOptions.Value.UniqueFilenames;
 
         public object TempData { get; private set; }
+
 
         public ForumsApiController(MediaFileManager mediaFileManager, ILogger<ForumsApiController> logger,
             IHttpContextAccessor httpContextAccessor,  IContentService contentservice,MemberManager memberManager, 
             ILocalizationService localizationService, IMemberService memberService,IForumMailService forumMailService,
-            IUmbracoHelperAccessor umbracoHelper,
+            IOptions<ForumConfigOptions> forumOptions,
             IWebHostEnvironment hostingEnvironment)
         {
             _memberManager = memberManager;
@@ -62,6 +72,7 @@ namespace MediaWiz.Forums.Controllers
             _memberService = memberService;
             _mailService = forumMailService;
             _hostingEnvironment = hostingEnvironment;
+            _forumOptions = forumOptions;
 
         }
 
@@ -125,7 +136,8 @@ namespace MediaWiz.Forums.Controllers
 
                 if (session.Keys.Contains("Captcha") && session.GetString("Captcha") != id.Value.ToString())
                 {
-                    ModelState.AddModelError("Captcha", "Wrong value of sum, please try again.");
+                    
+                    ModelState.AddModelError("Captcha", _localizationService.GetOrCreateDictionaryValue("Forums.Error.CaptchaFail","Wrong value of sum, please try again."));
                     return false;
                 }
                 //empty the captcha variable
@@ -237,8 +249,6 @@ namespace MediaWiz.Forums.Controllers
         }    
         #region Installation
 
-
-
         [Route("sendvalidation")]
         [HttpPost]
         public void ResendValidation(JObject jobj)
@@ -262,9 +272,8 @@ namespace MediaWiz.Forums.Controllers
         [Route("forumupload/{id?}")]
         public async Task<IActionResult> TinyMceUpload(int? id)
         {
-            var path = "/forumuploads";
             var currentMember =  _memberManager.GetCurrentMemberAsync().Result;
-            path = path + "/" + currentMember.Id;
+            var path = "/" + Combine(uploadFolder, currentMember.Id); 
 
             var file = _httpContextAccessor.HttpContext.Request.Form.Files;
             var loc = await SaveFileAsync(path, file[0]);
@@ -281,9 +290,9 @@ namespace MediaWiz.Forums.Controllers
         public async Task<IActionResult> GetMemberFiles(int? id)
         {
             string wwwroot = _hostingEnvironment.MapPathWebRoot("~/");
-            string folderPath = _hostingEnvironment.MapPathWebRoot("~/media/forumuploads/" + id);
+            string folderPath = _hostingEnvironment.MapPathWebRoot($"~/media/{uploadFolder}/" + id);
             string[] files = Directory.GetFiles(folderPath);
-            var content = "No files uploaded";
+            var content = _localizationService.GetOrCreateDictionaryValue("Forums.Profile.NoFiles", "No files uploaded");
             if (files.Any())
             {
                 
@@ -331,20 +340,25 @@ namespace MediaWiz.Forums.Controllers
         private async Task<string> SaveFileAsync(string targetFolder, IFormFile file)
         {
             const int megabyte = 1024 * 1024;
-            string[] extensions = { ".gif", ".jpg", ".png", ".svg", ".webp" };
-            //var fs = new PhysicalFileSystem("~" + targetFolder);
+            string[] extensions =  { ".gif", ".jpg", ".png", ".svg", ".webp" };
+            if (AllowedFiles.Any())
+            {
+                extensions = AllowedFiles;
+            }
+
             if (!file.ContentType.StartsWith("image/"))
             {
-                throw new InvalidOperationException("Invalid MIME content type.");
+                throw new InvalidOperationException(_localizationService.GetOrCreateDictionaryValue("Forums.Error.MimeType","MIME type is not an Image."));
             }
             var extension = Path.GetExtension(file.FileName.ToLowerInvariant());
             if (!extensions.Contains(extension))
             {
-                throw new InvalidOperationException("Invalid file extension.");
+                throw new InvalidOperationException(_localizationService.GetOrCreateDictionaryValue("Forums.Error.FileExt","Invalid file extension."));
             }            
-            if (file.Length > (8 * megabyte))
+            if (file.Length > (MaxFileSize * megabyte))
             {
-                throw new InvalidOperationException("File size (8MB) limit exceeded.");
+                
+                throw new InvalidOperationException($"{_localizationService.GetOrCreateDictionaryValue("Forums.Error.FileSize","File size limit exceeded.")} ({MaxFileSize}MB)");
             }            
             var _fileSystem = _mediaFileManager.FileSystem;
 
@@ -353,14 +367,18 @@ namespace MediaWiz.Forums.Controllers
                 Directory.CreateDirectory(_fileSystem.GetFullPath(targetFolder));
             }
 
-            var fileName = Guid.NewGuid() + extension;
-            var path = Path.Combine(_fileSystem.GetFullPath(targetFolder), file.FileName);
+            var fileName = file.FileName;
+            if (UniqueFilenames)
+            {
+                fileName = Guid.NewGuid() + extension;
+            }
+            var path = Path.Combine(_fileSystem.GetFullPath(targetFolder), fileName);
             await using (Stream fileStream = new FileStream(path, FileMode.Create)) {
                 await file.CopyToAsync(fileStream);
             }
 
 
-            return Combine(targetFolder, file.FileName);
+            return Combine(targetFolder, fileName);
         }
         public static string Combine(string uri1, string uri2)
         {

@@ -263,7 +263,7 @@ namespace MediaWiz.Forums.Controllers
             else
             {
                 ModelState.AddModelError("ForgotPasswordForm", 
-                    _localizationService.GetDictionaryItemOrDefault("Forums.Error.NoUser","No user found"));
+                    _localizationService.GetOrCreateDictionaryValue("Forums.Error.NoUser","No user found"));
                 return ViewComponent("PasswordManager", new { Model = model , Template = "ForgotPassword"});
             }
 

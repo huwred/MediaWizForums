@@ -38,7 +38,7 @@ namespace MediaWiz.Forums.ViewComponents
                 case "Login" :
                     var loginModel = new LoginModel();
 
-                    string forumUrl = _localizationService.GetDictionaryItemOrDefault("Forums.ForumUrl","/");
+                    string forumUrl = _localizationService.GetOrCreateDictionaryValue("Forums.ForumUrl","/");
                     loginModel.RedirectUrl = forumUrl;
                     return await Task.FromResult((IViewComponentResult)View(Template,loginModel));
 

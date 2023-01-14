@@ -33,7 +33,7 @@
                             var cacheInfo = _forumCache.GetPost(post, "Topic_" + post.Id);
                             <div class="d-flex flex-row flex-wrap topic @locked @solved p-3 mb-2 bg-light">
                                 <div class="col-12">
-                                @if (post.Value<int>("stickyness") > 0)
+                                @if (post.Value<int>("stickiness") > 0)
                                 {
                                     <i class="bi bi-star"></i>
                                 }

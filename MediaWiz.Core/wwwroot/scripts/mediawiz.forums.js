@@ -81,7 +81,7 @@
                     plugins: "link lists anchor codesample image code emoticons",
                     toolbar: MediaWiz.tools,
                     file_picker_types: "image",
-                    images_upload_url: "/forumuploads",
+                    images_upload_url: "/forumupload",
                     images_reuse_filename: true,
                     statusbar: false,
                     menubar: false,
