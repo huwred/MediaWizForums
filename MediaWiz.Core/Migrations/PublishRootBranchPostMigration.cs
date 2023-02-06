@@ -3,6 +3,8 @@ using System.Linq;
 using Examine;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.PropertyEditors;
+using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Infrastructure.Migrations;
@@ -22,6 +24,8 @@ namespace MediaWiz.Forums.Migrations
         private readonly IExamineManager _examine;
         private readonly IMemberService _memberService;
         private readonly ILocalizationService _localizationService;
+        private IDataValueEditorFactory _dataValueEditorFactory;
+        private IConfigurationEditorJsonSerializer _configurationEditorJsonSerializer;
 
         public PublishRootBranchPostMigration(
             ILogger<PublishRootBranchPostMigration> logger,
@@ -33,7 +37,9 @@ namespace MediaWiz.Forums.Migrations
             IShortStringHelper shortStringHelper,
             IExamineManager examine,
             IContentTypeService contentTypeService,
-            IMemberService memberService,ILocalizationService localizationService) : base(context)
+            IMemberService memberService,ILocalizationService localizationService,
+            IDataValueEditorFactory dataValueEditorFactory,
+            IConfigurationEditorJsonSerializer configurationEditorJsonSerializer) : base(context)
         {
             _logger = logger;
             _memberGroupService = memberGroupService;
@@ -45,11 +51,14 @@ namespace MediaWiz.Forums.Migrations
             _contentTypeService = contentTypeService;
             _memberService = memberService;
             _localizationService = localizationService;
+            _dataValueEditorFactory = dataValueEditorFactory;
+            _configurationEditorJsonSerializer = configurationEditorJsonSerializer;
         }
 
         protected override void Migrate()
         {
             _logger.LogInformation("PublishRootBranchPostMigration");
+
             var contentForum = _contentService.GetRootContent().FirstOrDefault(x => x.ContentType.Alias == "forum");
             if (contentForum != null)
             {
@@ -65,6 +74,8 @@ namespace MediaWiz.Forums.Migrations
                 _logger.LogWarning("The Forum is already installed");
             }
             AddAnswerProperty();
+            AddReplyCountProperty();
+            
         }
 
         private void AddAnswerProperty()
@@ -101,6 +112,43 @@ namespace MediaWiz.Forums.Migrations
             }
 
         }
+        private void AddReplyCountProperty()
+        {
+            try
+            {
+                var dataTypeDefinitions = _dataTypeService.GetAll().ToArray(); //.ToArray() because arrays are fast and easy.
+                var integerDataType = dataTypeDefinitions.FirstOrDefault(p => p.EditorAlias.ToLower() == "umbraco.integer"); //we want the Intiger data type.
+                
+                var forumPost = _contentTypeService.Get("forumPost");
+                var chack = forumPost.PropertyGroups;
+                if (forumPost != null && integerDataType != null)
+                {
+                    if (!forumPost.PropertyTypes.Any(p => p.Alias == "replyCount"))
+                    {
+                        var replyCountPropertyType = new PropertyType(_shortStringHelper, integerDataType)
+                        {
+                            Name = "Replies",
+                            Alias = "replyCount",
+                            Description = "Number of replies.",
+
+                        };
+
+                        forumPost.AddPropertyType(replyCountPropertyType,"general");
+                        _contentTypeService.Save(forumPost);
+                    }
+
+                }
+                UpdateReplyCounts();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e,"Adding replyCount property");
+                throw;
+            }
+
+        }
+
+
         private bool AddForumMemberType()
         {
             // do things on install
@@ -290,6 +338,31 @@ namespace MediaWiz.Forums.Migrations
                 return -1;
             }
 
+        }
+        private void UpdateReplyCounts()
+        {
+            try
+            {
+                if (_examine.TryGetIndex("ForumIndex", out var index))
+                {
+                    var searcher = index.Searcher;
+                    var topics = searcher.CreateQuery("content")
+                        .Field("posttype", "1")
+                        .Execute();
+
+                    foreach (ISearchResult topic in topics)
+                    {
+                        var content = _contentService.GetById(Convert.ToInt32(topic.Id));
+                        content.SetValue("replyCount",_contentService.CountChildren(content.Id));
+                        _contentService.SaveAndPublish(content);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                _logger.LogError( e, "Executing ForumInstallHandler:UpdatePostCounts");
+            }
         }
         private void AddDictionaryItems()
         {

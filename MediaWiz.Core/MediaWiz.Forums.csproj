@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
-    <Version>10.4.2-rc5</Version>
+    <Version>10.4.2-rc19</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ContentTargetFolders>.</ContentTargetFolders>
     <PackageId>MediaWiz.Forums</PackageId>
@@ -48,8 +48,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Content Remove="bundleconfig.json" />
-	</ItemGroup>
+    <Content Remove="bundleconfig.json" />
+  </ItemGroup>
 
 	<ItemGroup>
     <None Remove="Migrations\package.xml" />

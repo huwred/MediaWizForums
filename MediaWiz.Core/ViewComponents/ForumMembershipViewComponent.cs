@@ -62,7 +62,12 @@ namespace MediaWiz.Forums.ViewComponents
                     if (model.CurrentUser != null)
                         model.MemberIdentity = _memberManager.FindByNameAsync(model.CurrentUser.UserName).Result;
                     model.ViewMember = _memberService.GetByKey(model.MemberIdentity.Key);
-                    return await Task.FromResult((IViewComponentResult)View(Template,model));
+
+                    if (model.Username == model.CurrentUser?.UserName)
+                    {
+                        return await Task.FromResult((IViewComponentResult)View(Template,model));
+                    }
+                    return await Task.FromResult((IViewComponentResult)View("ViewProfile",model));
                 case "ListMembers" :
                     TempData["PageSize"] = pageSize;
                     return await Task.FromResult((IViewComponentResult)View("Members"));

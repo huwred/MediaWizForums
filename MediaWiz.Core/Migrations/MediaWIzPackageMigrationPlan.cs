@@ -13,7 +13,7 @@ namespace MediaWiz.Forums.Migrations
         protected override void DefinePlan()
         {
             From(String.Empty)
-                .To<ImportPackageXmlMigration>(new Guid("AE51B566-D3AB-48AF-BF3B-6AF32408346E"));
+                .To<ImportPackageXmlMigration>(new Guid("65060E59-E399-4A11-BB8C-270FC80DF316"));
 
         }
     }

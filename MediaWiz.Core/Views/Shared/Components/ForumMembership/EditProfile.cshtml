@@ -2,13 +2,8 @@
 
 @using Umbraco.Cms.Web.Website.Controllers
 @using Umbraco.Extensions
-@using Umbraco.Cms.Core.Models
 @using Microsoft.AspNetCore.Mvc.TagHelpers
-@using Umbraco.Cms.Core.Services
-@using System.IO
-@using Umbraco.Cms.Core.Hosting
 
-@inject IHostingEnvironment hostingEnvironment
 @{
 
     var success = TempData["FormSuccess"] != null;
@@ -19,7 +14,7 @@
     }
 }
 
-@if (Model.ProfileModel != null && Model.Username.ToString() == Model.CurrentUser.UserName || string.IsNullOrWhiteSpace(Model.Username.ToString()))
+@if (Model.ProfileModel != null && Model.Username == Model.CurrentUser?.UserName || Model.Username.IsNullOrWhiteSpace())
 {
     if (success)
     {
@@ -29,13 +24,13 @@
     <nav>
         <div class="nav nav-tabs" id="nav-tab" role="tablist">
             <button class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="false">Profile</button>
-            <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" data-id="@Model.CurrentUser.Id" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
+            <button class="nav-link" id="nav-files-tab" data-bs-toggle="tab" data-bs-target="#nav-files" data-id="@Model.CurrentUser?.Id" type="button" role="tab" aria-controls="nav-files" aria-selected="false">Files</button>
         </div>
     </nav>
     <div class="tab-content" id="nav-tabContent">
         <div class="tab-pane fade show active" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
             @using (Html.BeginUmbracoForm<UmbProfileController>
-                ("HandleUpdateProfile", new { RedirectUrl = Model.ProfileModel.RedirectUrl }))
+                ("HandleUpdateProfile", new { RedirectUrl = Model.ProfileModel?.RedirectUrl }))
                 {
                 <hr />
                 @if (!string.IsNullOrWhiteSpace(Model.ProfileModel.UserName))
@@ -98,41 +93,9 @@
                 }
                 @await Component.InvokeAsync("PasswordManager",new {Template = "ChangePassword"})
         </div>
-        <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" data-id="@Model.CurrentUser.Id">
-
+        <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" data-id="@Model.CurrentUser?.Id">
+            <p><label>No files uploaded</label></p>
         </div>
     </div>
-
-
-}
-else
-{
-
-    if (Model.MemberIdentity != null)
-    {
-        
-
-        <h2>@Model.Username's Profile.</h2>
-        <hr />
-        <div class="mb-3">
-            <label>Name</label>
-            @Html.DisplayTextFor(m => Model.ViewMember.Name)
-        </div>
-
-        @if (Model.ViewMember.Properties != null)
-        {
-            foreach (var property in Model.ViewMember.Properties)
-            {
-                if (property.Alias != "receiveNotifications")
-                {
-
-                    <div class="mb-3">
-                        <label>@property.Alias</label>
-                        <label>@property.GetValue()</label>
-                    </div>
-                }
-            }
-        }
-    }
 
 }
