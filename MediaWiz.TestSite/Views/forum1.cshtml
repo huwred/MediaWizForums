@@ -1,0 +1,33 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+	Layout = "ForumMaster.cshtml";
+}
+<div class="row" id="fInfo">
+    <div class="col">
+        @await Component.InvokeAsync("Forum",new {Template = "Info"})
+    </div>
+</div>
+<div class="row" id="fForums">
+    <div class="col">
+        @await Component.InvokeAsync("Forum",new {Template = "List"})
+    </div>
+</div>
+<div class="row" id="fTopics">
+    <div class="col" >
+        @await Component.InvokeAsync("Topics",new {Template = "List"})
+    </div>
+</div>
+<div class="row" id="fPostForm">
+    <div class="col">
+        @await Component.InvokeAsync("Topics",new {Template = "Create"})
+    </div>
+</div>
+
+@section ForumScripts
+{
+    <script>
+        MediaWiz.InitTinyMce("textarea.new-post");
+
+    </script>
+}

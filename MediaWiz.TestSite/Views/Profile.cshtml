@@ -3,6 +3,11 @@
 
 @{
     Layout = "ForumMaster.cshtml";
+    string userqry = "";
+    if (Context.Request.Query.ContainsKey("user"))
+    {
+        userqry = Context.Request.Query["user"].ToString();
+    }
 }
 @section ForumHeader{
     <meta name="robots" content="noindex,nofollow" />
@@ -16,4 +21,7 @@
         @Html.Raw(Model.Value("message"))
     </div>
 </div>
-@await Component.InvokeAsync("ForumMembership",new {Template = "EditProfile",qryUser = Context.Request.Query["user"].ToString()})
+@if (Context.Request.Query.ContainsKey("user"))
+{
+    @await Component.InvokeAsync("ForumMembership",new {Template = "EditProfile",qryUser = userqry})
+}
