@@ -236,6 +236,7 @@ namespace MediaWiz.Forums.Controllers
             TempData["ResetForm"] = true;
             return View("Reset");
         }
+
         [HttpPost]
         public async Task<IActionResult> PasswordReset(ForumForgotPasswordModel model)
         {
@@ -256,7 +257,7 @@ namespace MediaWiz.Forums.Controllers
                 _memberService.Save(member);
 
                 // send email, do not wait as we want it to run in background....
-                await _mailService.SendResetPassword(member.Email,encodedToken);
+                await _mailService.SendResetPassword(member.Email,token);
 
                 TempData["ResetSent"] = true;
             }

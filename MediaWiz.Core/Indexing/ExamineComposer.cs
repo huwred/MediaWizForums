@@ -10,8 +10,8 @@ namespace MediaWiz.Forums.Indexing
     {
         public void Compose(IUmbracoBuilder builder)
         {
+            builder.Services.ConfigureOptions<ConfigureForumIndexOptions>();
             builder.Services.AddExamineLuceneIndex<ForumIndex, ConfigurationEnabledDirectoryFactory>("ForumIndex");
-
             builder.Services.AddSingleton<ForumIndexValueSetBuilder>();
 
             builder.Services.AddSingleton<IIndexPopulator, ForumIndexPopulator>();

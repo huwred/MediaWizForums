@@ -32,24 +32,27 @@ namespace MediaWiz.Forums.Indexing
 
             foreach (var content in contents)
             {
+                if (content.ContentType.Alias != "forum" && content.ContentType.Alias != "forumPost")
+                {
+                    continue;
+                }
                 var post = _publishedContent.Content(content.Id);
                 var cacheInfo = _cacheService.GetPost(post, "Topic_" + content.Id,new TimeSpan(0,0,10));
 
                 var indexValues = new Dictionary<string, object>
                 {
-                    //["name"] = content.Name,
-                    ["id"] = content.Id,
-                    ["contentType"] = content.ContentType.Alias,
+                    ["__Key"] = content.Key,
+                    ["nodeName"] = content.GetValue<int>("postType") == 0 && content.ContentType.Alias != "forum" ? post.Parent.Name + ":" + content.Name : content.Name,
                     ["message"] = content.GetValue<string>("forumDescription") ?? content.GetValue<string>("postBody"),
                     ["author"] = content.GetValue<string>("postCreator"),
-                    ["title"] = content.GetValue<string>("forumTitle") ?? content.GetValue<string>("postTitle"),
+                    //["title"] = content.GetValue<string>("forumTitle") ?? content.GetValue<string>("postTitle"),
                     ["edited"] = content.GetValue<DateTime?>("editDate"),
-                    ["posttype"] = content.GetValue<int>("postType"),
+                    ["posttype"] = content.GetValue<int>("postType") == 1 ? "Topic" : content.ContentType.Alias == "forum" ? "Forum" : "Reply",
                     ["updated"] = content.UpdateDate,
                     ["lastpost"] = cacheInfo.latestPost == DateTime.MinValue ? content.CreateDate : cacheInfo.latestPost
                 };
 
-                yield return new ValueSet(content.Id.ToString(), "content", indexValues);
+                yield return new ValueSet(content.Id.ToString(), "Forum",content.ContentType.Alias ,indexValues);
             }
         }
     }

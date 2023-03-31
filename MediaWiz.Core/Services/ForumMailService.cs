@@ -5,17 +5,15 @@ using System.Linq;
 using System.Net.Mail;
 using System.Threading.Tasks;
 using MediaWiz.Forums.Extensions;
-using MediaWiz.Forums.Helpers;
 using MediaWiz.Forums.Interfaces;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Configuration.Models;
+using Umbraco.Cms.Core.Hosting;
 using Umbraco.Cms.Core.Mail;
 using Umbraco.Cms.Core.Models.Email;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Services;
-using Umbraco.Cms.Web.Common;
 using Umbraco.Extensions;
 
 namespace MediaWiz.Core.Services
@@ -26,19 +24,19 @@ namespace MediaWiz.Core.Services
         private readonly HostingSettings _hostingSettings;
         private readonly ILogger _logger;
         private readonly IEmailSender _emailSender;
-        private readonly IHttpContextAccessor _httpContext;
+        private readonly IHostingEnvironment _hostingEnvironment;
         private readonly ILocalizationService _localisation;
         private readonly IMemberService _memberService;
 
 
-        public ForumMailService(IHttpContextAccessor httpContext, IOptions<GlobalSettings> globalSettings,IEmailSender emailSender, 
+        public ForumMailService(IHostingEnvironment hostingEnvironment, IOptions<GlobalSettings> globalSettings,IEmailSender emailSender, 
             ILocalizationService localisation,ILogger<MailMessage> logger,IMemberService memberService,IOptions<ContentSettings> contentSettings,
             IOptions<HostingSettings> hostingSettings)
         {
 
             _logger = logger;
             _emailSender = emailSender;
-            _httpContext = httpContext;
+            _hostingEnvironment = hostingEnvironment;
             _localisation = localisation;
             _memberService = memberService;
             _hostingSettings = hostingSettings.Value;
@@ -57,17 +55,18 @@ namespace MediaWiz.Core.Services
         {
             try
             {
-                //logger.Info<ForumEmailHelper>("Send Verify: {0} {1}", email, guid);
 
-                var test = ForumHelper.GetAbsoluteUri(_httpContext.HttpContext.Request);
-                string baseURL = test.AbsoluteUri.Replace(test.AbsolutePath, string.Empty);
+                string baseURL = _hostingEnvironment.ApplicationMainUrl.AbsoluteUri;
                 var resetUrl = baseURL + _localisation.GetOrCreateDictionaryValue("Forums.VerifyUrl","/verify").TrimEnd('/') + "/?verifyGUID=" + guid;
-
-                var messageBody = _localisation.GetOrCreateDictionaryValue("Forums.VerifyBody",$@"<h2>Verify your account</h2>
+                Dictionary<string, string> parameters = new Dictionary<string, string>
+                {
+                    {"{resetUrl}", resetUrl}
+                };
+                var messageTemplate = _localisation.GetOrCreateDictionaryValue("Forums.VerifyBody",@"<h2>Verify your account</h2>
             <p>in order to use your account, you first need to verify your email address using the link below.</p>
             <p><a href='{resetUrl}'>Verify your account</a></p>");
 
-
+                var messageBody = GetEmailTemplate(messageTemplate, "Forums.NotificationBody", parameters);
                 EmailMessage message = new EmailMessage(_fromEmail, email,
                     _localisation.GetOrCreateDictionaryValue("Forums.VerifySubject", "Verifiy your account"), messageBody, true);
 
@@ -92,23 +91,29 @@ namespace MediaWiz.Core.Services
 
             var authorName = author != null ? ((IPublishedContent)author).Name : post.Value<string>("postCreator");
 
-            var test = ForumHelper.GetAbsoluteUri(_httpContext.HttpContext.Request);
-            string siteUrl = test.AbsoluteUri;
-            string postUrl = test.AbsoluteUri;
-
-            //Umbraco community: New comment in topic 'UmbracoApiController returning 404 error'
+            string postUrl = _hostingEnvironment.ApplicationMainUrl.AbsoluteUri;
 
             // build the default body template
-            var bodyTemplate = "<p>{{author}} has posted a comment to the '{{postTitle}}' topic</p>" +
-                "<div style=\"border-left: 4px solid #444;padding:0.5em;font-size:1.3em\">{{body}}</div>" +
-                "<p>you can view all the comments here: <a href=\"{{threadUrl}}\">{{threadUrl}}</a></p>" +
+            var bodyTemplate = "<p>{author} has posted a comment to the '{postTitle}' topic</p>" +
+                "<div style=\"border-left: 4px solid #444;padding:0.5em;font-size:1.3em\">{body}</div>" +
+                "<p>you can view all the comments here: <a href=\"{threadUrl}\">{threadUrl}</a></p>" +
                 "<p>You get this notification because you are subscribed to receive notifications.You can unsubscribe from your profile on</p>";
 
-            var Subject = GetEmailTemplate("{{newOld}} comment in topic '{{postTitle}}'", "Forums.NotificationSubject",
-                threadTitle, updateBody?.ToString(), authorName, postUrl, newPost);
+            Dictionary<string, string> parameters = new Dictionary<string, string>
+            {
+                {"{postTitle}", postUrl},
+                {"{newOld}", newPost ? "New" : "Updated"}
+            };
+            var Subject = GetEmailTemplate("{newOld} comment in topic '{postTitle}'", "Forums.NotificationSubject", parameters);
 
-            var Body = GetEmailTemplate(bodyTemplate, "Forums.NotificationBody",
-                threadTitle, updateBody?.ToString(), authorName, postUrl, newPost);
+            parameters = new Dictionary<string, string>
+            {
+                {"{author}", authorName},
+                {"{postTitle}", threadTitle},
+                {"{body}", updateBody},
+                {"{threadUrl}", postUrl}
+            };
+            var Body = GetEmailTemplate(bodyTemplate, "Forums.NotificationBody", parameters);
 
             EmailMessage message = new EmailMessage(_fromEmail, new string[]{recipients.First()}, null, recipients.ToArray(), new[] { _fromEmail },
                 Subject,
@@ -127,26 +132,39 @@ namespace MediaWiz.Core.Services
             }
         }
 
-        public async Task SendResetPassword(string email, string guid)
+        public async Task SendResetPassword(string email, string token)
         {
             try
             {
                 var member = _memberService.GetByEmail(email);
                 if (member != null)
                 {
-                    var test = ForumHelper.GetAbsoluteUri(_httpContext.HttpContext.Request);
 
-                    string baseURL = test.AbsoluteUri.Replace(test.AbsolutePath, string.Empty);
-                    var resetUrl = baseURL + "/forgotpassword/?id=" + member.Id + "&token=" + guid;
+                    string baseURL = _hostingEnvironment.ApplicationMainUrl.AbsoluteUri;
+                    var resetUrl = baseURL + "/forgotpassword/?id=" + member.Id + "&token=" + token;
 
-                    var messageBody = _localisation.GetOrCreateDictionaryValue("Forums.ResetBody",$@"<p>Hi {member.Name},</p>
+                    var subjectTemplate = @"Password reset requested for {_hostingSettings.SiteName}";
+                    Dictionary<string, string> parameters = new Dictionary<string, string>
+                    {
+                        {"{_hostingSettings.SiteName}", _hostingSettings.SiteName},
+                    };
+                    var subject = GetEmailTemplate(subjectTemplate, "Forums.RestSubject", parameters);
+                    var messageTemplate = @"<p>Hi {member.Name},</p>
                     <p>Someone requested a password reset for your account on {_hostingSettings.SiteName}.</p>
                     <p>If this wasn't you then you can ignore this email, otherwise, please click the following password reset link to continue:</p>
                     <p>Please go to <a href='{resetUrl}'>here</a> to reset your password</p>
                     <p>&nnbsp;</p>
-                    <p>Kind regards,<br/>The {_hostingSettings.SiteName} Team</p>");
+                    <p>Kind regards,<br/>The {_hostingSettings.SiteName} Team</p>";
 
-                    EmailMessage message = new EmailMessage(_fromEmail,email,_localisation.GetOrCreateDictionaryValue("Forums.ResetSubject", $@"Password reset requested for {_hostingSettings.SiteName}"),messageBody,true);
+                    parameters = new Dictionary<string, string>
+                    {
+                        {"{member.Name}", member.Name},
+                        {"{_hostingSettings.SiteName}", _hostingSettings.SiteName},
+                        {"{resetUrl}",resetUrl}
+                    };
+                    var body = GetEmailTemplate(messageTemplate, "Forums.RestBody", parameters);
+
+                    EmailMessage message = new EmailMessage(_fromEmail,email,subject,body,true);
 
                     try
                     {
@@ -166,7 +184,7 @@ namespace MediaWiz.Core.Services
             }
         }
 
-        public string GetEmailTemplate(string template, string dictionaryString, string postTitle, string body, string author, string threadUrl, bool newPost)
+        public string GetEmailTemplate(string template, string dictionaryString, Dictionary<string,string> parameters)
         {
             var dictionaryTemplate = _localisation.GetDictionaryItemByKey(dictionaryString);
             if (dictionaryTemplate != null && !string.IsNullOrWhiteSpace(dictionaryTemplate.GetDefaultValue()))
@@ -174,18 +192,9 @@ namespace MediaWiz.Core.Services
                 template = dictionaryTemplate.GetDefaultValue();
             }
 
-            Dictionary<string, string> parameters = new Dictionary<string, string>
-            {
-                {"{{author}}", author},
-                {"{{postTitle}}", postTitle},
-                {"{{body}}", body},
-                {"{{threadUrl}}", threadUrl},
-                {"{{newOld}}", newPost ? "New" : "Updated"}
-            };
 
-            return template.ReplaceMany(parameters);
+            return template?.ReplaceMany(parameters);
         }
-
         private void AllDone(object sender, AsyncCompletedEventArgs e)
         {
             _logger.LogInformation(e.Error.Message);

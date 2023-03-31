@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web;
 using MediaWiz.Forums.Helpers;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -20,11 +21,12 @@ using Umbraco.Cms.Infrastructure.Scoping;
 using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Models;
 using Umbraco.Cms.Web.Common.Security;
+using Umbraco.Cms.Web.Website.Controllers;
 using Umbraco.Cms.Web.Website.Models;
 
 namespace MediaWiz.Forums.Controllers
 {
-    public class ForumMemberController : Umbraco.Cms.Web.Website.Controllers.UmbRegisterController
+    public class ForumMemberController : UmbRegisterController
     {
 
         private readonly ILogger _logger;
@@ -32,10 +34,9 @@ namespace MediaWiz.Forums.Controllers
         private readonly IForumMailService _mailService;
         private readonly IMemberService _memberService;
         private readonly IMemberManager _memberManager;
-        private readonly IUmbracoHelperAccessor _localizationService;
         private readonly IMemberSignInManager _memberSignInManager;
 
-        public ForumMemberController(IMemberManager memberManager, IMemberService memberService, IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IMemberSignInManager memberSignInManager, IScopeProvider scopeProvider,ILogger<ForumMemberController> logger,IHttpContextAccessor httpContextAccessor,IForumMailService mailService,IUmbracoHelperAccessor localizationService) 
+        public ForumMemberController(IMemberManager memberManager, IMemberService memberService, IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IMemberSignInManager memberSignInManager, IScopeProvider scopeProvider,ILogger<ForumMemberController> logger,IHttpContextAccessor httpContextAccessor,IForumMailService mailService) 
             : base(memberManager, memberService, umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider, memberSignInManager, scopeProvider)
         {
             _logger = logger;
@@ -43,7 +44,7 @@ namespace MediaWiz.Forums.Controllers
             _mailService = mailService;
             _memberService = memberService;
             _memberManager = memberManager;
-            _localizationService = localizationService;
+
             _memberSignInManager = memberSignInManager;
         }
 
@@ -55,7 +56,8 @@ namespace MediaWiz.Forums.Controllers
                 return CurrentUmbracoPage();
             }
 
-            if (await _memberManager.ValidateCredentialsAsync(login.Username, login.Password))
+            var validate = await _memberManager.ValidateCredentialsAsync(login.Username, login.Password);
+            if (validate)
             {
                 var result = await _memberSignInManager.PasswordSignInAsync(login.Username, login.Password, login.RememberMe, true);
                 if (result.Succeeded)
@@ -89,21 +91,21 @@ namespace MediaWiz.Forums.Controllers
             var usernamecheck = _memberService.GetByUsername(newmember.Username);
             if (usernamecheck != null)
             {
-                ModelState.AddModelError("Registration","The username is already in use, please use another");
+                ModelState.AddModelError("Registration", "The username is already in use, please use another");
                 return CurrentUmbracoPage();
             }
 
-            var identityUser = MemberIdentityUser.CreateNew(newmember.Username, newmember.Email,"forumMember", isApproved: false, newmember.Name);
+            var identityUser = MemberIdentityUser.CreateNew(newmember.Username, newmember.Email, "forumMember", isApproved: false, newmember.Name);
             IdentityResult identityResult = await _memberManager.CreateAsync(
                 identityUser,
                 newmember.Password);
             var member = _memberService.GetByEmail(identityUser.Email);
-            
+
             string resetGuid = null;
             if (member != null)
             {
                 resetGuid = ForumHelper.GenerateUniqueCode(16);
-                member.SetValue("resetGuid",resetGuid);
+                member.SetValue("resetGuid", resetGuid);
                 //member.IsApproved = false;
                 foreach (MemberPropertyModel property in newmember.MemberProperties.Where(p => p.Value != null)
                     .Where(property => member.Properties.Contains(property.Alias)))
@@ -116,12 +118,12 @@ namespace MediaWiz.Forums.Controllers
             try
             {
                 var umbracoHelper = _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<UmbracoHelper>();
-                
-                TempData["FormSuccess"] = await _mailService.SendVerifyAccount(member.Email,resetGuid);;
+
+                TempData["FormSuccess"] = await _mailService.SendVerifyAccount(member.Email, resetGuid); ;
             }
             catch (Exception e)
             {
-                _logger.LogError(e,"Problem sending Validation email");
+                _logger.LogError(e, "Problem sending Validation email");
                 throw;
             }
 
@@ -135,7 +137,7 @@ namespace MediaWiz.Forums.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PasswordReset([Bind(Prefix = "registerModel")]RegisterModel changePassword,string token)
+        public async Task<IActionResult> PasswordReset([Bind(Prefix = "registerModel")] RegisterModel changePassword, string token)
         {
             //do the passwords match
             if (changePassword.Password != changePassword.ConfirmPassword)
@@ -145,8 +147,9 @@ namespace MediaWiz.Forums.Controllers
             }
             try
             {
+                
                 var changePasswordResult =
-                    await _memberManager.ChangePasswordWithResetAsync(changePassword.Name.ToString(), token, changePassword.Password);
+                    await _memberManager.ChangePasswordWithResetAsync(changePassword.Name.ToString(), HttpUtility.UrlDecode(token), changePassword.Password);
                 if (changePasswordResult.Succeeded)
                 {
                     TempData["ValidationSuccess"] = "success";
@@ -158,13 +161,50 @@ namespace MediaWiz.Forums.Controllers
                         TempData["ValidationError"] += identityError.Description;
                     }
                 }
-                
+
             }
             catch (Exception e)
             {
                 TempData["ValidationError"] = e.Message;
             }
-            
+
+
+            return CurrentUmbracoPage();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChangePassword(ChangingPasswordModel model)
+        {
+            var passwordvalid = _memberManager.ValidatePasswordAsync(model.NewPassword).Result;
+            if (passwordvalid.Succeeded)
+            {
+                try
+                {
+                    var member = _memberManager.GetCurrentMemberAsync().Result;
+                    var changePasswordResult =
+                        await _memberManager.ChangePasswordAsync(member, model.OldPassword, model.NewPassword);
+                    if (changePasswordResult.Succeeded)
+                    {
+                        TempData["ValidationSuccess"] = "success";
+                    }
+                    else
+                    {
+                        foreach (var identityError in changePasswordResult.Errors)
+                        {
+                            TempData["ValidationError"] += identityError.Description;
+                        }
+                    }
+                    
+                }
+                catch (Exception e)
+                {
+                    TempData["ValidationError"] = e.Message;
+                }
+            }
+            else
+            {
+                TempData["ValidationError"] = passwordvalid.Errors.ToString();
+            }
 
             return CurrentUmbracoPage();
         }

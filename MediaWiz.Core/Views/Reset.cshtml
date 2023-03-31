@@ -77,11 +77,16 @@ else
             MediaWiz.captchaCheck( $("#Captcha").val(), function(data) {
                 if(data){
                     $("#captcha-check").hide();
-                    $('#forgot-form-id').show();
-                    $('#forgotten-submit').show();
-                    $("#forgot-form-id").clearValidation();
+                    if ($('#forgot-form-id').length > 0) {
+                        $('#forgot-form-id').show();
+                        $('#forgotten-submit').show();
+                        $("#forgot-form-id").clearValidation();
+                    }
+                    else if ($('#reset-form-id').length > 0) {
+                        $('#reset-form-id').show();
+                    }
                 } else {
-                    alert("false2");
+
                     $("#Captcha").attr("placeholder", "Incorrect, please try again.");
                 }
             });

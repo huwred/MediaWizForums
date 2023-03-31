@@ -5,7 +5,7 @@ using Lucene.Net.Index;
 using Lucene.Net.Util;
 using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Configuration.Models;
-using Umbraco.Cms.Infrastructure.Scoping;
+using Umbraco.Cms.Core.Scoping;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Infrastructure.Examine;
 
@@ -35,20 +35,17 @@ namespace MediaWiz.Forums.Indexing
 
                 options.FieldDefinitions = new(
                     new("id", FieldDefinitionTypes.Integer),
-                    new("contentType", FieldDefinitionTypes.FullText),
-                    new("title", FieldDefinitionTypes.FullText),
                     new("message", FieldDefinitionTypes.FullText),
                     new("author", FieldDefinitionTypes.FullText),
                     new("edited", FieldDefinitionTypes.DateTime),
-                    new("postType", FieldDefinitionTypes.Long),
+                    new("postType", FieldDefinitionTypes.FullText),
                     new("updated", FieldDefinitionTypes.DateTime),
                     new ("lastpost", FieldDefinitionTypes.DateTime)
                     );
 
                 options.UnlockIndex = true;
-                options.Validator = new ContentValueSetValidator(true, null, new[] { "forumPosts" });
-                //options.Validator = new ContentValueSetValidator(true, false, _publicAccessService, _scopeProvider, includeItemTypes: new[] { "forumPost" });
-                
+                options.Validator = new ContentValueSetValidator(true, false, _publicAccessService, _scopeProvider, includeItemTypes: new[] { "forumPost" });
+
                 if (_settings.Value.LuceneDirectoryFactory == LuceneDirectoryFactory.SyncedTempFileSystemDirectoryFactory)
                 {
                     // if this directory factory is enabled then a snapshot deletion policy is required

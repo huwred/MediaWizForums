@@ -8,11 +8,11 @@ namespace MediaWiz.Forums.Interfaces
     public interface IForumMailService
     {
 
-        Task SendResetPassword(string email, string guid);
+        Task SendResetPassword(string email, string token);
         Task<bool> SendVerifyAccount(string email, string guid);
 
         void SendNotificationEmail(IPublishedContent root, IPublishedContent post, object author,List<string> recipients, bool newPost);
 
-        string GetEmailTemplate(string template, string dictionaryString, string postTitle, string body, string author,string threadUrl, bool newPost);
+        string GetEmailTemplate(string template, string dictionaryString, Dictionary<string,string> parameters);
     }
 }
