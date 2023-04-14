@@ -137,7 +137,7 @@ namespace MediaWiz.Forums.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PasswordReset([Bind(Prefix = "registerModel")] RegisterModel changePassword, string token)
+        public async Task<IActionResult> PasswordReset([Bind(Prefix = "registerModel")] RegisterModel changePassword, int id, string token)
         {
             //do the passwords match
             if (changePassword.Password != changePassword.ConfirmPassword)
@@ -147,9 +147,22 @@ namespace MediaWiz.Forums.Controllers
             }
             try
             {
+
+                var member = _memberService.GetById(id);
                 
+                if (member.HasProperty("resetGuid"))
+                {
+                    if (member.GetValue<string>("resetGuid") != token)
+                    {
+                        TempData["ValidationError"] = "Token not found";
+                        return CurrentUmbracoPage();
+                    }
+                }
+
+                var user = _memberManager.FindByIdAsync(member.Id.ToString()).Result;
+
                 var changePasswordResult =
-                    await _memberManager.ChangePasswordWithResetAsync(changePassword.Name.ToString(), HttpUtility.UrlDecode(token), changePassword.Password);
+                    await _memberManager.ChangePasswordWithResetAsync(user.Id, token, changePassword.Password);
                 if (changePasswordResult.Succeeded)
                 {
                     TempData["ValidationSuccess"] = "success";

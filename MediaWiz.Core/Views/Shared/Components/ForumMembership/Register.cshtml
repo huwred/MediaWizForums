@@ -14,6 +14,7 @@
         .WithMemberTypeAlias("forumMember")
         .WithRedirectUrl(null)
         .WithCustomProperties(true)
+        .UsernameIsEmail(false)
         .Build();
 
     var success = TempData["FormSuccess"] != null;

@@ -265,7 +265,9 @@ namespace MediaWiz.Forums.Controllers
             {
                 ModelState.AddModelError("ForgotPasswordForm", 
                     _localizationService.GetOrCreateDictionaryValue("Forums.Error.NoUser","No user found"));
-                return ViewComponent("PasswordManager", new { Model = model , Template = "ForgotPassword"});
+                TempData["ValidationError"] =
+                    _localizationService.GetOrCreateDictionaryValue("Forums.Error.NoUser", "No user found");
+                //return ViewComponent("PasswordManager", new { Model = model , Template = "ForgotPassword"});
             }
 
             return CurrentUmbracoPage();
