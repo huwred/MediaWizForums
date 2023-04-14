@@ -7,11 +7,8 @@ Simple Forum add on for Umbraco ≥ 10.
 
 Tested in v10 and v11 of Umbraco
 
-### 10.4.1 ###
-Added 'mark as answered' to posts
-Update to Custom ForumIndex fields + Rebuild on publish post
-Changed DisplayPost Razor function into ViewComponent
-Fixed issue with tinyMCE initialisation in modal popups
+### 10.4.3 ###
+Fixed issue with ForgotPassword code
 
 ### 10.4.2 ###
 Fixed issue with tinyMCE image uploads
@@ -26,3 +23,10 @@ Added Config section to appsettings.json
     "UniqueFilenames": true - if true uses random guid for filename, if false uses name of uploaded file
   }
 ```
+
+### 10.4.1 ###
+Added 'mark as answered' to posts
+Update to Custom ForumIndex fields + Rebuild on publish post
+Changed DisplayPost Razor function into ViewComponent
+Fixed issue with tinyMCE initialisation in modal popups
+
