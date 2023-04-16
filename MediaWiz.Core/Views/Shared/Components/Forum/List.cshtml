@@ -21,7 +21,7 @@
         roles = _memberManager.GetRolesAsync(user).Result;
     }
 
-    var forums = Model.Children.Where(x => x.IsDocumentType("Forum") && x.IsVisible() && (x.Value<int?>("membersOnly") != 1 || (x.Value<int?>("membersOnly") == 1 && _memberManager.IsLoggedIn()))).ToList();
+    var forums = Model.Children.Where(x => x.IsDocumentType("Forum") && x.IsVisible() && x.Value<bool>("isActive") && (x.Value<int?>("membersOnly") != 1 || (x.Value<int?>("membersOnly") == 1 && _memberManager.IsLoggedIn()))).ToList();
     if (forums.Any())
     {
         <div>
@@ -75,6 +75,14 @@
                     }
                     </div>
                 }
+            </div>
+        </div>
+    }
+    else if(Model.IsDocumentType("ForumMain"))
+    {
+        <div>
+            <div class="wiz-forums">
+                <h5>No active Forums.</h5>
             </div>
         </div>
     }

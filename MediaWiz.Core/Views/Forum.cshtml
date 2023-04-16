@@ -1,28 +1,31 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
 	Layout = "ForumMaster.cshtml";
 }
-<div class="row" id="fInfo">
-    <div class="col">
-        @await Component.InvokeAsync("Forum",new {Template = "Info"})
+@if (Model.Value<bool>("isActive"))
+{
+    <div class="row" id="fInfo">
+        <div class="col">
+            @await Component.InvokeAsync("Forum",new {Template = "Info"})
+        </div>
     </div>
-</div>
-<div class="row" id="fForums">
-    <div class="col">
-        @await Component.InvokeAsync("Forum",new {Template = "List"})
+    <div class="row" id="fForums">
+        <div class="col">
+            @await Component.InvokeAsync("Forum",new {Template = "List"})
+        </div>
     </div>
-</div>
-<div class="row" id="fTopics">
-    <div class="col" >
-        @await Component.InvokeAsync("Topics",new {Template = "List"})
+    <div class="row" id="fTopics">
+        <div class="col" >
+            @await Component.InvokeAsync("Topics",new {Template = "List"})
+        </div>
     </div>
-</div>
-<div class="row" id="fPostForm">
-    <div class="col">
-        @await Component.InvokeAsync("Topics",new {Template = "Create"})
+    <div class="row" id="fPostForm">
+        <div class="col">
+            @await Component.InvokeAsync("Topics",new {Template = "Create"})
+        </div>
     </div>
-</div>
 
 @section ForumScripts
 {
@@ -30,4 +33,13 @@
         MediaWiz.InitTinyMce("textarea.new-post");
 
     </script>
+}
+}
+else
+{
+    <div class="row" id="fInfo">
+        <div class="col">
+            <h5>No Active Forums!</h5>
+        </div>
+    </div>
 }
