@@ -3,6 +3,7 @@
         <MediaWizForumsAppPluginsFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\MediaWizards\**\*.*</MediaWizForumsAppPluginsFilesPath>
         <MediaWizAssetsFilesPath>$(MSBuildThisFileDirectory)..\staticwebassets\**\*.*</MediaWizAssetsFilesPath>
         <MediaWizViewsFilesPath>$(MSBuildThisFileDirectory)..\Views\*.*</MediaWizViewsFilesPath>
+      <MediaWizViewsPartial>$(MSBuildThisFileDirectory)..\Views\Partials\*.*</MediaWizViewsPartial>
     </PropertyGroup>
 
     <Target Name="CopyMediaWizForums" BeforeTargets="Build">
@@ -21,7 +22,14 @@
       <Copy SourceFiles="@(MediaWizForumsViews)" DestinationFiles="@(MediaWizForumsViews->'$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)')" SkipUnchangedFiles="true" 
             Condition="%(Filename)!='' AND (!Exists('$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) &gt; $([System.IO.File]::GetLastWriteTime('$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)').Ticks))" />
     </Target>
-
+  <Target Name="CopyMediaWizForumPartials" BeforeTargets="Build">
+    <ItemGroup>
+      <MediaWizPartialsViews Include="$(MediaWizViewsPartial)" />
+    </ItemGroup>
+    <Message Text="Copying MediaWiz.Forums Partial Views: $(MediaWizViewsPartial) - #@(MediaWizPartialsViews->Count()) files" Importance="high" />
+    <Copy SourceFiles="@(MediaWizPartialsViews)" DestinationFiles="@(MediaWizPartialsViews->'$(MSBuildProjectDirectory)\Views\Partials\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" 
+          Condition="%(Filename)!='' AND (!Exists('$(MSBuildProjectDirectory)\Views\Partials\%(RecursiveDir)%(Filename)%(Extension)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) &gt; $([System.IO.File]::GetLastWriteTime('$(MSBuildProjectDirectory)\Views\Partials\%(RecursiveDir)%(Filename)%(Extension)').Ticks))" />
+  </Target>
     <Target Name="CopyMediaWizStaticAssets" BeforeTargets="Build">
       <ItemGroup>
         <MediaWizForumsAssetFiles Include="$(MediaWizAssetsFilesPath)" />

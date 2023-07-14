@@ -300,19 +300,9 @@ header {
 }
 
 footer {
-	overflow:hidden;
-	position:fixed;
-	z-index:1;
-	bottom:0;
-	left:50%;
-	opacity:60;
-	width:100%;
-	padding:20px 0 10px;
-	color:#999;
-	background-color:#1c1c1c;
-	transform: translateX(-50%);
-	-ms-transform: translateX(-50%);
-	-webkit-transform: translateX(-50%);
+    padding: 20px 0 10px;
+    background: #1c1c1c;
+    color: #999;
 }
 footer h4 {color:#fff;}
 
@@ -593,17 +583,8 @@ a.blogpost {
 	.breadcrumbs_block {padding:50px 0;}
 	.breadcrumbs_block h2 {font-size:60px; line-height:64px;}
 	.breadcrumbs_block p {font-size:21px; line-height:24px;}
-	
-
-/* __________ Footer __________ */
-	/*footer {position:static; left:auto; bottom:auto; transform:none; -webkit-transform:none;}*/
-	
-	
-	.map_hide {margin-left:325px;}
-	
-	
-	.respond_clear {clear:both; height:0; font-size:0;}
-
+    .map_hide {margin-left:325px;}
+    .respond_clear {clear:both; height:0; font-size:0;}
 
 }
 
@@ -637,9 +618,6 @@ a.blogpost {
 	.sub-menu ul li a {background:none; border:0; padding-left:30px;}
 	.sub-menu ul li a:hover, .sub-menu ul li.active a {background:none !important; color:#333 !Important;}
 	.sub-menu ul li a:before {content:'-'; position:absolute; z-index:10; left:17px; top:4px; color:#666;}
-
-/* __________ Footer __________ */
-	footer {position:static; left:auto; bottom:auto; transform:none; -webkit-transform:none;}
 
 }
 
