@@ -1,8 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <Version>10.4.4-rc4-5</Version>
+    <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
+    <Version>10.4.5-rc2</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ContentTargetFolders>.</ContentTargetFolders>
     <PackageId>MediaWiz.Forums</PackageId>
@@ -20,13 +20,20 @@
     <PackageReleaseNotes>Fixed main template content</PackageReleaseNotes>
   </PropertyGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="$(TargetFramework) == 'net7.0'">
     <PackageReference Include="Microsoft.Maui.Graphics" Version="7.0.52" />
     <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.52" />
-    <PackageReference Include="Umbraco.Cms.Core" Version="10.6.1" />
-    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.6.1" />
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.6.1" />
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.6.1" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="11.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="11.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="11.0.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(TargetFramework) == 'net6.0'">
+    <PackageReference Include="Microsoft.Maui.Graphics" Version="7.0.52" />
+    <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="7.0.52" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="10.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="10.0.0" />
   </ItemGroup>
 
 	<ItemGroup>

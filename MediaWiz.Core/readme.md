@@ -7,6 +7,9 @@ Simple Forum add on for Umbraco ≥ 10.
 
 Tested in v10 and v11 of Umbraco
 
+### 10.4.4 ###
+Umbraco Security Patch
+
 ### 10.4.3 ###
 Fixed issue with ForgotPassword code
 
