@@ -90,13 +90,13 @@
             <postMessage><![CDATA[<p>Please create a new password using the form below.</p>]]></postMessage>
           </reset>
         </forumAuthHolder>
-        <searchPage id="1102" key="e8aca891-2080-4a11-a5de-ec206fa97f2c" parentID="1089" level="2" creatorID="-1" sortOrder="2" createDate="2022-05-29T08:48:25" updateDate="2022-12-10T20:45:20" nodeName="Search" urlName="search" path="-1,1089,1102" isDoc="" nodeType="1086" nodeTypeAlias="searchPage" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+        <forumSearchPage id="1102" key="e8aca891-2080-4a11-a5de-ec206fa97f2c" parentID="1089" level="2" creatorID="-1" sortOrder="2" createDate="2022-05-29T08:48:25" updateDate="2022-12-10T20:45:20" nodeName="Search" urlName="search" path="-1,1089,1102" isDoc="" nodeType="1086" nodeTypeAlias="forumSearchPage" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
           <umbracoNaviHide>1</umbracoNaviHide>
           <hideChildrenFromNav>0</hideChildrenFromNav>
           <umbracoUrlAlias><![CDATA[forumsearch]]></umbracoUrlAlias>
           <title><![CDATA[Search the Forums]]></title>
           <intPageSize><![CDATA[25]]></intPageSize>
-        </searchPage>
+        </forumSearchPage>
         <activeTopics id="1105" key="d9962b88-c85f-4c67-ae7b-ebccefe41336" parentID="1089" level="2" creatorID="-1" sortOrder="3" createDate="2022-05-29T13:00:46" updateDate="2022-12-10T20:42:26" nodeName="Active Topics" urlName="active-topics" path="-1,1089,1105" isDoc="" nodeType="1104" nodeTypeAlias="activeTopics" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
           <umbracoNaviHide>1</umbracoNaviHide>
           <hideChildrenFromNav>0</hideChildrenFromNav>
@@ -206,7 +206,7 @@
         <DocumentType>forumPost</DocumentType>
         <DocumentType>forumAuthHolder</DocumentType>
         <DocumentType>members</DocumentType>
-        <DocumentType>searchPage</DocumentType>
+        <DocumentType>forumSearchPage</DocumentType>
         <DocumentType>activeTopics</DocumentType>
       </Structure>
       <GenericProperties>
@@ -708,7 +708,7 @@
     <DocumentType>
       <Info>
         <Name>ForumSearchPage</Name>
-        <Alias>searchPage</Alias>
+        <Alias>forumSearchPage</Alias>
         <Key>49fe2244-5d29-47ad-95ef-dc9e89ee99ac</Key>
         <Icon>icon-search color-deep-purple</Icon>
         <Thumbnail>folder.png</Thumbnail>
@@ -721,9 +721,9 @@
           <Composition>forumCommon</Composition>
         </Compositions>
         <AllowedTemplates>
-          <Template>searchPage</Template>
+          <Template>forumSearch</Template>
         </AllowedTemplates>
-        <DefaultTemplate>searchPage</DefaultTemplate>
+        <DefaultTemplate>forumSearch</DefaultTemplate>
       </Info>
       <Structure />
       <GenericProperties>

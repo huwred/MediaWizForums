@@ -25,7 +25,7 @@ namespace MediaWiz.Forums.Migrations
             //register the views as templates before importing the package
             var mediawizmaster = _fileService.GetTemplate("mediawizMaster") ?? _fileService.CreateTemplateWithIdentity("MediawizMaster", "mediawizMaster",null);
             var master = _fileService.GetTemplate("forumMaster") ?? _fileService.CreateTemplateWithIdentity("ForumMaster", "forumMaster",null);
-            var forumTemplates = new[] { "forum", "forumPost", "login", "members", "profile", "register", "reset", "verify", "searchPage", "activeTopics" };
+            var forumTemplates = new[] { "forum", "forumPost", "login", "members", "profile", "register", "reset", "verify", "forumSearch", "activeTopics" };
             foreach (var template in forumTemplates)
             {
                 var found = _fileService.GetTemplate(template);
