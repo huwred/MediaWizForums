@@ -1,7 +1,11 @@
 ﻿using MediaWiz.Forums.Extensions;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using System.Linq;
+using System;
 using Umbraco.Cms.Core.Configuration.Models;
 using Umbraco.Cms.Core.IO;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
@@ -37,6 +41,9 @@ namespace MediaWiz.Forums.Migrations
             //Now the templates are registered we can import the package xml, but first lets remove the empty templates
             ImportPackage.FromEmbeddedResource<ImportPackageXmlMigration>().Do();
             Context.AddPostMigration<PublishRootBranchPostMigration>();
+
         }
     }
+
+
 }
