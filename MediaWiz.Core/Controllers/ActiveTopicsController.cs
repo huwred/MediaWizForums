@@ -10,6 +10,7 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
@@ -49,10 +50,12 @@ namespace MediaWiz.Forums.Controllers
                 
                 var searcher = index.Searcher;
 
-                results = searcher.CreateQuery("content")
-                    .Field("posttype", "1")
-                    .OrderByDescending(new SortableField[] { new SortableField("lastpost") })
-                    .Execute(/*maxResults: pageSize * (pageIndex + 1)*/);
+                var examineQuery = searcher.CreateQuery(IndexTypes.Content)
+                    .Field("postType", "Topic")
+                    .OrderByDescending(new SortableField[] { new SortableField("updateDate") });
+                //.Execute(/*maxResults: pageSize*(pageIndex + 1)*/);
+
+                results = examineQuery.Execute();
             }
 
             if (results != null)
@@ -91,10 +94,12 @@ namespace MediaWiz.Forums.Controllers
             {
                 var searcher = index.Searcher;
 
-                results = searcher.CreateQuery("content")
-                    .Field("postType", "1")
-                    .OrderByDescending(new SortableField[] { new SortableField("updateDate") })
-                    .Execute(/*maxResults: pageSize*(pageIndex + 1)*/);
+                var examineQuery = searcher.CreateQuery(IndexTypes.Content)
+                    .Field("postType", "Topic")
+                    .OrderByDescending(new SortableField[] { new SortableField("updateDate") });
+                    //.Execute(/*maxResults: pageSize*(pageIndex + 1)*/);
+
+                results = examineQuery.Execute();
             }
 
             if (results != null)

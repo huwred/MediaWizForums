@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
+using Examine.Search;
 using MediaWiz.Forums.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -10,6 +11,7 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
@@ -100,13 +102,23 @@ namespace MediaWiz.Forums.Controllers
             if (_examineManager.TryGetIndex("ForumIndex", out var index))
             {
                 var searcher = index.Searcher;
-                //var value = "" + query + "*";
-                var search = searcher.CreateQuery("content")
-                    .Field("contentType","forumPost").And()
-                    //.Field("postType","1").And()
-                    .GroupedOr(textFields.ToArray(), query);
+                var criteria = searcher.CreateQuery(IndexTypes.Content, BooleanOperation.And);
+                var examineQuery = criteria.NodeTypeAlias("forumPost");
 
-                results = search.Execute();
+                if (!string.IsNullOrEmpty(query))
+                {
+                    if (textFields.Count > 1)
+                    {
+                        string[] terms = query.Split(' ');
+                        examineQuery.And().GroupedOr(textFields, terms);
+                    }
+                    else
+                    {
+                        examineQuery.And().Field(textFields.First(), query.MultipleCharacterWildcard());
+                    }
+                }
+
+                results = examineQuery.Execute();
             }
             var totalResults = results.TotalItemCount;
             var pagedResults = results.Skip(pageIndex * pageSize).Take(pageSize);

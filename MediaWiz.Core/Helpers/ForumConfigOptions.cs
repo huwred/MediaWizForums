@@ -1,6 +1,4 @@
 ﻿
-using Newtonsoft.Json;
-
 namespace MediaWiz.Forums.Helpers
 {
     public class ForumConfigOptions

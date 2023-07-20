@@ -51,7 +51,7 @@
         <forumAuthHolder id="1091" key="d77b7ba5-943c-497e-90c0-601a2d7af388" parentID="1089" level="2" creatorID="-1" sortOrder="1" createDate="2022-05-28T14:27:35" updateDate="2022-12-10T20:43:21" nodeName="Membership" urlName="membership" path="-1,1089,1091" isDoc="" nodeType="1070" nodeTypeAlias="forumAuthHolder" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
           <title><![CDATA[Membership Holder page, does not do anything.]]></title>
           <umbracoNaviHide>1</umbracoNaviHide>
-          <register id="1092" key="9d96ec77-ae97-4acb-a57c-cc184691fcb8" parentID="1091" level="3" creatorID="-1" sortOrder="0" createDate="2022-05-28T14:29:08" updateDate="2022-09-28T16:52:36" nodeName="Register" urlName="register" path="-1,1089,1091,1092" isDoc="" nodeType="1080" nodeTypeAlias="register" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          <forumRegister id="1092" key="9d96ec77-ae97-4acb-a57c-cc184691fcb8" parentID="1091" level="3" creatorID="-1" sortOrder="0" createDate="2022-05-28T14:29:08" updateDate="2022-09-28T16:52:36" nodeName="Register" urlName="register" path="-1,1089,1091,1092" isDoc="" nodeType="1080" nodeTypeAlias="forumRegister" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
             <title><![CDATA[Create a new account.]]></title>
             <message><![CDATA[<p>Registration is not required to view current topics on the Forum; however, if you wish to post a new topic or reply to an existing topic registration is required. Registration is free and only takes a few minutes. The only required fields are your Username, which may be your real name or a nickname, and a valid email address.</p>
 <p> </p>
@@ -61,34 +61,34 @@
             <umbracoNaviHide>0</umbracoNaviHide>
             <useCaptcha>1</useCaptcha>
             <defaultMembership><![CDATA[1095]]></defaultMembership>
-          </register>
-          <login id="1096" key="db6422b9-ce53-4fb7-aefb-96e66a4404d4" parentID="1091" level="3" creatorID="-1" sortOrder="1" createDate="2022-05-28T14:34:35" updateDate="2022-09-28T16:52:38" nodeName="Login" urlName="login" path="-1,1089,1091,1096" isDoc="" nodeType="1074" nodeTypeAlias="login" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          </forumRegister>
+          <forumLogin id="1096" key="db6422b9-ce53-4fb7-aefb-96e66a4404d4" parentID="1091" level="3" creatorID="-1" sortOrder="1" createDate="2022-05-28T14:34:35" updateDate="2022-09-28T16:52:38" nodeName="Login" urlName="login" path="-1,1089,1091,1096" isDoc="" nodeType="1074" nodeTypeAlias="forumLogin" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
             <title><![CDATA[Forum Login]]></title>
             <message><![CDATA[<p>Don't have an account? You can register for one <a href="/register" title="Register">here</a></p>
 <p> </p>]]></message>
             <umbracoUrlAlias><![CDATA[login,forum/login]]></umbracoUrlAlias>
             <umbracoNaviHide>0</umbracoNaviHide>
-          </login>
-          <profile id="1097" key="b4000556-9a74-41d4-8d09-f5a11cf22919" parentID="1091" level="3" creatorID="-1" sortOrder="2" createDate="2022-05-28T14:35:11" updateDate="2022-09-28T16:52:38" nodeName="Profile" urlName="profile" path="-1,1089,1091,1097" isDoc="" nodeType="1078" nodeTypeAlias="profile" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          </forumLogin>
+          <forumProfile id="1097" key="b4000556-9a74-41d4-8d09-f5a11cf22919" parentID="1091" level="3" creatorID="-1" sortOrder="2" createDate="2022-05-28T14:35:11" updateDate="2022-09-28T16:52:38" nodeName="Profile" urlName="profile" path="-1,1089,1091,1097" isDoc="" nodeType="1078" nodeTypeAlias="forumProfile" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
             <title><![CDATA[Update your account.]]></title>
             <message><![CDATA[<p>If you change your email address an email will be sent to the new address to validate it is real, your account will be locked until you use the verification link.</p>]]></message>
             <umbracoUrlAlias><![CDATA[profile,forum/profile]]></umbracoUrlAlias>
             <umbracoNaviHide>0</umbracoNaviHide>
-          </profile>
-          <verify id="1128" key="bbcd4837-bbb1-4d38-9818-3f3f5579595f" parentID="1091" level="3" creatorID="-1" sortOrder="4" createDate="2022-05-31T16:56:16" updateDate="2022-09-28T16:52:38" nodeName="Verify" urlName="verify" path="-1,1089,1091,1128" isDoc="" nodeType="1084" nodeTypeAlias="verify" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          </forumProfile>
+          <forumVerify id="1128" key="bbcd4837-bbb1-4d38-9818-3f3f5579595f" parentID="1091" level="3" creatorID="-1" sortOrder="4" createDate="2022-05-31T16:56:16" updateDate="2022-09-28T16:52:38" nodeName="Verify" urlName="verify" path="-1,1089,1091,1128" isDoc="" nodeType="1084" nodeTypeAlias="forumVerify" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
             <title><![CDATA[Email validation]]></title>
             <message><![CDATA[<p>Thank you for registering.</p>]]></message>
             <umbracoUrlAlias><![CDATA[verify, forums/verify]]></umbracoUrlAlias>
             <umbracoNaviHide>0</umbracoNaviHide>
-          </verify>
-          <reset id="1171" key="8e645940-c2fb-4df8-b1bb-dcd2c00e978e" parentID="1091" level="3" creatorID="-1" sortOrder="5" createDate="2022-06-03T18:06:44" updateDate="2022-09-28T16:52:38" nodeName="Reset" urlName="reset" path="-1,1089,1091,1171" isDoc="" nodeType="1082" nodeTypeAlias="reset" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+          </forumVerify>
+          <forumReset id="1171" key="8e645940-c2fb-4df8-b1bb-dcd2c00e978e" parentID="1091" level="3" creatorID="-1" sortOrder="5" createDate="2022-06-03T18:06:44" updateDate="2022-09-28T16:52:38" nodeName="Reset" urlName="reset" path="-1,1089,1091,1171" isDoc="" nodeType="1082" nodeTypeAlias="forumReset" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
             <title><![CDATA[Forgot your password?]]></title>
             <message><![CDATA[<p>An email will be sent to your email address to validate it is real, please use the link in the email to reset your password.</p>]]></message>
             <umbracoUrlAlias><![CDATA[forgotpassword,forums/forgotpassword]]></umbracoUrlAlias>
             <umbracoNaviHide>0</umbracoNaviHide>
             <useCaptcha>1</useCaptcha>
             <postMessage><![CDATA[<p>Please create a new password using the form below.</p>]]></postMessage>
-          </reset>
+          </forumReset>
         </forumAuthHolder>
         <forumSearchPage id="1102" key="e8aca891-2080-4a11-a5de-ec206fa97f2c" parentID="1089" level="2" creatorID="-1" sortOrder="2" createDate="2022-05-29T08:48:25" updateDate="2022-12-10T20:45:20" nodeName="Search" urlName="search" path="-1,1089,1102" isDoc="" nodeType="1086" nodeTypeAlias="forumSearchPage" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
           <umbracoNaviHide>1</umbracoNaviHide>
@@ -103,13 +103,13 @@
           <title><![CDATA[Active Topics]]></title>
           <intPageSize><![CDATA[25]]></intPageSize>
         </activeTopics>
-        <members id="1129" key="84513b4c-3b6d-4f31-8c07-9708226f882d" parentID="1089" level="2" creatorID="-1" sortOrder="4" createDate="2022-06-01T09:21:41" updateDate="2022-12-10T20:42:40" nodeName="Members" urlName="members" path="-1,1089,1129" isDoc="" nodeType="1072" nodeTypeAlias="members" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+        <forumMembers id="1129" key="84513b4c-3b6d-4f31-8c07-9708226f882d" parentID="1089" level="2" creatorID="-1" sortOrder="4" createDate="2022-06-01T09:21:41" updateDate="2022-12-10T20:42:40" nodeName="Members" urlName="members" path="-1,1089,1129" isDoc="" nodeType="1072" nodeTypeAlias="forumMembers" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
           <umbracoNaviHide>1</umbracoNaviHide>
           <hideChildrenFromNav>0</hideChildrenFromNav>
           <title><![CDATA[Forum members]]></title>
           <message><![CDATA[<p>Current members on the forum.</p>]]></message>
           <intPageSize><![CDATA[25]]></intPageSize>
-        </members>
+        </forumMembers>
       </forum>
     </DocumentSet>
   </Documents>
@@ -205,7 +205,7 @@
         <DocumentType>forum</DocumentType>
         <DocumentType>forumPost</DocumentType>
         <DocumentType>forumAuthHolder</DocumentType>
-        <DocumentType>members</DocumentType>
+        <DocumentType>forumMembers</DocumentType>
         <DocumentType>forumSearchPage</DocumentType>
         <DocumentType>activeTopics</DocumentType>
       </Structure>
@@ -613,11 +613,11 @@
         <DefaultTemplate></DefaultTemplate>
       </Info>
       <Structure>
-        <DocumentType>login</DocumentType>
-        <DocumentType>profile</DocumentType>
-        <DocumentType>register</DocumentType>
-        <DocumentType>reset</DocumentType>
-        <DocumentType>verify</DocumentType>
+        <DocumentType>forumLogin</DocumentType>
+        <DocumentType>forumProfile</DocumentType>
+        <DocumentType>forumRegister</DocumentType>
+        <DocumentType>forumReset</DocumentType>
+        <DocumentType>forumVerify</DocumentType>
       </Structure>
       <GenericProperties>
         <GenericProperty>
@@ -774,8 +774,8 @@
     </DocumentType>
     <DocumentType>
       <Info>
-        <Name>Login</Name>
-        <Alias>login</Alias>
+        <Name>Forum Login</Name>
+        <Alias>forumLogin</Alias>
         <Key>faa4e87c-3fe5-4b63-b34e-5fe6715ed371</Key>
         <Icon>icon-logout color-deep-purple</Icon>
         <Thumbnail>folder.png</Thumbnail>
@@ -789,9 +789,9 @@
           <Composition>forumAuthHolder</Composition>
         </Compositions>
         <AllowedTemplates>
-          <Template>login</Template>
+          <Template>forumLogin</Template>
         </AllowedTemplates>
-        <DefaultTemplate>login</DefaultTemplate>
+        <DefaultTemplate>forumLogin</DefaultTemplate>
       </Info>
       <Structure />
       <GenericProperties />
@@ -800,8 +800,8 @@
     </DocumentType>
     <DocumentType>
       <Info>
-        <Name>Members</Name>
-        <Alias>members</Alias>
+        <Name>Forum Members</Name>
+        <Alias>forumMembers</Alias>
         <Key>7abcaa17-9cac-44a5-8e00-8b11c9bf3d16</Key>
         <Icon>icon-users-alt color-deep-purple</Icon>
         <Thumbnail>folder.png</Thumbnail>
@@ -814,9 +814,9 @@
           <Composition>forumCommon</Composition>
         </Compositions>
         <AllowedTemplates>
-          <Template>members</Template>
+          <Template>forumMembers</Template>
         </AllowedTemplates>
-        <DefaultTemplate>members</DefaultTemplate>
+        <DefaultTemplate>forumMembers</DefaultTemplate>
       </Info>
       <Structure />
       <GenericProperties>
@@ -883,8 +883,8 @@
     </DocumentType>
     <DocumentType>
       <Info>
-        <Name>Profile</Name>
-        <Alias>profile</Alias>
+        <Name>Forum Profile</Name>
+        <Alias>forumProfile</Alias>
         <Key>bd44899a-b77e-4bc7-8fbb-c9522e799ca0</Key>
         <Icon>icon-umb-users color-deep-purple</Icon>
         <Thumbnail>folder.png</Thumbnail>
@@ -898,9 +898,9 @@
           <Composition>forumAuthHolder</Composition>
         </Compositions>
         <AllowedTemplates>
-          <Template>profile</Template>
+          <Template>forumProfile</Template>
         </AllowedTemplates>
-        <DefaultTemplate>profile</DefaultTemplate>
+        <DefaultTemplate>forumProfile</DefaultTemplate>
       </Info>
       <Structure />
       <GenericProperties />
@@ -909,8 +909,8 @@
     </DocumentType>
     <DocumentType>
       <Info>
-        <Name>Register</Name>
-        <Alias>register</Alias>
+        <Name>Forum Register</Name>
+        <Alias>forumRegister</Alias>
         <Key>37df6cfd-7490-4587-b594-1d75a7c7508e</Key>
         <Icon>icon-umb-members color-deep-purple</Icon>
         <Thumbnail>folder.png</Thumbnail>
@@ -924,9 +924,9 @@
           <Composition>forumAuthHolder</Composition>
         </Compositions>
         <AllowedTemplates>
-          <Template>register</Template>
+          <Template>forumRegister</Template>
         </AllowedTemplates>
-        <DefaultTemplate>register</DefaultTemplate>
+        <DefaultTemplate>forumRegister</DefaultTemplate>
       </Info>
       <Structure />
       <GenericProperties>
@@ -1017,8 +1017,8 @@
     </DocumentType>
     <DocumentType>
       <Info>
-        <Name>Reset</Name>
-        <Alias>reset</Alias>
+        <Name>Forum Password Reset</Name>
+        <Alias>forumReset</Alias>
         <Key>e563b965-641d-4bf0-932c-af0922b06e27</Key>
         <Icon>icon-refresh color-deep-purple</Icon>
         <Thumbnail>folder.png</Thumbnail>
@@ -1032,9 +1032,9 @@
           <Composition>forumAuthHolder</Composition>
         </Compositions>
         <AllowedTemplates>
-          <Template>reset</Template>
+          <Template>forumReset</Template>
         </AllowedTemplates>
-        <DefaultTemplate>reset</DefaultTemplate>
+        <DefaultTemplate>forumReset</DefaultTemplate>
       </Info>
       <Structure />
       <GenericProperties>
@@ -1085,8 +1085,8 @@
     </DocumentType>
     <DocumentType>
       <Info>
-        <Name>Verify</Name>
-        <Alias>verify</Alias>
+        <Name>Forum Email Verify</Name>
+        <Alias>forumVerify</Alias>
         <Key>e36c0acf-53bd-44d7-9888-ab320523a318</Key>
         <Icon>icon-check color-deep-purple</Icon>
         <Thumbnail>folder.png</Thumbnail>
@@ -1100,9 +1100,9 @@
           <Composition>forumAuthHolder</Composition>
         </Compositions>
         <AllowedTemplates>
-          <Template>verify</Template>
+          <Template>forumVerify</Template>
         </AllowedTemplates>
-        <DefaultTemplate>verify</DefaultTemplate>
+        <DefaultTemplate>forumVerify</DefaultTemplate>
       </Info>
       <Structure />
       <GenericProperties />

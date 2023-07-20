@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using System.Web;
 using MediaWiz.Forums.Helpers;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Http;

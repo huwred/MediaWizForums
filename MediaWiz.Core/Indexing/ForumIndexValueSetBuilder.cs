@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using Examine;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Examine;
 
@@ -52,7 +50,7 @@ namespace MediaWiz.Forums.Indexing
                     ["lastpost"] = cacheInfo.latestPost == DateTime.MinValue ? content.CreateDate : cacheInfo.latestPost
                 };
 
-                yield return new ValueSet(content.Id.ToString(), "Forum",content.ContentType.Alias ,indexValues);
+                yield return new ValueSet(content.Id.ToString(), IndexTypes.Content,content.ContentType.Alias ,indexValues);
             }
         }
     }

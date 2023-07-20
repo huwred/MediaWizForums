@@ -7,6 +7,7 @@ using Umbraco.Cms.Core.PropertyEditors;
 using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
+using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Cms.Infrastructure.Migrations;
 using Umbraco.Extensions;
 
@@ -318,7 +319,7 @@ namespace MediaWiz.Forums.Migrations
                         var searcher = index.Searcher;
                         foreach (var member in _memberService.GetMembersByPropertyValue("hasVerifiedAccount",true))
                         {
-                            postcount = searcher.CreateQuery("content").NodeTypeAlias("forumpost").And()
+                            postcount = searcher.CreateQuery(IndexTypes.Content).NodeTypeAlias("forumpost").And()
                                 .Field("postCreator", member.Name)
                                 .Execute().TotalItemCount;
                             if (postcount > 0)
@@ -346,8 +347,8 @@ namespace MediaWiz.Forums.Migrations
                 if (_examine.TryGetIndex("ForumIndex", out var index))
                 {
                     var searcher = index.Searcher;
-                    var topics = searcher.CreateQuery("content")
-                        .Field("posttype", "1")
+                    var topics = searcher.CreateQuery(IndexTypes.Content)
+                        .Field("postType", "Topic")
                         .Execute();
 
                     foreach (ISearchResult topic in topics)

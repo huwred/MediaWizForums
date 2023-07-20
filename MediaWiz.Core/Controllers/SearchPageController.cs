@@ -10,6 +10,7 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
+using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
@@ -101,7 +102,7 @@ namespace MediaWiz.Forums.Controllers
             {
                 var searcher = index.Searcher;
                 //var value = "" + query + "*";
-                var search = searcher.CreateQuery("content")
+                var search = searcher.CreateQuery(IndexTypes.Content)
                     .Field("contentType","forumPost").And()
                     //.Field("postType","1").And()
                     .GroupedOr(textFields.ToArray(), query);
