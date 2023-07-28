@@ -14,7 +14,8 @@ If you encounter this issue it is possible to add a setting to the "MediaWizOpti
     ...
   }
 ```
-Adding this value will force the install to load a different package.xml in the migration and create the document types using the prefix "forum" instead, this should avoid any conflicts
+Adding this value will force the install to load a different package.xml in the migration and create the document types using the prefix "forum" instead, this should avoid any conflicts.
+
 ## New version 10 nuget package released ##
 1. Removed partial view files and replaced with Viewcomponents
 2. Removed dependency on platform specific System.Drawing for Captcha control
