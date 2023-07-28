@@ -9,6 +9,8 @@ namespace MediaWiz.Forums.Helpers
         public string[] AllowedFiles { get; set; }
 
         public bool UniqueFilenames { get; set; }
+
+        public string ForumDoctypes { get; set; }
     }
     
 }

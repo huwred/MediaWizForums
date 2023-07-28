@@ -35,7 +35,7 @@ namespace MediaWiz.Core.Services
 
             var forumInfo = new ForumCacheItem();
 
-            var posts = item.Descendants().Where(x => x.IsVisible() && x.IsDocumentType("forumPost")).ToList();
+            var posts = item.Children.Where(x => x.IsVisible() && x.IsDocumentType("forumPost")).ToList();
 
             forumInfo.Count = posts.Count();
             forumInfo.TopicCount = posts.Count(x=> x.Value<bool>("postType"));
@@ -82,7 +82,7 @@ namespace MediaWiz.Core.Services
             
             var topicInfo = new TopicCacheItem();
 
-            var posts = item.Descendants().Where(x => x.IsVisible() && x.IsDocumentType("forumPost")).ToList();
+            var posts = item.Children.Where(x => x.IsVisible() && x.IsDocumentType("forumPost")).ToList();
 
             topicInfo.ReplyCount = posts.Count(x=> !x.Value<bool>("postType"));
             

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-    <Version>10.4.5-rc2</Version>
+    <Version>10.6.0-rc1.9</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ContentTargetFolders>.</ContentTargetFolders>
     <PackageId>MediaWiz.Forums</PackageId>
@@ -59,12 +59,14 @@
   </ItemGroup>
 
 	<ItemGroup>
-    <None Remove="Migrations\package.xml" />
     <None Remove="Views\Shared\Components\_ViewImports.cshtml" />
 	</ItemGroup>
 
 	<ItemGroup>
+	  <EmbeddedResource Include="Migrations\forumpackage.xml" />
 	  <EmbeddedResource Include="Migrations\package.xml" />
+	  <EmbeddedResource Include="Migrations\forumtemplates.xml" />
+	  <EmbeddedResource Include="Migrations\packagetemplates.xml" />
 	</ItemGroup>
 
 	<ItemGroup>

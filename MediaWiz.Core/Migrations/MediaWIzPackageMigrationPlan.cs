@@ -13,8 +13,9 @@ namespace MediaWiz.Forums.Migrations
         protected override void DefinePlan()
         {
             From(String.Empty)
-                .To<ImportPackageXmlMigration>(new Guid("65060E59-E399-4A11-BB8C-270FC80DF316"))
-                .To<PublishDocTypeChangesMigration>("DocType-Change");
+                .To<ImportPackageXmlMigration>(new Guid("65060e59-e399-4a11-bb8c-270fc80df316"));
+            //From(String.Empty)
+            //    .To<PublishDocTypeChangesMigration>("DocType-Change");
 
         }
     }

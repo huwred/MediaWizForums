@@ -3,7 +3,6 @@
     var ForumUrl = Umbraco.GetDictionaryValue("Forums.ForumUrl", "/")?.TrimEnd('/');
 }
 
-
 <form action="@ForumUrl/ForumSearch" class="col-10 offset-1">
     <fieldset>
         <div class="form-group">
@@ -11,12 +10,10 @@
             <div class="col-6">
                 <select id="searchIn" name="searchIn" class="form-control">
                     <option value="Subject">Subject</option>
-                    <option value="Message">Subject + Message</option>
+                    <option value="Message">Message</option>
                     <option value="Username">Post creator</option>
                 </select>
-                
             </div>
-
         </div>
         <div class="form-group">
             <label for="query" class="col-2 col-form-label">Look for</label>
@@ -25,6 +22,5 @@
                 <button name="submit" type="submit" class="btn btn-dark">Search</button>
             </div>
         </div>
-
     </fieldset>
 </form>

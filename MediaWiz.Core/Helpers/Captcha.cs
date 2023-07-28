@@ -29,6 +29,7 @@ namespace MediaWiz.Forums.Helpers
             random = new Random();
 
             question = GetRandomString(pLength);
+
         }
 
         /// <summary>  
