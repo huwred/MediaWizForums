@@ -1,5 +1,22 @@
 # MediaWizForums #
 Simple Forum add on for Umbraco ≥ 10. 
+
+## IMPORTANT! 10.6.0 update ##
+Some code refactoring and a change to the way the migration works, A problem was discovered where the install would fail
+if your website already contained any document types using the same aliases as the forum package. 
+
+doctypes created that may cause conflicts "login", "members", "profile", "register", "reset", "verify"
+
+If you encounter this issue it is possible to add a setting to the "MediaWizOptions"
+
+```
+  "MediaWizOptions": {
+    "ForumDoctypes": "prefix",
+    ...
+  }
+```
+Adding this value will force the install to load a different package.xml in the migration and create the document types using the prefix "forum" instead, this should avoid any conflicts
+
 ## New version 10 nuget package released ##
 1. Removed partial view files and replaced with Viewcomponents
 2. Removed dependency on platform specific System.Drawing for Captcha control
