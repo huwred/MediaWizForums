@@ -12,7 +12,7 @@ namespace MediaWiz.Forums.ViewComponents
             switch (Template)
             {
                 case "ChangePassword" :
-                    return await Task.FromResult((IViewComponentResult)View(Template,new Umbraco.Cms.Core.Models.PasswordChangedModel()));
+                    return await Task.FromResult((IViewComponentResult)View(Template,new Umbraco.Cms.Core.Models.ChangingPasswordModel()));
 
                 case "ForgotPassword" :
                     return await Task.FromResult((IViewComponentResult)View(Template, Model ??= new ForumForgotPasswordModel()));
