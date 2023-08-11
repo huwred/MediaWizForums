@@ -7,29 +7,27 @@
         Context.Response.Redirect("/forums");
     }
 }
-if (Model.MemberIdentity != null)
+@if (Model.MemberIdentity != null)
 {
-        
+    <h2>@Model.Username's Profile.</h2>
+    <hr />
+    <div class="mb-3">
+        <label>Name</label>
+        @Html.DisplayTextFor(m => Model.ViewMember.Name)
+    </div>
 
-<h2>@Model.Username's Profile.</h2>
-<hr />
-<div class="mb-3">
-    <label>Name</label>
-    @Html.DisplayTextFor(m => Model.ViewMember.Name)
-</div>
-
-@if (Model.ViewMember.Properties != null)
-{
-    foreach (var property in Model.ViewMember.Properties)
+    if (Model.ViewMember.Properties != null)
     {
-        if (property.Alias != "receiveNotifications")
+        foreach (var property in Model.ViewMember.Properties)
         {
+            if (property.Alias != "receiveNotifications")
+            {
 
-            <div class="mb-3">
-                <label>@property.Alias</label>
-                <label>@property.GetValue()</label>
-            </div>
+                <div class="mb-3">
+                    <label>@property.Alias</label>
+                    <label>@property.GetValue()</label>
+                </div>
+            }
         }
     }
-}
 }
