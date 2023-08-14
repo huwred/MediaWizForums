@@ -72,6 +72,66 @@ namespace MediaWiz.Forums.Controllers
         }
 
     }
+    public class ForumVerifyController : RenderController
+    {
+        private readonly IMemberService _memberService;
+        private readonly IVariationContextAccessor _variationContextAccessor;
+        private readonly ServiceContext _serviceContext;
+
+        public ForumVerifyController(ILogger<ForumVerifyController> logger, ICompositeViewEngine compositeViewEngine, IUmbracoContextAccessor umbracoContextAccessor,IMemberService memberService, IVariationContextAccessor variationContextAccessor,ServiceContext context) : base(logger, compositeViewEngine, umbracoContextAccessor)
+        {
+            _memberService = memberService;
+            _variationContextAccessor = variationContextAccessor;
+            _serviceContext = context;
+        }
+        public override IActionResult Index()
+        {
+            VerifyViewModel pageViewModel = new VerifyViewModel(CurrentPage,
+                new PublishedValueFallback(_serviceContext, _variationContextAccessor))
+            {
+                ValidatedMember = null
+            };
+            return CurrentTemplate(pageViewModel);
+        }
+        [HttpGet]
+        public IActionResult Index([FromQuery(Name = "verifyGuid")] string guid)
+        {
+            if (guid != null)
+            {
+                var member = _memberService.GetMembersByPropertyValue("resetGuid", guid, StringPropertyMatchType.Exact);
+                var enumerable = member as IMember[] ?? member.ToArray();
+                VerifyViewModel pageViewModel = new VerifyViewModel(CurrentPage,
+                    new PublishedValueFallback(_serviceContext, _variationContextAccessor));
+                if (enumerable.Count()==1)
+                {
+                    var memberToValidate = enumerable.First();
+                    memberToValidate.SetValue("resetGuid",null);
+                    memberToValidate.SetValue("joinedDate",DateTime.UtcNow);
+                    memberToValidate.SetValue("hasVerifiedAccount",true);
+                    memberToValidate.IsApproved = true;
+                    _memberService.Save(memberToValidate);
+                    _memberService.AssignRole(memberToValidate.Email, "ForumMember");
+                    TempData["ValidationSuccess"] = true;
+
+                    pageViewModel.ValidatedMember = memberToValidate;
+                }
+                else
+                {
+                    TempData["ValidationSuccess"] = null;
+                    TempData["ValidationError"] = "Verification code was not found or has expired";
+                }
+                return CurrentTemplate(pageViewModel);
+            }
+
+            VerifyViewModel viewModel = new VerifyViewModel(CurrentPage,
+                new PublishedValueFallback(_serviceContext, _variationContextAccessor))
+            {
+                ValidatedMember = null
+            };
+            return CurrentTemplate(viewModel);
+        }
+
+    }
 
     public class VerifyViewModel : PublishedContentWrapped
     {

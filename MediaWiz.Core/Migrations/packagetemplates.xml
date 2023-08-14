@@ -639,7 +639,7 @@ else if (Model.ResetToken != null)
             @Html.Raw(Model.Value("postMessage"))
         </div>
     </div>
-    @await Html.PartialAsync("Forums/_ResetPassword", Model)
+    @await Component.InvokeAsync("PasswordManager",new {Template = "ResetPassword"})
     @if (Model.Value<bool>("useCaptcha"))
     {
         @await Component.InvokeAsync("Captcha")

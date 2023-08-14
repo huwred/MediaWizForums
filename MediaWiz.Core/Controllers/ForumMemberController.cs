@@ -148,31 +148,38 @@ namespace MediaWiz.Forums.Controllers
             {
 
                 var member = _memberService.GetById(id);
-                
-                if (member.HasProperty("resetGuid"))
+                if (member == null)
                 {
-                    if (member.GetValue<string>("resetGuid") != token)
-                    {
-                        TempData["ValidationError"] = "Token not found";
-                        return CurrentUmbracoPage();
-                    }
-                }
-
-                var user = _memberManager.FindByIdAsync(member.Id.ToString()).Result;
-
-                var changePasswordResult =
-                    await _memberManager.ChangePasswordWithResetAsync(user.Id, token, changePassword.Password);
-                if (changePasswordResult.Succeeded)
-                {
-                    TempData["ValidationSuccess"] = "success";
+                    TempData["ValidationError"] = "Invalid member";
                 }
                 else
                 {
-                    foreach (var identityError in changePasswordResult.Errors)
+                    if (member.HasProperty("resetGuid"))
                     {
-                        TempData["ValidationError"] += identityError.Description;
+                        if (member.GetValue<string>("resetGuid") != token)
+                        {
+                            TempData["ValidationError"] = "Token not found";
+                            return CurrentUmbracoPage();
+                        }
+                    }
+
+                    var user = _memberManager.FindByIdAsync(member.Id.ToString()).Result;
+
+                    var changePasswordResult =
+                        await _memberManager.ChangePasswordWithResetAsync(user.Id, token, changePassword.Password);
+                    if (changePasswordResult.Succeeded)
+                    {
+                        TempData["ValidationSuccess"] = "success";
+                    }
+                    else
+                    {
+                        foreach (var identityError in changePasswordResult.Errors)
+                        {
+                            TempData["ValidationError"] += identityError.Description;
+                        }
                     }
                 }
+
 
             }
             catch (Exception e)
