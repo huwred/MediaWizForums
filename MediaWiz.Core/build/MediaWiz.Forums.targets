@@ -1,8 +1,8 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <MediaWizForumsAppPluginsFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\MediaWizards\**\*.*</MediaWizForumsAppPluginsFilesPath>
+      <MediaWizListViewFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\ForumListView\**\*.*</MediaWizListViewFilesPath>
         <MediaWizAssetsFilesPath>$(MSBuildThisFileDirectory)..\staticwebassets\**\*.*</MediaWizAssetsFilesPath>
-        <MediaWizViewsFilesPath>$(MSBuildThisFileDirectory)..\Views\*.*</MediaWizViewsFilesPath>
       <MediaWizViewsPartial>$(MSBuildThisFileDirectory)..\Views\Partials\*.*</MediaWizViewsPartial>
     </PropertyGroup>
 
@@ -13,15 +13,14 @@
         <Message Text="Copying MediaWiz.Forums App_Plugins: $(MediaWizForumsAppPluginsFilesPath) - #@(MediaWizForumsAppPluginFiles->Count()) files" Importance="high" />
         <Copy SourceFiles="@(MediaWizForumsAppPluginFiles)" DestinationFiles="@(MediaWizForumsAppPluginFiles->'$(MSBuildProjectDirectory)\App_Plugins\MediaWizards\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
     </Target>
+  <Target Name="CopyForumListView" BeforeTargets="Build">
+    <ItemGroup>
+      <MediaWizListViewFiles Include="$(MediaWizListViewFilesPath)" />
+    </ItemGroup>
+    <Message Text="Copying MediaWiz.Forums App_Plugins: $(MediaWizListViewFilesPath) - #@(MediaWizListViewFiles->Count()) files" Importance="high" />
+    <Copy SourceFiles="@(MediaWizListViewFiles)" DestinationFiles="@(MediaWizListViewFiles->'$(MSBuildProjectDirectory)\App_Plugins\ForumListView\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="false" />
+  </Target>
 
-    <Target Name="CopyMediaWizForumViews" BeforeTargets="Build">
-      <ItemGroup>
-        <MediaWizForumsViews Include="$(MediaWizViewsFilesPath)" />
-      </ItemGroup>
-      <Message Text="Copying MediaWiz.Forums Tempate Views: $(MediaWizViewsFilesPath) - #@(MediaWizForumsViews->Count()) files" Importance="high" />
-      <Copy SourceFiles="@(MediaWizForumsViews)" DestinationFiles="@(MediaWizForumsViews->'$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)')" SkipUnchangedFiles="true" 
-            Condition="%(Filename)!='' AND (!Exists('$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) &gt; $([System.IO.File]::GetLastWriteTime('$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)').Ticks))" />
-    </Target>
   <Target Name="CopyMediaWizForumPartials" BeforeTargets="Build">
     <ItemGroup>
       <MediaWizPartialsViews Include="$(MediaWizViewsPartial)" />

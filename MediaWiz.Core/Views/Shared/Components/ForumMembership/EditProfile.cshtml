@@ -37,7 +37,7 @@
                 {
                     <div class="mb-3">
                         <label asp-for="@Model.ProfileModel.UserName" class="form-label"></label>
-                        <input asp-for="@Model.ProfileModel.UserName" class="form-control" disabled="" />
+                        <input asp-for="@Model.ProfileModel.UserName" class="form-control" readonly="" />
                         <span asp-validation-for="@Model.ProfileModel.UserName" class="form-text text-danger"></span>
                     </div>
                 }
@@ -91,7 +91,7 @@
                 <button type="submit" class="btn btn-dark">Update</button>
 
                 }
-                @await Component.InvokeAsync("PasswordManager",new {Template = "ChangePassword"})
+                @*@await Component.InvokeAsync("PasswordManager",new {Template = "ChangePassword"})*@
         </div>
         <div class="tab-pane fade" id="nav-files" role="tabpanel" aria-labelledby="nav-files-tab" data-id="@Model.CurrentUser?.Id">
             <p><label>No files uploaded</label></p>

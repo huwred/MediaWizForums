@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Examine;
+using MediaWiz.Forums.Indexing;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Cache;
@@ -32,11 +33,13 @@ namespace MediaWiz.Forums.Events
         private readonly IForumMailService _mailService;
         private readonly IIndexRebuilder _indexRebuilder;
         private readonly IAppPolicyCache _runtimeCache;
+        private readonly ForumIndexValueSetBuilder _forumIndexValueSetBuilder;
 
         public ForumPostPublishedEvent(
         ILogger<ForumPostPublishedEvent> logger,AppCaches appCaches,IContentService contentService,IContentTypeService contentType,
         IForumMailService mailService, IUmbracoContextFactory context,IBackofficeUserAccessor backofficeUserAccessor, 
-        IMemberManager memberManager,IMemberService memberService,IIndexRebuilder indexRebuilder, IExamineManager examineManager)
+        IMemberManager memberManager,IMemberService memberService,IIndexRebuilder indexRebuilder, IExamineManager examineManager,
+        ForumIndexValueSetBuilder forumIndexValueSetBuilder)
         {
             _examineManager = examineManager;
             _contentService = contentService;
@@ -50,16 +53,23 @@ namespace MediaWiz.Forums.Events
             _indexRebuilder = indexRebuilder;
 
             _runtimeCache = appCaches.RuntimeCache;
+            _forumIndexValueSetBuilder = forumIndexValueSetBuilder;
 
         }
         public void Handle(ContentPublishedNotification notification)
         {
             List<string> invalidCacheList = new List<string>();
+
+
             foreach (var item in notification.PublishedEntities)
             {
                 // is a forum post...
                 if (item.ContentType.Alias.Equals("forumPost"))
                 {
+                    var index = _examineManager.Indexes.FirstOrDefault(s => s.Name == "ForumIndex");
+
+                    var indexData = _forumIndexValueSetBuilder.GetValueSets(item);
+                    index.IndexItems(indexData);    
                     
                     var currentUser = _memberManager.GetCurrentMemberAsync().Result;
                     var backofficeUser = _backofficeUserAccessor.BackofficeUser;
@@ -113,6 +123,8 @@ namespace MediaWiz.Forums.Events
                             }
                         }
                     }
+
+
 
                 }
             }

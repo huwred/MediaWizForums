@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
+using Examine.Lucene.Search;
+using Examine.Search;
 using MediaWiz.Forums.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -101,16 +103,23 @@ namespace MediaWiz.Forums.Controllers
 
             if (_examineManager.TryGetIndex("ForumIndex", out var index))
             {
+                var options = new LuceneSearchOptions()
+                {
+                    AllowLeadingWildcard = true
+                };
                 var searcher = index.Searcher;
+                
                 //var value = "" + query + "*";
-                var search = searcher.CreateQuery(IndexTypes.Content)
-                    .Field("__NodeTypeAlias","forumPost").And()
+                var search = (LuceneSearchQueryBase)searcher.CreateQuery(IndexTypes.Content);
+                    search.QueryParser.AllowLeadingWildcard = true;
+                    search.Field("__NodeTypeAlias","forumPost").And()
                 //.Field("postType","1").And()
                     .GroupedOr(textFields.ToArray(), query.Boost(2.0f))
                     .Or()
-                    .GroupedOr(textFields.ToArray(), query.MultipleCharacterWildcard());
-
-                results = search.Execute();
+                    .GroupedOr(textFields.ToArray(), new ExamineValue(Examineness.ComplexWildcard, "*" + query));
+                //var query = (LuceneSearchQueryBase)searcher.CreateQuery("content");
+                
+                results = searcher.Search(search.ToString());
             }
             var totalResults = results.TotalItemCount;
             var pagedResults = results.Skip(pageIndex * pageSize).Take(pageSize);

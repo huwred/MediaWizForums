@@ -2,6 +2,8 @@
 using System.Linq;
 using Examine;
 using Examine.Search;
+using Lucene.Net.Index;
+using Lucene.Net.Search;
 using MediaWiz.Forums.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -53,7 +55,9 @@ namespace MediaWiz.Forums.Controllers
                 var examineQuery = searcher.CreateQuery(IndexTypes.Content)
                     .Field("postType", "Topic")
                     .OrderByDescending(new SortableField[] { new SortableField("updateDate") });
-                //.Execute(/*maxResults: pageSize*(pageIndex + 1)*/);
+                Query querystr = new TermQuery(new Term("postType", "Topic"));
+                
+                var test = searcher.Search(querystr.ToString() + " OR -postType2");
 
                 results = examineQuery.Execute();
             }
@@ -93,7 +97,7 @@ namespace MediaWiz.Forums.Controllers
             if (_examineManager.TryGetIndex("ForumIndex", out var index))
             {
                 var searcher = index.Searcher;
-
+                var test = searcher.Search("* AND -postType");
                 var examineQuery = searcher.CreateQuery(IndexTypes.Content)
                     .Field("postType", "Topic")
                     .OrderByDescending(new SortableField[] { new SortableField("updateDate") });

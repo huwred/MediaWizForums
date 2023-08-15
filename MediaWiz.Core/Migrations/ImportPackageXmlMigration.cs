@@ -30,40 +30,22 @@ namespace MediaWiz.Forums.Migrations
 
         protected override void Migrate()
         {
-            //register the views as templates before importing the package
-            var asm = Assembly.GetExecutingAssembly();
+            //set the default values for the xml files to import
             var xmlpackage = "package.xml";
             var templatepackage = "packagetemplates.xml";
-
-            //var mediawizmaster = _fileService.GetTemplate("mediawizMaster") ?? _fileService.CreateTemplateWithIdentity("MediawizMaster", "mediawizMaster",null);
-            //var master = _fileService.GetTemplate("forumMaster") ?? _fileService.CreateTemplateWithIdentity("ForumMaster", "forumMaster",null);
-            
-            //var forumTemplates = new[] { "forum", "forumPost", "login", "members", "profile", "register", "reset", "verify", "forumSearch", "activeTopics" };
-            if (ForumDoctypes != null)
+            if (ForumDoctypes != null) //If the override value is set load the alternate xml files
             {
                 xmlpackage = "forumpackage.xml";
                 templatepackage = "forumtemplates.xml";
-                //forumTemplates = new[] { "forum", "forumPost", "forumLogin", "forumMembers", "forumProfile", "forumRegister", "forumReset", "forumVerify", "forumSearch", "activeTopics" };
             }
-            else
-            {
-
-            }
-            //foreach (var template in forumTemplates)
-            //{
-            //    var found = _fileService.GetTemplate(template);
-            //    if (found == null)
-            //    {
-            //        _fileService.CreateTemplateWithIdentity(template.FirstCharToUpper(), template,null,master);
-            //    }
-            //}
-            //Now the templates are registered we can import the package xml, but first lets remove the empty templates
+            var asm = Assembly.GetExecutingAssembly();
+            //Import the templates
             using(var stream = asm.GetManifestResourceStream("MediaWiz.Forums.Migrations." + templatepackage))
             {
                 var templateXml = XDocument.Load(stream);
                 _packagingService.InstallCompiledPackageData(templateXml);
             }
-
+            //Import doctypes and content nodes
             using(var stream = asm.GetManifestResourceStream("MediaWiz.Forums.Migrations." + xmlpackage))
             {
                 var packageXml = XDocument.Load(stream);

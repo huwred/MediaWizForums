@@ -1,7 +1,7 @@
 ﻿@model MediaWiz.Forums.ViewModels.ProfileViewModel
 
 @{
-
+    var success = TempData["FormSuccess"] != null;
     if (Model.CurrentUser == null)
     {
         Context.Response.Redirect("/forums");
@@ -9,25 +9,34 @@
 }
 @if (Model.MemberIdentity != null)
 {
-    <h2>@Model.Username's Profile.</h2>
-    <hr />
-    <div class="mb-3">
-        <label>Name</label>
-        @Html.DisplayTextFor(m => Model.ViewMember.Name)
-    </div>
-
-    if (Model.ViewMember.Properties != null)
+    if (success)
     {
-        foreach (var property in Model.ViewMember.Properties)
-        {
-            if (property.Alias != "receiveNotifications")
-            {
+        @* This message will show if profileModel.RedirectUrl is not defined (default) *@
+        <p class="text-success">Profile updated</p>
+    }
+    else
+    {
+        <h2>@Model.CurrentUser.UserName<text>'s Profile.</text></h2>
+        <hr />
+        <div class="mb-3">
+            <label>Name</label>
+            @Html.DisplayTextFor(m => Model.ViewMember.Name)
+        </div>
 
-                <div class="mb-3">
-                    <label>@property.Alias</label>
-                    <label>@property.GetValue()</label>
-                </div>
+        if (Model.ViewMember.Properties != null)
+        {
+            foreach (var property in Model.ViewMember.Properties)
+            {
+                if (property.Alias != "receiveNotifications")
+                {
+
+                    <div class="mb-3">
+                        <label>@property.Alias</label> : <label>@property.GetValue()</label>
+                    </div>
+                }
             }
         }
     }
+
+
 }

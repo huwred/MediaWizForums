@@ -20,4 +20,23 @@ namespace MediaWiz.Forums.Helpers
             });
         }
     }
+
+    internal class ForumPostListManifestFilter: IManifestFilter
+    {
+        public void Filter(List<PackageManifest> manifests)
+        {
+            manifests.Add(new PackageManifest
+            {
+                PackageName = "ForumListView",
+                Stylesheets = new []
+                {
+                    "/App_Plugins/ForumListView/layout.css"
+                },
+                Scripts = new []
+                {
+                    "/App_Plugins/ForumListView/forumposts.controller.js"
+                }
+            });
+        }
+    }
 }

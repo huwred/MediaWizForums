@@ -2,11 +2,15 @@
 @using MediaWiz.Forums.Controllers
 @using MediaWiz.Forums.Extensions
 @using Microsoft.Extensions.Options
+@using Umbraco.Cms.Core
 @using Umbraco.Cms.Core.Configuration.Models
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Services
 @using Umbraco.Cms.Web.Website.Models
 @using Umbraco.Extensions
 @inject MemberModelBuilderFactory memberModelBuilderFactory;
 @inject IOptions<GlobalSettings> hostingSettings
+@inject IMemberTypeService memberTypeService
 @{
     // Build a registration model with parameters
     var registerModel = memberModelBuilderFactory
@@ -72,6 +76,8 @@ else
             {
                 if (registerModel.MemberProperties[i].Alias == "receiveNotifications")
                 {
+                    var membertype = memberTypeService.Get("forumMember");
+                    var desc = membertype.PropertyTypes.First(p => p.Alias == "receiveNotifications").Description;
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="@registerModel.MemberProperties[i].Value">
@@ -80,7 +86,8 @@ else
 
                         <span asp-validation-for="@registerModel.MemberProperties[i].Value" class="form-text text-danger"></span>
                         <div id="notifyHelp" class="form-text">
-                            Receive an email when someone posts on the forum.
+                            @desc
+                            @*Receive an email when someone posts on the forum.*@
                         </div>
                     </div>
                 }

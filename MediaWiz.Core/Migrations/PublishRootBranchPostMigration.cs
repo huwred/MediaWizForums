@@ -3,8 +3,6 @@ using System.Linq;
 using Examine;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Models;
-using Umbraco.Cms.Core.PropertyEditors;
-using Umbraco.Cms.Core.Serialization;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
 using Umbraco.Cms.Infrastructure.Examine;
@@ -25,8 +23,7 @@ namespace MediaWiz.Forums.Migrations
         private readonly IExamineManager _examine;
         private readonly IMemberService _memberService;
         private readonly ILocalizationService _localizationService;
-        private IDataValueEditorFactory _dataValueEditorFactory;
-        private IConfigurationEditorJsonSerializer _configurationEditorJsonSerializer;
+
 
         public PublishRootBranchPostMigration(
             ILogger<PublishRootBranchPostMigration> logger,
@@ -38,9 +35,7 @@ namespace MediaWiz.Forums.Migrations
             IShortStringHelper shortStringHelper,
             IExamineManager examine,
             IContentTypeService contentTypeService,
-            IMemberService memberService,ILocalizationService localizationService,
-            IDataValueEditorFactory dataValueEditorFactory,
-            IConfigurationEditorJsonSerializer configurationEditorJsonSerializer) : base(context)
+            IMemberService memberService,ILocalizationService localizationService) : base(context)
         {
             _logger = logger;
             _memberGroupService = memberGroupService;
@@ -52,8 +47,7 @@ namespace MediaWiz.Forums.Migrations
             _contentTypeService = contentTypeService;
             _memberService = memberService;
             _localizationService = localizationService;
-            _dataValueEditorFactory = dataValueEditorFactory;
-            _configurationEditorJsonSerializer = configurationEditorJsonSerializer;
+
         }
 
         protected override void Migrate()

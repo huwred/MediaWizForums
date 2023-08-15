@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Events;
 using Umbraco.Cms.Core.Notifications;
 using Umbraco.Cms.Core.Security;
+using static Umbraco.Cms.Core.Constants.HttpContext;
 
 namespace MediaWiz.Forums.Events
 {
