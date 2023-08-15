@@ -236,7 +236,7 @@ namespace MediaWiz.Forums.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PasswordReset(ForumForgotPasswordModel model)
+        public async Task<IActionResult> ForgotPassword(ForumForgotPasswordModel model)
         {
             TempData["ResetSent"] = false;
             if (!ModelState.IsValid)

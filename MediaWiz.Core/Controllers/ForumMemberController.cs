@@ -136,7 +136,7 @@ namespace MediaWiz.Forums.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PasswordReset([Bind(Prefix = "registerModel")] RegisterModel changePassword, int id, string token)
+        public async Task<IActionResult> ForgotPassword([Bind(Prefix = "registerModel")] RegisterModel changePassword, int id, string token)
         {
             //do the passwords match
             if (changePassword.Password != changePassword.ConfirmPassword)
