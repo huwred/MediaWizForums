@@ -1,0 +1,22 @@
+﻿
+<div ng-controller="My.ListView.Layout.ForumPostsController as vm"
+     ng-if="items"
+     class="forumpost-layout__cards">
+
+    <div class="forumpost-layout__card"
+         ng-repeat="item in items"
+         ng-class="{'-selected':item.selected}"
+         ng-click="vm.selectItem(item, $event, $index)">
+
+        <div class="forumpost-layout__overlay">
+            <div class="forumpost-layout__name">Posted in Topic: {{item.parentTopic}} on {{item.createDate}} </div>
+            <div class="forumpost-layout__author">by {{ item.postCreator }} </div>
+            <div class="forumpost-layout__body" ng-bind-html="item.postBody"></div>
+        </div>
+
+        <div class="forumpost-layout__button" ng-click="vm.clickItem(item)">View post</div>
+
+    </div>
+
+</div>
+
