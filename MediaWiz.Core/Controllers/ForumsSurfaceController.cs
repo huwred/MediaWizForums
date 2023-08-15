@@ -150,11 +150,11 @@ namespace MediaWiz.Forums.Controllers
                     }
                     else
                     {
-                        var entslim= _entityService.Get(post.ContentType.Id);
-                        if (entslim is DocumentEntitySlim resultDocument)
-                        {
-                            resultDocument.IsContainer = false;
-                        }
+                        //var entslim= _entityService.Get(post.ContentType.Id);
+                        //if (entslim is DocumentEntitySlim resultDocument)
+                        //{
+                        //    resultDocument.IsContainer = false;
+                        //}
                     }
 
                     if (!newPost)
