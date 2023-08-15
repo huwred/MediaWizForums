@@ -113,11 +113,10 @@ namespace MediaWiz.Forums.Controllers
                 var search = (LuceneSearchQueryBase)searcher.CreateQuery(IndexTypes.Content);
                     search.QueryParser.AllowLeadingWildcard = true;
                     search.Field("__NodeTypeAlias","forumPost").And()
-                //.Field("postType","1").And()
                     .GroupedOr(textFields.ToArray(), query.Boost(2.0f))
                     .Or()
-                    .GroupedOr(textFields.ToArray(), new ExamineValue(Examineness.ComplexWildcard, "*" + query));
-                //var query = (LuceneSearchQueryBase)searcher.CreateQuery("content");
+                    .GroupedOr(textFields.ToArray(), query.MultipleCharacterWildcard());
+
                 
                 results = searcher.Search(search.ToString());
             }

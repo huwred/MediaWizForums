@@ -15,6 +15,7 @@ using Umbraco.Cms.Core;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.Entities;
 using Umbraco.Cms.Core.Routing;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
@@ -42,6 +43,7 @@ namespace MediaWiz.Forums.Controllers
 
         private readonly IHttpContextAccessor _contextAccessor;
         private readonly ILocalizationService _localizationService;
+        private readonly IEntityService _entityService;
         
         public ForumsSurfaceController(IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider,
             IMemberService memberService,
@@ -49,7 +51,7 @@ namespace MediaWiz.Forums.Controllers
             IPublishedContentQuery publishedContentQuery,
             IMemberManager memberManager,
             IContentService contentService,
-            IForumMailService mailService,IHttpContextAccessor httpContextAccessor,ILocalizationService localizationService) 
+            IForumMailService mailService,IHttpContextAccessor httpContextAccessor,ILocalizationService localizationService,IEntityService entityService) 
             : base(umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider)
         {
             _memberService = memberService;
@@ -61,6 +63,7 @@ namespace MediaWiz.Forums.Controllers
 
             _contextAccessor = httpContextAccessor;
             _localizationService = localizationService;
+            _entityService = entityService;
         }
         [HttpGet]
         public IActionResult EditPost(int id)
@@ -142,7 +145,16 @@ namespace MediaWiz.Forums.Controllers
                     post.SetValue("postType", model.IsTopic);
                     if (model.IsTopic)
                     {
+                        
                         post.SetValue("intPageSize",parent.GetValue<int>("intPageSize"));
+                    }
+                    else
+                    {
+                        var entslim= _entityService.Get(post.ContentType.Id);
+                        if (entslim is DocumentEntitySlim resultDocument)
+                        {
+                            resultDocument.IsContainer = false;
+                        }
                     }
 
                     if (!newPost)
