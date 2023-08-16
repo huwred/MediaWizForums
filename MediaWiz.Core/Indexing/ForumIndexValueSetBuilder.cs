@@ -43,7 +43,7 @@ namespace MediaWiz.Forums.Indexing
                     ["nodeName"] = content.GetValue<int>("postType") == 0 && content.ContentType.Alias != "forum" ? post.Parent.Name + ":" + content.Name : content.Name,
                     ["message"] = content.GetValue<string>("forumDescription") ?? content.GetValue<string>("postBody"),
                     ["author"] = content.GetValue<string>("postCreator"),
-                    //["title"] = content.GetValue<string>("forumTitle") ?? content.GetValue<string>("postTitle"),
+                    ["subject"] = content.GetValue<string>("forumTitle") ?? content?.GetValue<string>("postTitle"),
                     ["edited"] = content.GetValue<DateTime?>("editDate"),
                     ["posttype"] = content.GetValue<int>("postType") == 1 ? "Topic" : content.ContentType.Alias == "forum" ? "Forum" : "Reply",
                     ["updated"] = content.UpdateDate,

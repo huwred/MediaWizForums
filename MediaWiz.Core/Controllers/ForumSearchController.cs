@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Examine;
-using Examine.Lucene.Search;
-using Examine.Search;
 using MediaWiz.Forums.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -15,7 +13,6 @@ using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
-using static Microsoft.Extensions.Logging.EventSource.LoggingEventSource;
 
 namespace MediaWiz.Forums.Controllers
 {
@@ -82,7 +79,7 @@ namespace MediaWiz.Forums.Controllers
             switch (searchIn)
             {
                 case "Subject":
-                    textFields.Add("nodeName");
+                    textFields.Add("subject");
                     break;
                 case "Message":
                     textFields.Add("message");

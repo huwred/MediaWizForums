@@ -36,6 +36,7 @@ namespace MediaWiz.Forums.Indexing
                 options.FieldDefinitions = new(
                     new("id", FieldDefinitionTypes.Integer),
                     new("message", FieldDefinitionTypes.FullText),
+                    new("subject", FieldDefinitionTypes.FullText),
                     new("author", FieldDefinitionTypes.FullText),
                     new("edited", FieldDefinitionTypes.DateTime),
                     new("postType", FieldDefinitionTypes.FullText),

@@ -79,7 +79,7 @@ namespace MediaWiz.Forums.Controllers
             switch (searchIn)
             {
                 case "Subject":
-                    textFields.Add("title");
+                    textFields.Add("subject");
                     break;
                 case "Message":
                     textFields.Add("message");
@@ -103,9 +103,10 @@ namespace MediaWiz.Forums.Controllers
                 var searcher = index.Searcher;
                 //var value = "" + query + "*";
                 var search = searcher.CreateQuery(IndexTypes.Content)
-                    .Field("contentType","forumPost").And()
-                    //.Field("postType","1").And()
-                    .GroupedOr(textFields.ToArray(), query);
+                    .Field("__NodeTypeAlias","forumPost").And()
+                    .GroupedOr(textFields.ToArray(), query.Boost(2.0f))
+                    .Or()
+                    .GroupedOr(textFields.ToArray(), query.MultipleCharacterWildcard());
 
                 results = search.Execute();
             }
