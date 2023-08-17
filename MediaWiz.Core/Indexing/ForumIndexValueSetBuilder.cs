@@ -46,7 +46,7 @@ namespace MediaWiz.Forums.Indexing
                     ["subject"] = content.GetValue<string>("forumTitle") ?? content?.GetValue<string>("postTitle"),
                     ["edited"] = content.GetValue<DateTime?>("editDate"),
                     ["posttype"] = content.GetValue<int>("postType") == 1 ? "Topic" : content.ContentType.Alias == "forum" ? "Forum" : "Reply",
-                    ["updated"] = content.UpdateDate.Ticks,
+                    ["updated"] = content.UpdateDate.Ticks, //changed to Ticks
                     ["lastpost"] = cacheInfo.latestPost == DateTime.MinValue ? content.CreateDate : cacheInfo.latestPost
                 };
 

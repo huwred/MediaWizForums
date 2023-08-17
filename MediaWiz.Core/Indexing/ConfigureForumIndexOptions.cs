@@ -40,7 +40,7 @@ namespace MediaWiz.Forums.Indexing
                     new("author", FieldDefinitionTypes.FullText),
                     new("edited", FieldDefinitionTypes.DateTime),
                     new("postType", FieldDefinitionTypes.FullText),
-                    new("updated", FieldDefinitionTypes.Long),
+                    new("updated", FieldDefinitionTypes.Long), //changed to long
                     new ("lastpost", FieldDefinitionTypes.DateTime)
                     );
 
