@@ -1,9 +1,12 @@
 # MediaWizForums #
 Simple Forum add on for Umbraco ≥ 10. 
 
-## 10.6.2 ##
+## 10.6.1 ##
 1. Fixed issue with password reset
 2. Fixed issue with index and searching
+3. Updated static strings in viewcomponents to use dictionary strings
+4. Added viewcomponent for active topic filter
+5. FIxed issue with indexing of updated field
 
 # IMPORTANT! 10.6.0 update #
 Some code refactoring and a change to the way the migration works, A problem was discovered where the install would fail
