@@ -1,0 +1,47 @@
+﻿@using Umbraco.Cms.Core.Services
+@using MediaWiz.Forums.Extensions
+@inject ILocalizationService LocalizationService
+@{
+    string activesince = Context.Request.Query["TopicsSince"];
+    activesince ??= "7d";
+}
+<div class="row">
+    <div class="col-1">
+        <label class="form-label pt-2">@LocalizationService.GetOrCreateDictionaryValue("Forums.ActiveSince", "Within the")</label>
+    </div>
+    <div class="col-6">
+        <form action="/Active-Topics" class="col-10 offset-1" id="topics-since">
+            <fieldset>
+                <select class="form-select" name="TopicsSince" id="active-since">
+                    <!option value="60m"
+                    @if (activesince == "60m")
+                    {
+                        @Html.Raw("selected")
+                    }>@LocalizationService.GetOrCreateDictionaryValue("Forums.ActiveSince.LastHour", "Last hour")</!option>
+                    <!option value="1d"
+                    @if (activesince == "1d")
+                    {
+                        @Html.Raw("selected")
+                    }>@LocalizationService.GetOrCreateDictionaryValue("Forums.ActiveSince.Yesterday", "Yesterday")</!option>
+                    <!option value="7d"
+                    @if (activesince == "7d")
+                    {
+                        @Html.Raw("selected")
+                    }>@LocalizationService.GetOrCreateDictionaryValue("Forums.ActiveSince.LastWeek", "Last week")</!option>
+                    <!option value="1m"
+                    @if (activesince == "1m")
+                    {
+                        @Html.Raw("selected")
+                    }>@LocalizationService.GetOrCreateDictionaryValue("Forums.ActiveSince.LastMonth", "Last month")</!option>
+                    <!option value="1y"
+                    @if (activesince == "1y")
+                    {
+                        @Html.Raw("selected")
+                    }>@LocalizationService.GetOrCreateDictionaryValue("Forums.ActiveSince.LastYear", "Last year")</!option>
+                </select>
+            </fieldset>
+        </form>
+
+
+    </div>
+</div>

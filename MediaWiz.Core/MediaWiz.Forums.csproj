@@ -59,6 +59,7 @@
   </ItemGroup>
 
 	<ItemGroup>
+    <None Remove="views\Shared\Components\Topics\ActiveSince.cshtml" />
     <None Remove="Views\Shared\Components\_ViewImports.cshtml" />
 	</ItemGroup>
 
@@ -74,6 +75,14 @@
 	    <Pack>True</Pack>
 	    <PackagePath>\</PackagePath>
 	  </None>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <UpToDateCheckInput Remove="Views\Shared\Components\Topics\ActiveSince.cshtml" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <_ContentIncludedByDefault Remove="Views\Shared\Components\Topics\ActiveSince.cshtml" />
 	</ItemGroup>
 
 </Project>
