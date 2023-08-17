@@ -35,6 +35,9 @@ namespace MediaWiz.Forums.Controllers
             _examineManager = examineManager;
         }
 
+        /// <summary>
+        /// Added date range query
+        /// </summary>
         [HttpGet]
         public IActionResult Index([FromQuery(Name = "page")] int page, [FromQuery(Name = "TopicsSince")] string query)
         {
