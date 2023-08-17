@@ -2,11 +2,13 @@
 
 @using MediaWiz.Forums.Helpers
 @using MediaWiz.Forums.Interfaces
+@using Umbraco.Cms.Core.Services
 @using Umbraco.Extensions
+@using MediaWiz.Forums.Extensions
 
 @inject IViewCounterService _viewCounter
 @inject IForumCacheService _cacheService
-
+@inject ILocalizationService LocalizationService
 @{
     var post = Model;
     var cacheInfo = _cacheService.GetPost(post, "Topic_" + post.Id);
@@ -25,13 +27,13 @@
                     @if (!String.IsNullOrWhiteSpace(cacheInfo.lastpostAuthor))
                     {
                         <span class="wiz-topic-started-by">
-                            last post&nbsp;by&nbsp;<a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
-                            @ForumHelper.GetRelativeDate(cacheInfo.latestPost) <a href="@cacheInfo.lastPostUrl" title="Jump to latest post"><i class="bi bi-chevron-double-right"></i></a>
+                            @LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Lastpostby","last post by") <a href="/profile/?user=@cacheInfo.lastpostAuthor">@cacheInfo.lastpostAuthor</a>
+                            <span title="@cacheInfo.latestPost.ToDisplayDate()">@cacheInfo.latestPost.GetRelativeDate()</span> <a href="@cacheInfo.lastPostUrl" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Jumpto","Jump to latest post")"><i class="bi bi-chevron-double-right"></i></a>
                         </span>
                     }
                     else
                     {
-                        <span class="wiz-topic-started-by">topic created by <a href="/profile/?user=@post.Value("postCreator")">@post.Value("postCreator")</a> @ForumHelper.GetRelativeDate(post.CreateDate)</span>
+                        <span class="wiz-topic-started-by">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Createdby","topic created by") <a href="/profile/?user=@post.Value("postCreator")">@post.Value("postCreator")</a> <span title="@post.CreateDate.ToDisplayDate()">@post.CreateDate.GetRelativeDate()</span></span>
                     }
                 </span>
             </div>

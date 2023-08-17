@@ -1,7 +1,11 @@
 # MediaWizForums #
 Simple Forum add on for Umbraco ≥ 10. 
 
-## IMPORTANT! 10.6.0 update ##
+## 10.6.2 ##
+1. Fixed issue with password reset
+2. Fixed issue with index and searching
+
+# IMPORTANT! 10.6.0 update #
 Some code refactoring and a change to the way the migration works, A problem was discovered where the install would fail
 if your website already contained any document types using the same aliases as the forum package. 
 

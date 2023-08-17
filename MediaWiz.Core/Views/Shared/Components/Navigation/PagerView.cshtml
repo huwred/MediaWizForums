@@ -1,4 +1,7 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@using Umbraco.Cms.Core.Services
+@using MediaWiz.Forums.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject ILocalizationService LocalizationService
 @{
     int pagenum = ViewBag.Page;
     if (pagenum == 0)
@@ -15,7 +18,7 @@
 <ul class="pagination list-unstyled">
     @if (pagenum > 1)
     {
-        <li class="page-link"><a href="@($"{querystring}page={(pagenum - 1)}")">Prev</a></li>
+        <li class="page-link"><a href="@($"{querystring}page={(pagenum - 1)}")">@LocalizationService.GetOrCreateDictionaryValue("Forums.Paging.Previous","Prev")</a></li>
     }
     @for (var p = 1; p < totalPages + 1; p++)
     {
@@ -33,6 +36,6 @@
     }
     @if (pagenum < totalPages)
     {
-        <li class="page-link"><a href="@($"{querystring}page={(pagenum + 1)}")">Next</a></li>
+        <li class="page-link"><a href="@($"{querystring}page={(pagenum + 1)}")">@LocalizationService.GetOrCreateDictionaryValue("Forums.Paging.Next","Next")</a></li>
     }
 </ul>

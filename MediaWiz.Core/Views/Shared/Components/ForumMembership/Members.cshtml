@@ -4,9 +4,11 @@
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Core.Security
 @using Umbraco.Cms.Core.Services
+@using MediaWiz.Forums.Extensions
 
 @inject IMemberService memberService
 @inject IMemberManager MemberManager
+@inject ILocalizationService LocalizationService
 @{
     var ForumUrl = Umbraco.GetDictionaryValue("Forums.ForumUrl", "/").TrimEnd('/');
 
@@ -50,10 +52,10 @@
 <table class="table">
     <thead>
         <tr>
-            <th scope="col"><a href="@ForumUrl/members/?page=@pagenum&sort=Name&dir=@sortdir" class="@if(sortby == "Name") { <text>active</text> } @sortdir">Name</a></th>
-            <th scope="col"><a href="@ForumUrl/members/?page=@pagenum&sort=umbracoMemberLastLogin&dir=@sortdir" class="@if(sortby == "umbracoMemberLastLogin") { <text>active</text> } @sortdir">Last Visit</a></th>
-            <th scope="col" class="post-count"><a href="@ForumUrl/members/?page=@pagenum&sort=postCount&dir=@sortdir" class="@if(sortby == "postCount") { <text>active</text> } number @sortdir">Posts</a></th>
-            <th scope="col">Status</th>
+            <th scope="col"><a href="@ForumUrl/members/?page=@pagenum&sort=Name&dir=@sortdir" class="@if(sortby == "Name") { <text>active</text> } @sortdir">@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Name","Name")</a></th>
+            <th scope="col"><a href="@ForumUrl/members/?page=@pagenum&sort=umbracoMemberLastLogin&dir=@sortdir" class="@if(sortby == "umbracoMemberLastLogin") { <text>active</text> } @sortdir">@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Lastvisit","Last Visit")</a></th>
+            <th scope="col" class="post-count"><a href="@ForumUrl/members/?page=@pagenum&sort=postCount&dir=@sortdir" class="@if(sortby == "postCount") { <text>active</text> } number @sortdir">@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Posts","Posts")</a></th>
+            <th scope="col">@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Status","Status")</th>
         </tr>
     </thead>
     <tbody>
@@ -67,7 +69,7 @@
                 <td>@member.Name</td>
                 @if (user.LastLoginDateUtc != null)
                 {
-                <td><span title="@user.LastLoginDateUtc">@ForumHelper.GetRelativeDate(user.LastLoginDateUtc.Value)</span></td>
+                    <td><span title="@user.LastLoginDateUtc">@user.LastLoginDateUtc.Value.GetRelativeDate()</span></td>
 
                 }
                 else
@@ -81,27 +83,27 @@
 
                         @if (roles.Contains("ForumAdministrator"))
                         {
-                            <a href="#" data-mode="unlock" data-userid="@user.Id" class="lock-user" title="UnLock user"><i class="bi bi-unlock" style="font-size: 1.2em;"></i></a>
+                            <a href="#" data-mode="unlock" data-userid="@user.Id" class="lock-user" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Unlock","UnLock user")"><i class="bi bi-unlock" style="font-size: 1.2em;"></i></a>
 
                         }
                         else
                         {
-                            <i class="bi bi-lock" style="font-size: 1.2em;" title="Account locked"></i>
+                            <i class="bi bi-lock" style="font-size: 1.2em;" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Locked","Account locked")"></i>
                         }
                     }
                     else
                     {
                         @if (user.LastLoginDateUtc.HasValue && user.LastLoginDateUtc.Value > DateTime.UtcNow.AddMinutes(-10))
                         {
-                            <i class="bi bi-person-check" style="font-size: 1.2em;" title="User is online"></i>
+                            <i class="bi bi-person-check" style="font-size: 1.2em;" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Online","User is online")"></i>
                         }
                         else
                         {
-                            <i class="bi bi-person" style="font-size: 1.2em;" title="User is offline"></i>
+                            <i class="bi bi-person" style="font-size: 1.2em;" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Offline","User is offline")"></i>
                         }
                         @if (roles.Contains("ForumAdministrator"))
                         {
-                            <a href="#" data-mode="lock" data-userid="@user.Id" title="Lock user" class="lock-user"><i class="bi bi-lock" style="font-size: 1.2em;"></i></a>
+                            <a href="#" data-mode="lock" data-userid="@user.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Lock","Lock user")" class="lock-user"><i class="bi bi-lock" style="font-size: 1.2em;"></i></a>
                         }
                     }
 

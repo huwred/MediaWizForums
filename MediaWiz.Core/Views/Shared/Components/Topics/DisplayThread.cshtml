@@ -1,9 +1,11 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using Umbraco.Cms.Core.Models.PublishedContent
-@using Umbraco.Cms.Core.Security
+@using Umbraco.Cms.Core.Services
 @using Umbraco.Extensions
 @using ContentModels = Umbraco.Cms.Web.Common.PublishedModels
-@inject IMemberManager _memberManager;
+@using MediaWiz.Forums.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@inject ILocalizationService LocalizationService
 @{
 
     int parentId = Model.Parent.Id;
@@ -55,13 +57,13 @@
                 <select class="form-select" name="Sortby" id="thread-sort">
                     @if (sortdir != "DESC")
                     {
-                        <option value="DESC">Newest First</option>
-                        <option value="ASC" selected="selected">Oldest First</option>
+                        <option value="DESC">@LocalizationService.GetOrCreateDictionaryValue("Forums.Sort.Newest","Newest First")</option>
+                        <option value="ASC" selected="selected">@LocalizationService.GetOrCreateDictionaryValue("Forums.Sort.Oldest","Oldest First")</option>
                     }
                     else
                     {
-                        <option value="DESC" selected="selected">Newest First</option>
-                        <option value="ASC">Oldest First</option>
+                        <option value="DESC" selected="selected">@LocalizationService.GetOrCreateDictionaryValue("Forums.Sort.Newest","")Newest First</option>
+                        <option value="ASC">@LocalizationService.GetOrCreateDictionaryValue("Forums.Sort.Oldest","Oldest First")</option>
                     }
 
                 </select>

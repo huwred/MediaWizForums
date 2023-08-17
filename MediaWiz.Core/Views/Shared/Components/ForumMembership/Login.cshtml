@@ -1,8 +1,11 @@
 ﻿@model LoginModel
 @using MediaWiz.Forums.Controllers
+@using MediaWiz.Forums.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Umbraco.Cms.Core.Services
 @using Umbraco.Cms.Web.Common.Models
 @using Umbraco.Extensions
-
+@inject ILocalizationService LocalizationService
 <div class="login-form">
 
     @using (Html.BeginUmbracoForm<ForumMemberController>(
@@ -27,7 +30,7 @@
             </label>
         </div>
 
-            <button type="submit" class="btn btn-dark">Log in</button>
+        <button type="submit" class="btn btn-dark">@LocalizationService.GetOrCreateDictionaryValue("Forums.Signin","Log in")</button>
 
 
         }

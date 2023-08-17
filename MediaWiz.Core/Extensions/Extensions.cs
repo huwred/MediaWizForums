@@ -2,6 +2,7 @@
 using System.Linq;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
+using Umbraco.Cms.Web.Common;
 
 namespace MediaWiz.Forums.Extensions
 {
@@ -56,5 +57,6 @@ namespace MediaWiz.Forums.Extensions
                 return currentValue.Value;
             return $"[{key}]";
         }
+
     }
 }

@@ -1,6 +1,8 @@
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using MediaWiz.Forums.Controllers
+@using MediaWiz.Forums.Extensions
 @using MediaWiz.Forums.Models
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Core.Security
 @using Umbraco.Cms.Core.Services
@@ -9,7 +11,7 @@
 
 @inject IMemberManager _memberManager
 @inject IMemberGroupService MemberGroupService
-
+@inject ILocalizationService LocalizationService
 @{
     if (UserCanPostHere(Model))
     {
@@ -21,9 +23,9 @@
             edit = (bool)TempData["edit"];
         }
 
-        var mode = edit ? "Edit Post" : (showTitle ? "Create a new Post" : "Reply");
-        var label = edit ? "Message" : (showTitle ? "Message" : "Reply");
-        var btn = edit ? "Save" : (showTitle ? "Submit" : "Save");
+        var mode = edit ? LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.EditPost", "Edit Post") : (showTitle ? LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Newpost", "Create a new Post") : LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Reply", "Reply"));
+        var label = edit ? LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Message", "Message") : (showTitle ? LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Message", "Message") : LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Reply", "Reply"));
+        var btn = edit ? LocalizationService.GetOrCreateDictionaryValue("Forums.Save", "Save") : (showTitle ? LocalizationService.GetOrCreateDictionaryValue("Forums.Submit", "Submit") : LocalizationService.GetOrCreateDictionaryValue("Forums.Save", "Save"));
 
         var Post = new ForumsPostModel();
         var user = _memberManager.GetCurrentMemberAsync().Result;
@@ -78,7 +80,7 @@
                 <input asp-for="@Post.IsTopic" type="hidden" />
 
                 <div class="col ms-5 p-2">
-                    <button type="submit" class="btn btn-dark">@btn</button> <button type="button" class="btn btn-secondary btn-cancel">Cancel</button>
+                    <button type="submit" class="btn btn-dark">@btn</button> <button type="button" class="btn btn-secondary btn-cancel">@LocalizationService.GetOrCreateDictionaryValue("Forums.Cancel","Cancel")</button>
                 </div>
             </fieldset>
         }

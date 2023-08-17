@@ -3,9 +3,12 @@
 @using Umbraco.Cms.Core.Models.PublishedContent
 @using MediaWiz.Forums.Helpers
 @using MediaWiz.Forums.Interfaces
+@using Umbraco.Cms.Core.Services
 @using Umbraco.Extensions
+@using MediaWiz.Forums.Extensions
 @inject Umbraco.Cms.Core.Security.IMemberManager _memberManager
 @inject IForumCacheService _cacheService
+@inject ILocalizationService LocalizationService
 @{
     bool TopicIslocked = !Model.Value<bool>("allowReplies");
     
@@ -71,7 +74,7 @@
                                 @if (post.Value<DateTime>("editDate").ToLocalTime() > post.CreateDate.AddSeconds(10))
                                 {
                                     var edited = post.Value<DateTime>("editDate");
-                                    <span class="text-danger" title="@edited.ToLocalTime()">- last edited @ForumHelper.GetRelativeDate(edited.ToLocalTime())</span>
+                                    <span class="text-danger" title="@edited.ToLocalTime()">- last edited @edited.ToLocalTime().GetRelativeDate()</span>
                                 }
 
                             </span>
@@ -84,7 +87,7 @@
                                 @{
                                     DisplayPostTools(post);
                                 }
-                                <li class="list-inline-item"><a href="#post_@post.Id" title="Direct link to post"><i class="fs-5 bi-link-45deg"></i><span class="tool-label" style="display: none;">Copy link</span></a> </li>
+                                <li class="list-inline-item"><a href="#post_@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Link.Title","Direct link to post")"><i class="fs-5 bi-link-45deg"></i><span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Link.Text","Copy link")</span></a> </li>
                             </ul>
                         </div>
                     </div>
@@ -98,11 +101,11 @@
             <div class="wiz-reply-header post-deleted">
                 @if (post.Value<bool>("deletedByAuthor"))
                 {
-                    <div class="alert alert-warning">post deleted by author</div>
+                    <div class="alert alert-warning">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Deleted","post deleted by author")</div>
                 }
                 else
                 {
-                    <div class="alert alert-warning">post has been removed</div>
+                    <div class="alert alert-warning">@LocalizationService.GetOrCreateDictionaryValue("Forum.Posts.Removed","post has been removed")</div>
 
                 }
             </div>
@@ -184,15 +187,15 @@
             IPublishedContent member = _memberManager.AsPublishedMember(memberById);
 
             <li class="list-inline-item">
-                <a class="post-quote" data-postid="@post.Id" title="Reply with Quote" href="#">
-                    <i class="fs-5 bi-chat-quote" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Quote</span>
+                <a class="post-quote" data-postid="@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.QuoteLink.Title","Reply with Quote")" href="#">
+                    <i class="fs-5 bi-chat-quote" aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.QuoteLink.Text","Quote")</span>
                 </a>
             </li>
             @if (!post.Value<bool>("postType") && !isSolved)
             {
                 <li class="list-inline-item">
-                    <a href="#" class="post-answer" data-postid="@post.Id" title="Mark as solution">
-                        <i class="fs-5 bi-check-circle" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Mark as solution</span>
+                    <a href="#" class="post-answer" data-postid="@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.SolutionLink.Title","Mark as solution")">
+                        <i class="fs-5 bi-check-circle" aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.SolutionLink.Text","Mark as solution")</span>
                     </a>
                 </li>
             }
@@ -201,13 +204,13 @@
                 @if (post.CreateDate >= lastpostDate || roles.Contains("ForumAdministrator"))
                 {
                     <li class="list-inline-item">
-                        <a class="post-delete" data-postid="@post.Id" title="Delete Post" href="#">
-                            <i class="fs-5 bi-trash" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Delete</span>
+                        <a class="post-delete" data-postid="@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.DeleteLink.Title","Delete Post")" href="#">
+                            <i class="fs-5 bi-trash" aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.DeleteLink.Text","Delete")</span>
                         </a>
                     </li>
                     <li class="list-inline-item">
-                        <a href="#" class="post-edit" data-postid="@post.Id" data-bs-toggle="modal" data-bs-target="#editPostModal" title="Edit Post">
-                            <i class="fs-5 bi-pencil" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Edit</span>
+                        <a href="#" class="post-edit" data-postid="@post.Id" data-bs-toggle="modal" data-bs-target="#editPostModal" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.EditLink.Title","Edit Post")">
+                            <i class="fs-5 bi-pencil" aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.EditLink.Text","Edit")</span>
                         </a>
                     </li>
                 }
@@ -215,14 +218,14 @@
                 @if (post.Value<bool>("postType") && (roles.Contains("ForumAdministrator") || roles.Contains("ForumModerator")))
                 {
                     <li class="list-inline-item">
-                        <a class="post-lock" data-postid="@post.Id" href="#" rel="nofollow" title="Lock/Unlock Post">
+                        <a class="post-lock" data-postid="@post.Id" href="#" rel="nofollow" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.LockUnlock","Lock/Unlock Post")">
                             @if (TopicIslocked)
                             {
-                                <i class="fs-5 bi-unlock " aria-hidden="true"></i> <span class="tool-label" style="display: none;">Unlock</span>
+                                <i class="fs-5 bi-unlock " aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Unlock","Unlock")</span>
                             }
                             else
                             {
-                                <i class="fs-5 bi-lock" aria-hidden="true"></i> <span class="tool-label" style="display: none;">Lock</span>
+                                <i class="fs-5 bi-lock" aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Lock","Lock")</span>
                             }
                         </a>
                     </li>

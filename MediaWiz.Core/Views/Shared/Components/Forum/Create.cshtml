@@ -1,12 +1,15 @@
 ﻿@model MediaWiz.Forums.Models.ForumsForumModel
 @using MediaWiz.Forums.Controllers
+@using MediaWiz.Forums.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using Umbraco.Cms.Core.Services
 @using Umbraco.Extensions
-
+@inject ILocalizationService LocalizationService
 <div class="modal fade" id="forumModal" tabindex="-1" aria-labelledby="forumModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="forumModalLabel">Create Forum</h5>
+                <h5 class="modal-title" id="forumModalLabel">@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Create","Create Forum")</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             @using (Html.BeginUmbracoForm<ForumsSurfaceController>("CreateForum", FormMethod.Post))
@@ -34,8 +37,8 @@
                     <input asp-for="@Model.ParentId" type="hidden" />
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="submit" class="btn btn-dark">Save changes</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">@LocalizationService.GetOrCreateDictionaryValue("Forums.Cancel","Cancel")</button>
+                    <button type="submit" class="btn btn-dark">@LocalizationService.GetOrCreateDictionaryValue("Forums.Save","Save")</button>
                 </div>
             }
 

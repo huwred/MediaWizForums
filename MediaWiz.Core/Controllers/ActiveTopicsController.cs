@@ -16,6 +16,7 @@ using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Cms.Web.Common.Controllers;
 using Umbraco.Extensions;
 
+
 namespace MediaWiz.Forums.Controllers
 {
     public class ActiveTopicsController : RenderController
@@ -35,12 +36,34 @@ namespace MediaWiz.Forums.Controllers
         }
 
         [HttpGet]
-        public IActionResult Index([FromQuery(Name = "page")] int page, [FromQuery(Name = "query")] string query)
+        public IActionResult Index([FromQuery(Name = "page")] int page, [FromQuery(Name = "TopicsSince")] string query)
         {
             ISearchResults results = null;
-            if (string.IsNullOrWhiteSpace(query))
+            var today = DateTime.Now;
+            long min = today.Ticks;
+            long max = today.Ticks;
+            query ??= "7d";
+
+            switch (query)
             {
-                query = "updated";
+                case "30m" :
+                    min = today.AddMinutes(-30).Ticks;
+                    break;
+                case "60m" :
+                    min = today.AddHours(-1).Ticks;
+                    break;
+                case "1d" :
+                    min = today.AddDays(-1).Ticks;
+                    break;
+                case "7d" :
+                    min = today.AddDays(-7).Ticks;
+                    break;
+                case "1m" :
+                    min = today.AddMonths(-1).Ticks;
+                    break;
+                case "1y" :
+                    min = today.AddYears(-1).Ticks;
+                    break;
             }
 
             int pageIndex = page - 1;
@@ -53,12 +76,10 @@ namespace MediaWiz.Forums.Controllers
                 var searcher = index.Searcher;
 
                 var examineQuery = searcher.CreateQuery(IndexTypes.Content)
-                    .Field("postType", "Topic")
+                .Field("postType", "Topic")
+                    .And().RangeQuery<long>(new string[] { "updated" }, min, max)
                     .OrderByDescending(new SortableField[] { new SortableField("updateDate") });
-                Query querystr = new TermQuery(new Term("postType", "Topic"));
                 
-                var test = searcher.Search(querystr.ToString() + " OR -postType2");
-
                 results = examineQuery.Execute();
             }
 
@@ -72,7 +93,7 @@ namespace MediaWiz.Forums.Controllers
                 SearchViewModel searchPageViewModel = new SearchViewModel(CurrentPage, new PublishedValueFallback(_serviceContext, _variationContextAccessor))
                 {
                     //do the search
-                    query = query,
+                    query = query?.ToString(),
                     searchIn = "",
                     TotalResults = totalResults,
                     PagedResult = pagedResultsAsContent
@@ -86,7 +107,7 @@ namespace MediaWiz.Forums.Controllers
         public IActionResult Sort([FromQuery(Name = "page")] int page, [FromQuery(Name = "query")] string query)
         {
             ISearchResults results = null;
-            if (String.IsNullOrWhiteSpace(query))
+            if (string.IsNullOrWhiteSpace(query))
             {
                 query = "updated";
             }

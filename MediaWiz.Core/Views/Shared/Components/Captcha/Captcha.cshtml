@@ -1,17 +1,19 @@
-﻿
+﻿@using Umbraco.Cms.Core.Services
+@using MediaWiz.Forums.Extensions
+@inject ILocalizationService LocalizationService
 <div class="mb-3" id="captcha-check">
-    <h5><our-dictionary key="Captcha.Title">Confirm Humanity</our-dictionary></h5>
-    <p><our-dictionary key="Captcha.Description">Before we continue, we need to confirm you are a sentient being (it's a spam thing).Please type the answer to the question in the image below and click the 'Not a Robot' button.</our-dictionary></p>
+    <h5>@LocalizationService.GetOrCreateDictionaryValue("Forums.Captcha.Title","Confirm Humanity")</h5>
+    <p>@LocalizationService.GetOrCreateDictionaryValue("Forums.Captcha.Description","Before we continue, we need to confirm you are a sentient being (it's a spam thing).Please type the answer to the question in the image below and click the 'Not a Robot' button.")</p>
     <div id="div-captcha" class="mb-1">
         <div class="form-group mb-3">
             <img src='data:image/Png;base64,@TempData["b64"]' id="captch-img" alt="Captcha"/>
-            <a href="#" title="Click to refresh" id="captcha-refresh"><our-dictionary key="Captcha.Refresh">Reload Captcha</our-dictionary></a>
+            <a href="#" title="Click to refresh" id="captcha-refresh">@LocalizationService.GetOrCreateDictionaryValue("Forums.Captcha.Refresh","Reload Captcha")</a>
         </div>
         <div class="form-group">
-            <input type="text" name="Captcha" id="Captcha" class="form-control" placeholder="Please type your answer here" pattern="^[0-9]$" />
+            <input type="text" name="Captcha" id="Captcha" class="form-control" placeholder="@LocalizationService.GetOrCreateDictionaryValue("Forums.Captcha.Placeholder","Please type your answer here")" pattern="^[0-9]$" />
         </div>
     </div>
     <div class="pull-right flip">
-        <button class="btn-captcha btn btn-dark" id="btn-captcha" type="button"><our-dictionary key="Captcha.ButtonText">Not a Robot</our-dictionary></button>
+        <button class="btn-captcha btn btn-dark" id="btn-captcha" type="button">@LocalizationService.GetOrCreateDictionaryValue("Forums.Captcha.Button","Not a Robot")</button>
     </div>
 </div>

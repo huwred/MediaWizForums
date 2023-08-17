@@ -2,31 +2,34 @@
 @using Umbraco.Extensions
 @using Microsoft.Extensions.Options
 @using Umbraco.Cms.Core.Configuration.Models
+@using Umbraco.Cms.Core.Services
+@using MediaWiz.Forums.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @inject IMemberManager _memberManager
 @inject IOptions<GlobalSettings> globalSettings
+@inject ILocalizationService LocalizationService
 @{
     var _hostingSettings = globalSettings.Value;
     var user = _memberManager.GetCurrentMemberAsync().Result;
     if (_hostingSettings.Smtp == null)
     {
-        <li class="nav-item text-danger">Email is not configured</li>
+        <li class="nav-item text-danger">@LocalizationService.GetOrCreateDictionaryValue("Forums.Email.Notconfigured","Email is not configured")</li>
     }
     if ( _memberManager.IsLoggedIn())
     {
         <li class="nav-item d-none d-sm-block">
             <span class="glyphicon glyphicon-star" aria-hidden="true" style="color: gold;"></span>
-            Welcome back <a href="/profile/?user=@user.UserName" rel="no-follow" title="View profile" class="nav-icon">@user.Name</a>
+            @LocalizationService.GetOrCreateDictionaryValue("Forums.Signin.Welcome","Welcome back") <a href="/profile/?user=@user.UserName" rel="no-follow" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Profile.View","View profile")" class="nav-icon">@user.Name</a>
         </li>
-        <li class="nav-item"><a href="@Url.SurfaceAction("Logout", "ForumsSurface")" class="nav-link" title="Logout"><i class="fs-5 bi-door-closed me-1"></i><span class="d-none d-sm-none d-md-inline">Logout</span></a></li>
+        <li class="nav-item"><a href="@Url.SurfaceAction("Logout", "ForumsSurface")" class="nav-link" title="Logout"><i class="fs-5 bi-door-closed me-1"></i><span class="d-none d-sm-none d-md-inline">@LocalizationService.GetOrCreateDictionaryValue("Forums.Signout","Logout")</span></a></li>
     }
     else
     {
-        <li class="nav-item"><a href="@Umbraco.GetDictionaryValue(" Forums.LoginUrl"," /login")" class="nav-link" title="Login"><i class="fs-5 bi-door-open me-1"></i><span class="d-none d-sm-none d-md-inline">Login</span></a></li>
+        <li class="nav-item"><a href="@LocalizationService.GetOrCreateDictionaryValue("Forums.LoginUrl"," /login")" class="nav-link" title="Login"><i class="fs-5 bi-door-open me-1"></i><span class="d-none d-sm-none d-md-inline">@LocalizationService.GetOrCreateDictionaryValue("Forums.Signin","Login")</span></a></li>
         @if (_hostingSettings.Smtp != null)
         {
-            <li class="nav-item"><a href="@Umbraco.GetDictionaryValue(" Forums.RegisterUrl"," /register")" class="nav-link" title="Register"><i class="fs-5 bi-person-badge me-1"></i><span class="d-none d-sm-none d-md-inline">Register</span></a></li>
-            <li class="nav-item"><a href="/ForgotPassword" class="nav-link" title="Forgot Password"><i class="fs-5 bi-file-lock me-1"></i><span class="d-none d-sm-none d-md-inline">Forgot&nbsp;Password</span></a></li>
+            <li class="nav-item"><a href="@LocalizationService.GetOrCreateDictionaryValue("Forums.RegisterUrl"," /register")" class="nav-link" title="Register"><i class="fs-5 bi-person-badge me-1"></i><span class="d-none d-sm-none d-md-inline">@LocalizationService.GetOrCreateDictionaryValue("Forums.Register","Register")</span></a></li>
+            <li class="nav-item"><a href="/ForgotPassword" class="nav-link" title="Forgot Password"><i class="fs-5 bi-file-lock me-1"></i><span class="d-none d-sm-none d-md-inline">@LocalizationService.GetOrCreateDictionaryValue("Forums.Profile.Forgotpassword","Forgot Password")</span></a></li>
         }
     }
 }

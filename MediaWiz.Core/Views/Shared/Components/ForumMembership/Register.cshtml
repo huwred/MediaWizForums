@@ -2,15 +2,13 @@
 @using MediaWiz.Forums.Controllers
 @using MediaWiz.Forums.Extensions
 @using Microsoft.Extensions.Options
-@using Umbraco.Cms.Core
 @using Umbraco.Cms.Core.Configuration.Models
-@using Umbraco.Cms.Core.Models
 @using Umbraco.Cms.Core.Services
 @using Umbraco.Cms.Web.Website.Models
 @using Umbraco.Extensions
 @inject MemberModelBuilderFactory memberModelBuilderFactory;
 @inject IOptions<GlobalSettings> hostingSettings
-@inject IMemberTypeService memberTypeService
+@inject ILocalizationService LocalizationService
 @{
     // Build a registration model with parameters
     var registerModel = memberModelBuilderFactory
@@ -22,15 +20,16 @@
         .Build();
 
     var success = TempData["FormSuccess"] != null;
-    var _hostingSettings = hostingSettings.Value; 
+    var _hostingSettings = hostingSettings.Value;
+    var warningMsg = LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Register.Emailwarning", "The email will be coming from {0} so please add this domain to your whitelist. Should you not receive your validation email, please post on the Our Umbraco forums");
 }
 
 
 @if (success)
 {
     @* This message will show if registerModel.RedirectUrl is not defined (default) *@
-    <p class="text-success">Your Registration was successful, you should now receive an email containing a validation link to verify your email address.</p>
-    <p>The email will be coming from '@_hostingSettings.Smtp.From' so please add this domain to your whitelist. Should you not receive your validation email, please post on the Our Umbraco forums</p>
+    <p class="text-success">@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Register.Success","Your Registration was successful, you should now receive an email containing a validation link to verify your email address.")</p>
+    <p>@String.Format(warningMsg,_hostingSettings.Smtp.From)</p>
 }
 else
 {
@@ -76,8 +75,7 @@ else
             {
                 if (registerModel.MemberProperties[i].Alias == "receiveNotifications")
                 {
-                    var membertype = memberTypeService.Get("forumMember");
-                    var desc = membertype.PropertyTypes.First(p => p.Alias == "receiveNotifications").Description;
+
                     <div class="mb-3">
                         <div class="form-check form-switch">
                             <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" value="@registerModel.MemberProperties[i].Value">
@@ -86,8 +84,7 @@ else
 
                         <span asp-validation-for="@registerModel.MemberProperties[i].Value" class="form-text text-danger"></span>
                         <div id="notifyHelp" class="form-text">
-                            @desc
-                            @*Receive an email when someone posts on the forum.*@
+                            @LocalizationService.GetOrCreateDictionaryValue("Forums.Profile.NotifyHelp","Receive an email when someone posts on the forum.")
                         </div>
                     </div>
                 }
@@ -103,7 +100,7 @@ else
             }
         }
 
-        <button type="submit" class="btn btn-dark" id="register-submit" >Register</button>
+        <button type="submit" class="btn btn-dark" id="register-submit">@LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Register","Register")</button>
     }
 
 

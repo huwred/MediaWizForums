@@ -5,16 +5,19 @@
 @using Umbraco.Cms.Core.Security
 @using Umbraco.Cms.Core.Services
 @using Umbraco.Extensions
+@using MediaWiz.Forums.Extensions
 
 @inject IMemberManager _memberManager
 @inject IMemberGroupService _memberGroupService
 @inject IForumCacheService _cacheService
+@inject ILocalizationService LocalizationService
 <!--
     lists all the child forums of this one.
     (uses the cache, to get post count and latest post - without having to recurse everytime)
 -->
 @{
     var user = _memberManager.GetCurrentMemberAsync().Result;
+    var titleStr = LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Viewprofile", "View {0}'s profile");
     IList<string> roles = new List<string>();
     if (user != null)
     {
@@ -27,10 +30,10 @@
         <div>
             <div id="forums-list-0" class="wiz-forums">
                 <div class="d-flex flex-row flex-wrap mb-3 p-2 bg-secondary color-white">
-                    <div class="col-8 col-sm-5">Forum</div>
-                    <div class="col-2">Topics</div>
-                    <div class="col-2">Posts</div>
-                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">Latest Post</div>
+                    <div class="col-8 col-sm-5">@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum","Forum")</div>
+                    <div class="col-2">@LocalizationService.GetOrCreateDictionaryValue("Forums.Topic","Topic")</div>
+                    <div class="col-2">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts","Posts")</div>
+                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">@LocalizationService.GetOrCreateDictionaryValue("Forums.LatestPost","Latest Pos")t</div>
                 </div>
                 <div class="wiz-body p-2">
                     @foreach (var forum in forums)
@@ -44,7 +47,7 @@
                                     <div class="p-2">@forum.Value("forumDescription")</div>
                                     @if (forum.HasValue("canPostGroups"))
                                 {
-                                        <span class="text-muted small">(Posting restricted to @PostRestriction(forum))</span>
+                                        <span class="text-muted small">(@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Restricted","Posting restricted to") @PostRestriction(forum))</span>
                                 }
                                 </div>
                                 <div class="col-2">@cacheInfo.TopicCount</div>
@@ -53,9 +56,9 @@
                                     @if (cacheInfo.latestPost > DateTime.MinValue)
                                     {
                                         <p class="wiz-topic-meta">
-                                            <a href="@cacheInfo.lastPostUrl#post_@cacheInfo.Id" title="Jump to latest post">@ForumHelper.GetRelativeDate(cacheInfo.latestPost)</a>
+                                            <a href="@cacheInfo.lastPostUrl#post_@cacheInfo.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Jumpto","Jump to latest post")">@cacheInfo.latestPost.GetRelativeDate()</a>
                                             by
-                                            <a href="~/profile/?user=@cacheInfo.lastpostAuthor" title="View @cacheInfo.lastpostAuthor's profile" class="wiz-author-link">
+                                            <a href="~/profile/?user=@cacheInfo.lastpostAuthor" title="@String.Format(titleStr,cacheInfo.lastpostAuthor)" class="wiz-author-link">
                                                 @cacheInfo.lastpostAuthor
                                             </a>
                                         </p>
@@ -82,7 +85,7 @@
     {
         <div>
             <div class="wiz-forums">
-                <h5>No active Forums.</h5>
+                <h5>@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.None","No active Forums.")</h5>
             </div>
         </div>
     }
