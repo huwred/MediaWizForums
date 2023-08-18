@@ -88,6 +88,7 @@ namespace MediaWiz.Forums.Events
 
                         using var cref = _context.EnsureUmbracoContext();
                         {
+                            cref.UmbracoContext.Content.GetByRoute("url");
                             var cache = cref.UmbracoContext.Content;
                             
                             var post = cache.GetById(item.Id);

@@ -14,6 +14,7 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Cms.Web.Common.Controllers;
+using Umbraco.Cms.Web.Common.UmbracoContext;
 using Umbraco.Extensions;
 
 
@@ -33,6 +34,7 @@ namespace MediaWiz.Forums.Controllers
             _serviceContext = context;
             _publishedContentQuery = publishedContentQuery;
             _examineManager = examineManager;
+
         }
 
         /// <summary>

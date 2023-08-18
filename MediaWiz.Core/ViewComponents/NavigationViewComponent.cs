@@ -1,5 +1,4 @@
 ﻿using System.Threading.Tasks;
-using MediaWiz.Forums.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Umbraco.Cms.Core.Models.PublishedContent;
 

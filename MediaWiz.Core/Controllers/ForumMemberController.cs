@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
+using MediaWiz.Forums.Extensions;
 using MediaWiz.Forums.Helpers;
 using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -34,8 +35,9 @@ namespace MediaWiz.Forums.Controllers
         private readonly IMemberService _memberService;
         private readonly IMemberManager _memberManager;
         private readonly IMemberSignInManager _memberSignInManager;
+        private readonly ILocalizationService _localizationService;
 
-        public ForumMemberController(IMemberManager memberManager, IMemberService memberService, IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IMemberSignInManager memberSignInManager, IScopeProvider scopeProvider,ILogger<ForumMemberController> logger,IHttpContextAccessor httpContextAccessor,IForumMailService mailService) 
+        public ForumMemberController(IMemberManager memberManager, IMemberService memberService, IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IMemberSignInManager memberSignInManager, IScopeProvider scopeProvider,ILogger<ForumMemberController> logger,IHttpContextAccessor httpContextAccessor,IForumMailService mailService,ILocalizationService localizationService) 
             : base(memberManager, memberService, umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider, memberSignInManager, scopeProvider)
         {
             _logger = logger;
@@ -43,8 +45,8 @@ namespace MediaWiz.Forums.Controllers
             _mailService = mailService;
             _memberService = memberService;
             _memberManager = memberManager;
-
             _memberSignInManager = memberSignInManager;
+            _localizationService = localizationService;
         }
 
         [HttpPost]
@@ -72,7 +74,7 @@ namespace MediaWiz.Forums.Controllers
             }
             else
             {
-                ModelState.AddModelError(string.Empty, "The username or password provided is incorrect.");
+                ModelState.AddModelError(string.Empty,_localizationService.GetOrCreateDictionaryValue("Forums.Error.InvalidCredentials","The username or password provided is incorrect.") );
             }
             // If there is a specified path to redirect to then use it.
 
@@ -90,7 +92,7 @@ namespace MediaWiz.Forums.Controllers
             var usernamecheck = _memberService.GetByUsername(newmember.Username);
             if (usernamecheck != null)
             {
-                ModelState.AddModelError("Registration", "The username is already in use, please use another");
+                ModelState.AddModelError("Registration",_localizationService.GetOrCreateDictionaryValue("Forums.Error.DuplicateUsername","The username is already in use, please use another") );
                 return CurrentUmbracoPage();
             }
 
@@ -141,7 +143,7 @@ namespace MediaWiz.Forums.Controllers
             //do the passwords match
             if (changePassword.Password != changePassword.ConfirmPassword)
             {
-                TempData["ValidationError"] = "Passwords do not match!";
+                TempData["ValidationError"] = _localizationService.GetOrCreateDictionaryValue("Forums.Error.PasswordMismatch","Passwords do not match!");
                 return CurrentUmbracoPage();
             }
             try
@@ -150,7 +152,7 @@ namespace MediaWiz.Forums.Controllers
                 var member = _memberService.GetById(id);
                 if (member == null)
                 {
-                    TempData["ValidationError"] = "Invalid member";
+                    TempData["ValidationError"] = _localizationService.GetOrCreateDictionaryValue("Forums.Error.NoMember","Invalid member");
                 }
                 else
                 {
@@ -158,7 +160,7 @@ namespace MediaWiz.Forums.Controllers
                     {
                         if (member.GetValue<string>("resetGuid") != token)
                         {
-                            TempData["ValidationError"] = "Token not found";
+                            TempData["ValidationError"] = _localizationService.GetOrCreateDictionaryValue("Forums.Error.InvalidToken","Token not found");
                             return CurrentUmbracoPage();
                         }
                     }
@@ -169,7 +171,7 @@ namespace MediaWiz.Forums.Controllers
                         await _memberManager.ChangePasswordWithResetAsync(user.Id, token, changePassword.Password);
                     if (changePasswordResult.Succeeded)
                     {
-                        TempData["ValidationSuccess"] = "success";
+                        TempData["ValidationSuccess"] =  "success";
                     }
                     else
                     {
