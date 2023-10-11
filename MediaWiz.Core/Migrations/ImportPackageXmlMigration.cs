@@ -26,10 +26,12 @@ namespace MediaWiz.Forums.Migrations
             _fileService = fileService;
             _packagingService = packagingService;
             _forumOptions = forumOptions;
+            
         }
 
         protected override void Migrate()
         {
+
             //set the default values for the xml files to import
             var xmlpackage = "package.xml";
             var templatepackage = "packagetemplates.xml";

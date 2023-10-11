@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net7.0;net6.0</TargetFrameworks>
-    <Version>10.6.1-rc1.3</Version>
+    <Version>10.6.1-rc1.6</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ContentTargetFolders>.</ContentTargetFolders>
     <PackageId>MediaWiz.Forums</PackageId>
@@ -53,12 +53,18 @@
     <None Include="docs\readme.md" Pack="true" PackagePath="\" />
     <None Include="wwwroot\**" />
 	</ItemGroup>
-
+  <ItemGroup>
+    <Content Include="App_Plugins\ForumListView\**">
+      <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+      <CopyToPublishDirectory>Always</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
 	<ItemGroup>
     <Content Remove="bundleconfig.json" />
   </ItemGroup>
 
 	<ItemGroup>
+    <None Remove="Views\activeTopics.cshtml" />
     <None Remove="views\Shared\Components\Topics\ActiveSince.cshtml" />
     <None Remove="Views\Shared\Components\_ViewImports.cshtml" />
 	</ItemGroup>

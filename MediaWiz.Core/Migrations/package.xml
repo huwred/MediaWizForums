@@ -31,7 +31,7 @@
           <forumPost id="1290" key="e7e38b9c-dc96-4be1-9372-2124358bfd60" parentID="1090" level="3" creatorID="-1" sortOrder="0" createDate="2022-12-07T16:56:04" updateDate="2022-12-07T16:56:04" nodeName="test Post" urlName="test-post" path="-1,1089,1090,1290" isDoc="" nodeType="1067" nodeTypeAlias="forumPost" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
             <postTitle><![CDATA[test Post]]></postTitle>
             <postBody><![CDATA[<p>Just a test for quotes</p>]]></postBody>
-            <postAuthor><![CDATA[1179]]></postAuthor>
+            <postAuthor></postAuthor>
             <postType>1</postType>
             <postCreator><![CDATA[Huw Reddick]]></postCreator>
             <allowReplies>1</allowReplies>
@@ -41,7 +41,7 @@
 <p>Just a test for quotes</p>
 </blockquote>
 <p>Reply with quote</p>]]></postBody>
-              <postAuthor><![CDATA[1179]]></postAuthor>
+              <postAuthor></postAuthor>
               <postType>0</postType>
               <postCreator><![CDATA[Huw Reddick]]></postCreator>
               <allowReplies>1</allowReplies>

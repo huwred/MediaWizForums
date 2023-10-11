@@ -26,13 +26,14 @@
     }
 
     bool showTitle = parentPage.IsDocumentType("Forum");
-    int pageSize = Convert.ToInt32(Model.Value<decimal>("intPageSize"));
-    int.TryParse(Context.Request.Query["page"], out var pagenum);
     bool TopicIslocked = !Model.Value<bool>("allowReplies");
     var sortdir = Context.Request.Query["sortdir"];
     var isSolved = Model.Value<bool>("answer");
     var items = Model.Children().Where(x => x.IsDocumentType("Forumpost") && !x.Value<bool>("postType"));
     var publishedContents = items as IPublishedContent[] ?? items.ToArray();
+
+    int pageSize = Convert.ToInt32(Model.Value<decimal>("intPageSize"));
+    int.TryParse(Context.Request.Query["page"], out var pagenum);
     var totalPages = (int)Math.Ceiling((double)publishedContents.Count() / (double)pageSize);
 
     ViewBag.Page = pagenum;

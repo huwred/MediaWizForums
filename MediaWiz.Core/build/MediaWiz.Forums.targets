@@ -1,9 +1,10 @@
 ﻿<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
     <PropertyGroup>
         <MediaWizForumsAppPluginsFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\MediaWizards\**\*.*</MediaWizForumsAppPluginsFilesPath>
-      <MediaWizListViewFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\ForumListView\**\*.*</MediaWizListViewFilesPath>
+        <MediaWizListViewFilesPath>$(MSBuildThisFileDirectory)..\App_Plugins\ForumListView\**\*.*</MediaWizListViewFilesPath>
         <MediaWizAssetsFilesPath>$(MSBuildThisFileDirectory)..\staticwebassets\**\*.*</MediaWizAssetsFilesPath>
-      <MediaWizViewsPartial>$(MSBuildThisFileDirectory)..\Views\Partials\*.*</MediaWizViewsPartial>
+        <MediaWizViewsPartial>$(MSBuildThisFileDirectory)..\Views\Partials\*.*</MediaWizViewsPartial>
+        <MediaWizViewUpdates>$(MSBuildThisFileDirectory)..\Views\*.*</MediaWizViewUpdates>
     </PropertyGroup>
 
     <Target Name="CopyMediaWizForums" BeforeTargets="Build">
@@ -37,6 +38,14 @@
       <Copy SourceFiles="@(MediaWizForumsAssetFiles)" DestinationFiles="@(MediaWizForumsAssetFiles->'$(MSBuildProjectDirectory)\wwwroot\%(RecursiveDir)%(Filename)%(Extension)')" SkipUnchangedFiles="true" 
             Condition="%(Filename)!='' AND (!Exists('$(MSBuildProjectDirectory)\wwwroot\%(RecursiveDir)%(Filename)%(Extension)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) &gt; $([System.IO.File]::GetLastWriteTime('$(MSBuildProjectDirectory)\wwwroot\%(RecursiveDir)%(Filename)%(Extension)').Ticks))"/>
     </Target>
+  <Target Name="CopyUpdatedViews" BeforeTargets="Build">
+    <ItemGroup>
+      <MediaWizUpdatedViews Include="$(MediaWizViewUpdates)" />
+    </ItemGroup>
+    <Message Text="Copying MediaWiz.Forums Updated Views: $(MediaWizViewUpdates) - #@(MediaWizUpdatedViews->Count()) files" Importance="high" />
+    <Copy SourceFiles="@(MediaWizUpdatedViews)" DestinationFiles="@(MediaWizUpdatedViews->'$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)')" SkipUnchangedFiles="true" 
+          Condition="%(Filename)!='' AND (!Exists('$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)') OR $([System.DateTime]::Parse('%(ModifiedTime)').Ticks) &gt; $([System.IO.File]::GetLastWriteTime('$(MSBuildProjectDirectory)\Views\%(Filename)%(Extension)').Ticks))" />
+  </Target>
 
     <Target Name="RemovePartialViews" BeforeTargets="Clean">
       <ItemGroup>

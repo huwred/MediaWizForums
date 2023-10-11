@@ -5,6 +5,9 @@ namespace MediaWiz.Forums.Migrations
 {
     public class MediaWizPackageMigrationPlan : PackageMigrationPlan
     {
+
+        public override bool IgnoreCurrentState => true;
+
         public MediaWizPackageMigrationPlan()
             : base("MediaWiz Forums")
         {

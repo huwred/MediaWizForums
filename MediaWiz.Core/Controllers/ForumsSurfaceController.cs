@@ -327,7 +327,26 @@ namespace MediaWiz.Forums.Controllers
 
             return Json(new { success = true, message = returnpath });
         }
+        [AllowAnonymous]
+        [IgnoreAntiforgeryToken]
+        [HttpPost]
+        public IActionResult Test([FromBody] string sort)
+        {
+            var data = JsonConvert.DeserializeObject<dynamic>(sort.ToString());
+            var returnpath = _contextAccessor.HttpContext.Request.Headers["Referer"].ToString();
 
+            //returnpath = Regex.Replace(returnpath, @"\?sortdir=[A-Z]{3,4}", "");
+            //if (returnpath.Contains("?"))
+            //{
+            //    returnpath += "&sortdir=" + data.sort.Value;
+            //}
+            //else
+            //{
+            //    returnpath += "?sortdir=" + data.sort.Value;
+            //}
+
+            return Json(new { success = true, message = returnpath });
+        }
         #region Captcha Image
  
         /// <summary>

@@ -33,7 +33,7 @@
         <h3>@Model.Value("title")</h3>
     </div>
     <div class="forum-intro">
-        @Html.Raw(Model.Value("message"))
+        @await Component.InvokeAsync("Topics",new {Template = "ActiveSince"})
     </div>
 </div>
 <div>

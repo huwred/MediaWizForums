@@ -88,6 +88,7 @@ namespace MediaWiz.Forums.Migrations
                     {
                         var answerPropertyType = new PropertyType(_shortStringHelper, truefalse)
                         {
+                            Key = Guid.Parse("00CC1C63-9086-4A72-A21B-6CC84960B79B"),
                             Name = "Answer",
                             Alias = "answer",
                             Description = "Marked as solution/resolved.",
@@ -122,6 +123,7 @@ namespace MediaWiz.Forums.Migrations
                     {
                         var replyCountPropertyType = new PropertyType(_shortStringHelper, integerDataType)
                         {
+                            Key = Guid.Parse("C2E08F2F-C35E-4CEE-9590-B3248A6ADB96"),
                             Name = "Replies",
                             Alias = "replyCount",
                             Description = "Number of replies.",
@@ -158,6 +160,7 @@ namespace MediaWiz.Forums.Migrations
                 {
                     _logger.LogDebug($"Creating MemberType={mType}");
                     memberContentType = new MemberType(_shortStringHelper, -1);
+                    memberContentType.Key = Guid.Parse("3CA42B51-86EC-41E8-B1C5-16B8657915CD");
                     memberContentType.Name = "Forum Member";
                     memberContentType.Alias = "forumMember";
                     memberContentType.Icon = "icon-male-and-female";
@@ -280,18 +283,21 @@ namespace MediaWiz.Forums.Migrations
             if (_memberGroupService.GetByName("ForumMember") == null)
             {
                 IMemberGroup membergroup = new MemberGroup();
+                membergroup.Key = Guid.Parse("3BE527DD-E71A-4DC3-9768-B769780088F5");
                 membergroup.Name = "ForumMember";
                 _memberGroupService.Save(membergroup);
             }
             if (_memberGroupService.GetByName("ForumAdministrator") == null)
             {
                 IMemberGroup admingroup = new MemberGroup();
+                admingroup.Key = Guid.Parse("B81100F8-8622-4B09-B832-00741A9C46A5");
                 admingroup.Name = "ForumAdministrator";
                 _memberGroupService.Save(admingroup);
             }
             if (_memberGroupService.GetByName("ForumModerator") == null)
             {
                 IMemberGroup modgroup = new MemberGroup();
+                modgroup.Key = Guid.Parse("E0B79277-01C8-458F-A9C8-88AA60E2876E");
                 modgroup.Name = "ForumModerator";
                 _memberGroupService.Save(modgroup);
             }            
