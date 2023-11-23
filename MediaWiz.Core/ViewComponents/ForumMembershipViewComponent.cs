@@ -60,8 +60,10 @@ namespace MediaWiz.Forums.ViewComponents
                     };
 
                     if (model.CurrentUser != null)
+                    {
                         model.MemberIdentity = _memberManager.FindByNameAsync(model.CurrentUser.UserName).Result;
-                    model.ViewMember = _memberService.GetByKey(model.MemberIdentity.Key);
+                        model.ViewMember = _memberService.GetByKey(model.MemberIdentity.Key);
+                    }
 
                     if (model.Username == model.CurrentUser?.UserName)
                     {

@@ -1,8 +1,10 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using MediaWiz.Forums.Controllers
 @using MediaWiz.Forums.Extensions
+@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Options
 @using Umbraco.Cms.Core.Configuration.Models
+@using Umbraco.Cms.Core.Models.PublishedContent
 @using Umbraco.Cms.Core.Services
 @using Umbraco.Cms.Web.Website.Models
 @using Umbraco.Extensions
@@ -35,6 +37,7 @@ else
 {
     @if (Model.Value<bool>("useCaptcha"))
     {
+        
         <div id="captchaimage-div">
             @await Component.InvokeAsync("Captcha")
         </div>

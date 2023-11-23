@@ -77,8 +77,9 @@ namespace MediaWiz.Forums.Controllers
 
             if (_examineManager.TryGetIndex("ForumIndex", out var index))
             {
-                
                 var searcher = index.Searcher;
+
+
 
                 var examineQuery = searcher.CreateQuery(IndexTypes.Content)
                 .Field("postType", "Topic")

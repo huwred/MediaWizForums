@@ -49,12 +49,12 @@
                 @if (showTitle)
                 {
                     <h4 id="@Model.Id" class="color_dark">
-                        @Model.Value("postTitle")
+                        <label for="thread-sort">@Model.Value("postTitle")</label>
                     </h4>
                 }
             </div>
             <div class="col-3">
-
+                
                 <select class="form-select" name="Sortby" id="thread-sort">
                     @if (sortdir != "DESC")
                     {

@@ -7,7 +7,6 @@ using MediaWiz.Forums.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
@@ -18,7 +17,6 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Persistence;
 using Umbraco.Cms.Infrastructure.Scoping;
-using Umbraco.Cms.Web.Common;
 using Umbraco.Cms.Web.Common.Models;
 using Umbraco.Cms.Web.Common.Security;
 using Umbraco.Cms.Web.Website.Controllers;
@@ -118,7 +116,6 @@ namespace MediaWiz.Forums.Controllers
             _memberService.Save(member);
             try
             {
-                var umbracoHelper = _httpContextAccessor.HttpContext.RequestServices.GetRequiredService<UmbracoHelper>();
 
                 TempData["FormSuccess"] = await _mailService.SendVerifyAccount(member.Email, resetGuid); ;
             }

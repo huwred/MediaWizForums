@@ -1,14 +1,10 @@
-﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+﻿@model MediaWiz.Forums.ViewComponents.ForumListViewModel
 @using MediaWiz.Forums.Helpers
 @using MediaWiz.Forums.Interfaces
-@using Umbraco.Cms.Core.Models.PublishedContent
-@using Umbraco.Cms.Core.Security
 @using Umbraco.Cms.Core.Services
 @using Umbraco.Extensions
 @using MediaWiz.Forums.Extensions
 
-@inject IMemberManager _memberManager
-@inject IMemberGroupService _memberGroupService
 @inject IForumCacheService _cacheService
 @inject ILocalizationService LocalizationService
 <!--
@@ -16,16 +12,9 @@
     (uses the cache, to get post count and latest post - without having to recurse everytime)
 -->
 @{
-    var user = _memberManager.GetCurrentMemberAsync().Result;
     var titleStr = LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Viewprofile", "View {0}'s profile");
-    IList<string> roles = new List<string>();
-    if (user != null)
-    {
-        roles = _memberManager.GetRolesAsync(user).Result;
-    }
 
-    var forums = Model.Children.Where(x => x.IsDocumentType("Forum") && x.IsVisible() && x.Value<bool>("isActive") && (x.Value<int?>("membersOnly") != 1 || (x.Value<int?>("membersOnly") == 1 && _memberManager.IsLoggedIn()))).ToList();
-    if (forums.Any())
+    if (Model.Forums.Any())
     {
         <div>
             <div id="forums-list-0" class="wiz-forums">
@@ -36,30 +25,30 @@
                     <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">@LocalizationService.GetOrCreateDictionaryValue("Forums.LatestPost","Latest Pos")t</div>
                 </div>
                 <div class="wiz-body p-2">
-                    @foreach (var forum in forums)
+                    @foreach (var forum in Model.Forums)
                     {
-                        if (CanView(forum))
+                        if (Model.CanView(forum))
                         {
-                            var cacheInfo = _cacheService.GetPost(forum, "forum_" + forum.Id);
+                            var cachedForum = _cacheService.GetPost(forum, "forum_" + forum.Id);
                             <div id="forum-@forum.Id" class="d-flex flex-row flex-wrap forum type-forum">
                                 <div class="col-8 col-sm-5">
                                     <a class="wiz-forum-title" href="@forum.Url()">@forum.Value("forumTitle")</a>
-                                    <div class="p-2">@forum.Value("forumDescription")</div>
+                                    <div class="p-2">@Html.Raw(forum.Value("forumDescription"))</div>
                                     @if (forum.HasValue("canPostGroups"))
-                                {
-                                        <span class="text-muted small">(@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Restricted","Posting restricted to") @PostRestriction(forum))</span>
-                                }
+                                    {
+                                        <span class="text-muted small">(@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Restricted","Posting restricted to") @Model.PostRestriction(forum))</span>
+                                    }
                                 </div>
-                                <div class="col-2">@cacheInfo.TopicCount</div>
-                                <div class="col-2">@cacheInfo.Count</div>
+                                <div class="col-2">@cachedForum.TopicCount</div>
+                                <div class="col-2">@cachedForum.Count</div>
                                 <div class="col-12 col-sm flex-shrink-0 flex-grow-1">
-                                    @if (cacheInfo.latestPost > DateTime.MinValue)
+                                    @if (cachedForum.latestPost > DateTime.MinValue)
                                     {
                                         <p class="wiz-topic-meta">
-                                            <a href="@cacheInfo.lastPostUrl#post_@cacheInfo.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Jumpto","Jump to latest post")">@cacheInfo.latestPost.GetRelativeDate()</a>
+                                            <a href="@cachedForum.lastPostUrl#post_@cachedForum.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.Jumpto","Jump to latest post")">@cachedForum.latestPost.GetRelativeDate()</a>
                                             by
-                                            <a href="~/profile/?user=@cacheInfo.lastpostAuthor" title="@String.Format(titleStr,cacheInfo.lastpostAuthor)" class="wiz-author-link">
-                                                @cacheInfo.lastpostAuthor
+                                            <a href="~/profile/?user=@cachedForum.lastpostAuthor" title="@String.Format(titleStr,cachedForum.lastpostAuthor)" class="wiz-author-link">
+                                                @cachedForum.lastpostAuthor
                                             </a>
                                         </p>
                                     }
@@ -68,7 +57,7 @@
                         }
                     }
                 </div>
-                @if (roles.Contains("ForumAdministrator"))
+                @if (Model.Roles.Contains("ForumAdministrator"))
                 {
                     <div class="d-flex flex-row text-right">
                         @if (TempData["ForumSaveResult"] != null)
@@ -81,63 +70,12 @@
             </div>
         </div>
     }
-    else if(Model.IsDocumentType("ForumMain"))
+    else if(Model.Content.IsDocumentType("ForumMain"))
     {
         <div>
             <div class="wiz-forums">
                 <h5>@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum.None","No active Forums.")</h5>
             </div>
         </div>
-    }
-}
-
-
-
-
-@functions
-{
-    public bool CanView(IPublishedContent model)
-    {
-
-        var canViewGroups = model.Value<string>("canViewGroups");
-        //all members allowed
-        if (String.IsNullOrWhiteSpace(canViewGroups))
-            return true;
-
-        var allowedGroupList = new List<string>();
-        foreach (var memberGroupStr in canViewGroups.Split(','))
-        {
-            var memberGroup = _memberGroupService.GetById(Convert.ToInt32(memberGroupStr));
-            if (memberGroup != null)
-            {
-                allowedGroupList.Add(memberGroup.Name);
-            }
-        }
-        //check if member is one of the allowed groups
-
-        return _memberManager.IsMemberAuthorizedAsync(null, allowedGroupList).Result;
-    }
-
-    public string PostRestriction(IPublishedContent item)
-    {
-
-        var canPostGroups = item.Value<string>("canPostGroups");
-
-        // default(blank list) is anyone can post
-        if (string.IsNullOrWhiteSpace(canPostGroups))
-            return "";
-
-        // is the user a member of a group
-        // is the user in any of those groups ?
-        var allowedGroupList = new List<string>();
-        foreach (var memberGroupStr in canPostGroups.Split(','))
-        {
-            var memberGroup = _memberGroupService.GetById(Convert.ToInt32(memberGroupStr));
-            if (memberGroup != null)
-            {
-                allowedGroupList.Add(memberGroup.Name);
-            }
-        }
-        return string.Join(", ", allowedGroupList);
     }
 }
