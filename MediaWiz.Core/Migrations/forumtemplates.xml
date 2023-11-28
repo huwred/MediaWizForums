@@ -16,7 +16,7 @@
 @using Umbraco.Extensions
 
 @{
-    Layout = "ForumMaster.cshtml";
+    Layout = "forumMaster.cshtml";
 
     int.TryParse(Context.Request.Query["page"], out var pagemum);
     if (pagemum == 0)
@@ -241,7 +241,7 @@ else
 
 @inject IScopeProvider _ScopeProvider
 @{
-    Layout = "ForumMaster.cshtml";
+    Layout = "forumMaster.cshtml";
 
     int nodeId = Umbraco.AssignedContentItem.Id;
     string cookieName = $"PageView_{nodeId}";
@@ -307,7 +307,7 @@ else
 @using Umbraco.Extensions
 @inject IForumCacheService _forumCache;
 
-@{ Layout = "ForumMaster.cshtml";
+@{ Layout = "forumMaster.cshtml";
 
     int.TryParse(Context.Request.Query["page"], out var pagenum);
     if (pagenum == 0)
@@ -399,7 +399,7 @@ else
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
-    Layout = "ForumMaster.cshtml";
+    Layout = "forumMaster.cshtml";
 }
 
 @section ForumHeader{
@@ -473,7 +473,7 @@ else
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
-    Layout = "ForumMaster.cshtml";
+    Layout = "forumMaster.cshtml";
 
     int.TryParse(Context.Request.Query["page"], out var pagenum);
     if (pagenum == 0)
@@ -513,7 +513,7 @@ else
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
-    Layout = "ForumMaster.cshtml";
+    Layout = "forumMaster.cshtml";
 }
 @section ForumHeader{
     <meta name="robots" content="noindex,nofollow" />
@@ -551,7 +551,7 @@ else
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
-    Layout = "ForumMaster.cshtml";
+    Layout = "forumMaster.cshtml";
 }
 
 @section ForumHeader{
@@ -613,7 +613,7 @@ else
 @using Umbraco.Extensions
 
 @{
-    Layout = "ForumMaster.cshtml";
+    Layout = "forumMaster.cshtml";
     var success = TempData["ValidationSuccess"] != null;
     var error = TempData["ValidationError"] != null;
 }
@@ -722,7 +722,7 @@ else
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<MediaWiz.Forums.Controllers.VerifyViewModel>
 
 @{
-    Layout = "ForumMaster.cshtml";
+    Layout = "forumMaster.cshtml";
     var success = TempData["ValidationSuccess"] != null;
     var error = TempData["ValidationError"] != null;
 }
