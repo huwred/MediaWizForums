@@ -184,6 +184,8 @@ namespace MediaWiz.Forums.Controllers
                 // unlikely but possible we still don't have a node.
                 if (post != null )
                 {
+                    //let's sanitize any text to prevent script injections
+
                     if (!string.IsNullOrWhiteSpace(model.Title))
                     {
                         post.SetValue("postTitle", model.Title);

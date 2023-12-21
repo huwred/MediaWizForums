@@ -1,6 +1,10 @@
 # MediaWizForums #
 Simple Forum add on for Umbraco ≥ 10. 
 
+## 13.0.0 ##
+
+Updated to support Umbraco 13 and .net8.0
+
 ## 10.6.1 ##
 1. Fixed issue with password reset
 2. Fixed issue with index and searching

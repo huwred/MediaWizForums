@@ -187,9 +187,9 @@ namespace MediaWiz.Core.Services
         public string GetEmailTemplate(string template, string dictionaryString, Dictionary<string,string> parameters)
         {
             var dictionaryTemplate = _localisation.GetDictionaryItemByKey(dictionaryString);
-            if (dictionaryTemplate != null && !string.IsNullOrWhiteSpace(dictionaryTemplate.GetDefaultValue()))
+            if (dictionaryTemplate != null && !string.IsNullOrWhiteSpace(dictionaryTemplate.Translations.FirstOrDefault()?.Value))
             {
-                template = dictionaryTemplate.GetDefaultValue();
+                template = dictionaryTemplate.Translations.FirstOrDefault()?.Value;
             }
 
 
@@ -197,7 +197,7 @@ namespace MediaWiz.Core.Services
         }
         private void AllDone(object sender, AsyncCompletedEventArgs e)
         {
-            _logger.LogInformation(e.Error.Message);
+            _logger.LogInformation(e.Error?.Message);
         }
     }
 

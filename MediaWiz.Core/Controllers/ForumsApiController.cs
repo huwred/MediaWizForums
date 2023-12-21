@@ -22,7 +22,7 @@ using Umbraco.Extensions;
 
 namespace MediaWiz.Forums.Controllers
 {
-    public class upload
+    public class Upload
     {
         public string location;
     }
@@ -271,7 +271,7 @@ namespace MediaWiz.Forums.Controllers
 
             var file = _httpContextAccessor.HttpContext.Request.Form.Files;
             var loc = await SaveFileAsync(path, file[0]);
-            var data = new upload()
+            var data = new Upload()
             {
                 location = "/media" + loc + "?width=800"
             };
