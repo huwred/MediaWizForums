@@ -1,5 +1,26 @@
 # MediaWizForums #
 Simple Forum add on for Umbraco ≥ 10. 
+
+## 13.0.1 ##
+Update to support different MemberType. If you want to use a member type other than the created "forumMember", add the following setting in appsettings.json
+```
+  "MediaWizOptions": {
+    "MemberTypeAlias": "myMemberType",
+    ...
+  }
+```
+
+## 13.0.0 ##
+Updated to support Umbraco 13 and .net8.0
+
+## 10.6.1 ##
+1. Fixed issue with password reset
+2. Fixed issue with index and searching
+3. Updated static strings in viewcomponents to use dictionary strings
+4. Added viewcomponent for active topic filter
+5. FIxed issue with indexing of updated field
+
+
 ## IMPORTANT! 10.6.0 update ##
 Some code refactoring and a change to the way the migration works, A problem was discovered where the install would fail
 if your website already contained any document types using the same aliases as the forum package. 
