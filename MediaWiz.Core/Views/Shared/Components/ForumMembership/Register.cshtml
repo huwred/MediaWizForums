@@ -1,6 +1,7 @@
 ﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 @using MediaWiz.Forums.Controllers
 @using MediaWiz.Forums.Extensions
+@using MediaWiz.Forums.Helpers
 @using Microsoft.AspNetCore.Mvc.TagHelpers
 @using Microsoft.Extensions.Options
 @using Umbraco.Cms.Core.Configuration.Models
@@ -11,16 +12,17 @@
 @inject MemberModelBuilderFactory memberModelBuilderFactory;
 @inject IOptions<GlobalSettings> hostingSettings
 @inject ILocalizationService LocalizationService
+@inject IOptions<ForumConfigOptions> forumOptions;
 @{
     // Build a registration model with parameters
     var registerModel = memberModelBuilderFactory
         .CreateRegisterModel()
-        .WithMemberTypeAlias("forumMember")
+        .WithMemberTypeAlias(forumOptions.Value.MemberTypeAlias ?? "forumMember")
         .WithRedirectUrl(null)
         .WithCustomProperties(true)
         .UsernameIsEmail(false)
         .Build();
-
+    var useCaptcha = Model.Value<bool>("useCaptcha");
     var success = TempData["FormSuccess"] != null;
     var _hostingSettings = hostingSettings.Value;
     var warningMsg = LocalizationService.GetOrCreateDictionaryValue("Forums.Members.Register.Emailwarning", "The email will be coming from {0} so please add this domain to your whitelist. Should you not receive your validation email, please post on the Our Umbraco forums");
@@ -35,7 +37,7 @@
 }
 else
 {
-    @if (Model.Value<bool>("useCaptcha"))
+    @if (useCaptcha)
     {
         
         <div id="captchaimage-div">
@@ -109,7 +111,10 @@ else
 
 }
 @Html.PartialViewScriptBlock(@<script type="text/javascript">
-    if ("@success".toLowerCase() === "true") {
-        $(".forum-intro").hide();
-    }
-</script>)
+        if ("@useCaptcha".toLowerCase() === "false") {
+            $('#register-form-id').show();
+        }
+        if ("@success".toLowerCase() === "true") {
+            $(".forum-intro").hide();
+        }
+    </script>)

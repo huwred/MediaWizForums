@@ -27,6 +27,7 @@
 
     bool showTitle = parentPage.IsDocumentType("Forum");
     bool TopicIslocked = !Model.Value<bool>("allowReplies");
+    
     var sortdir = Context.Request.Query["sortdir"];
     var isSolved = Model.Value<bool>("answer");
     var items = Model.Children().Where(x => x.IsDocumentType("Forumpost") && !x.Value<bool>("postType"));
@@ -90,7 +91,6 @@
                 foreach (var reply in replies.Skip((pagenum - 1) * pageSize).Take(pageSize))
                 {
                     @await Component.InvokeAsync("Posts",new {Template = "DisplayPost",Model = reply, showTitle = false})
-                    //DisplayPost(reply, false);
                 }
             }
         </ul>

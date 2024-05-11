@@ -13,7 +13,7 @@
     bool TopicIslocked = !Model.Value<bool>("allowReplies");
     
     var post = Model;
-
+    bool isApproved = !post.Value<bool>("requireApproval") || post.Value<bool>("approved");
     var topicClass = post.Value<bool>("postType") ? "topic" : "reply";
     if (TopicIslocked)
     {
@@ -34,15 +34,18 @@
 
     <li class="@topicClass mt-3" style="overflow: auto">
 
-        @if (post.IsVisible() || roles.Contains("ForumAdministrator"))
+        @if ((post.IsVisible() && isApproved) || roles.Contains("ForumAdministrator"))
         {
             var alertwarning = "";
             var author = post.Value<IPublishedContent>("postAuthor");
-            @if (!post.IsVisible())
+            if (!post.IsVisible())
             {
                 alertwarning = "alert-warning";
             }
-
+            if (!isApproved)
+            {
+                alertwarning = "notapproved";
+            }
             <div class="@topicClass @solved" style="overflow: auto">
 
                 <div class="d-flex wiz-reply-content" id="content_@post.Id" style="overflow: auto;">
@@ -62,9 +65,9 @@
                         </div>
                     </div>
                     <div class="flex-grow-1">
-                        <div id="post_@post.Id" class="wiz-reply-header @solved">
+                        <div id="post_@post.Id" class="wiz-reply-header @solved @alertwarning">
 
-                            <span class="wiz-topic-meta @alertwarning">
+                            <span class="wiz-topic-meta ">
                                 <span class="wiz-author-name mr-3">@post.Value("postCreator")</span>
                                 @if (author != null)
                                 {

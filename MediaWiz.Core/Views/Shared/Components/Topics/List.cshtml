@@ -29,8 +29,6 @@
                     .ThenByDescending(x => _cacheService.GetPost(x, "Topic_" + x.Id).latestPost))
                     {
                         @await Component.InvokeAsync("Posts",new {Template = "DisplayTopic",Model = post,showTitle = true})
-
-                        //DisplayPost(post);
                     }
                 </div>
             </div>
