@@ -139,7 +139,9 @@ namespace MediaWiz.Forums.Controllers
                         // posts that are in a forum, are allowed replies 
                         // thats how the threads work.
                         post.SetValue("allowReplies", true);
+
                     }
+                    
 
                     post.SetValue("postType", model.IsTopic);
                     if (model.IsTopic)
@@ -147,10 +149,22 @@ namespace MediaWiz.Forums.Controllers
                         post.SetValue("intPageSize",parent.GetValue<int>("intPageSize"));
                     }
 
-
                     if (!newPost)
                     {
                         post.SetValue("editDate",DateTime.UtcNow);
+                    }
+                    else
+                    {
+                        //does the post need approval
+                        post.SetValue("requireApproval",parent.GetValue<bool>("requireApproval"));
+                        if (parent.GetValue<bool>("requireApproval"))
+                        {
+                            post.SetValue("approved",false);
+                        }
+                        else
+                        {
+                            post.SetValue("approved",true);
+                        }
                     }
                     var result = _contentService.SaveAndPublish(post);
 
@@ -218,6 +232,7 @@ namespace MediaWiz.Forums.Controllers
             forum.SetValue("postAtRoot", model.AllowPosts);
             forum.SetValue("isActive",true);
             forum.SetValue("allowImages",model.AllowImages);
+            forum.SetValue("requireApproval",model.RequireApproval);
             var result = _contentService.SaveAndPublish(forum);
             TempData["ForumSaveResult"] = result;
             return CurrentUmbracoPage();

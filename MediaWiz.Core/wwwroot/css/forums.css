@@ -230,7 +230,15 @@ ul.wiz-admin-links li a:hover {
     margin-bottom: 0.3em;
     
 }
+.wiz-topics > div.wiz-body > div.notapproved {
+    background-color: #ffd800;
+    margin-bottom: 0.3em;
+    border: 1px solid darkred;
+}
 
+.wiz-topic-meta.notapproved {
+    background-color: darkorange;
+}
 #mediawiz-forums li.topic.locked .wiz-reply-header {
     background-color: darkred;
 }
@@ -239,7 +247,11 @@ ul.wiz-admin-links li a:hover {
     margin-bottom: 0.3em;
     border: 1px solid #777;
 }
-
+.wiz-topics > div.wiz-body > div.notapproved {
+    background-color: #ffd800;
+    margin-bottom: 0.3em;
+    border: 1px solid darkred;
+}
 #mediawiz-forums li.topic.locked div.wiz-topic-meta:before {
     font-family: bootstrap-icons !important;
     content: '\F47B';

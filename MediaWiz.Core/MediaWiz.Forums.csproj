@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net8.0;net7.0;net6.0</TargetFrameworks>
-    <Version>13.1.0-rc004</Version>
+    <Version>13.1.0</Version>
     <AddRazorSupportForMvc>true</AddRazorSupportForMvc>
     <ContentTargetFolders>.</ContentTargetFolders>
     <PackageId>MediaWiz.Forums</PackageId>
@@ -25,9 +25,9 @@
     <PackageReference Include="Microsoft.Maui.Graphics" Version="8.0.21" />
     <PackageReference Include="Microsoft.Maui.Graphics.Skia" Version="8.0.21" />
     <PackageReference Include="SkiaSharp.NativeAssets.Linux.NoDependencies" Version="2.88.8" />
-    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="13.3.0" />
-    <PackageReference Include="Umbraco.Cms.Web.Common" Version="13.3.0" />
-    <PackageReference Include="Umbraco.Cms.Web.Website" Version="13.3.0" />
+    <PackageReference Include="Umbraco.Cms.Web.BackOffice" Version="[13.3.0,13.999)" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="[13.3.0,13.999)" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="[13.3.0,13.999)" />
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework) == 'net7.0'">
     <PackageReference Include="Microsoft.Maui.Graphics" Version="8.0.21" />

@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Examine;
+using MediaWiz.Forums.Helpers;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Strings;
@@ -23,7 +25,7 @@ namespace MediaWiz.Forums.Migrations
         private readonly IExamineManager _examine;
         private readonly IMemberService _memberService;
         private readonly ILocalizationService _localizationService;
-
+        private readonly IOptions<ForumConfigOptions> _forumOptions;
 
         public PublishRootBranchPostMigration(
             ILogger<PublishRootBranchPostMigration> logger,
@@ -35,7 +37,8 @@ namespace MediaWiz.Forums.Migrations
             IShortStringHelper shortStringHelper,
             IExamineManager examine,
             IContentTypeService contentTypeService,
-            IMemberService memberService,ILocalizationService localizationService) : base(context)
+            IMemberService memberService,ILocalizationService localizationService,
+            IOptions<ForumConfigOptions> forumOptions) : base(context)
         {
             _logger = logger;
             _memberGroupService = memberGroupService;
@@ -47,7 +50,7 @@ namespace MediaWiz.Forums.Migrations
             _contentTypeService = contentTypeService;
             _memberService = memberService;
             _localizationService = localizationService;
-
+            _forumOptions = forumOptions;
         }
 
         protected override void Migrate()
@@ -103,7 +106,7 @@ namespace MediaWiz.Forums.Migrations
             }
             catch (Exception e)
             {
-                _logger.LogError(e,"Adding Ansered property");
+                _logger.LogError(e,"Adding Answered property");
                 throw;
             }
 
@@ -152,7 +155,7 @@ namespace MediaWiz.Forums.Migrations
             bool saveMemberContent = false;
 
             string groupname = "Forum Settings";
-            string mType = "forumMember";
+            string mType = _forumOptions.Value.MemberTypeAlias ?? "forumMember";
             IMemberType memberContentType = _memberTypeService.Get(mType);
             if (memberContentType == null)
             {
@@ -162,7 +165,7 @@ namespace MediaWiz.Forums.Migrations
                     memberContentType = new MemberType(_shortStringHelper, -1);
                     memberContentType.Key = Guid.Parse("3CA42B51-86EC-41E8-B1C5-16B8657915CD");
                     memberContentType.Name = "Forum Member";
-                    memberContentType.Alias = "forumMember";
+                    memberContentType.Alias = _forumOptions.Value.MemberTypeAlias ?? "forumMember";
                     memberContentType.Icon = "icon-male-and-female";
                     _memberTypeService.Save(memberContentType);
                 }

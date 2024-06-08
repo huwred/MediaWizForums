@@ -11,6 +11,8 @@ namespace MediaWiz.Forums.Helpers
         public bool UniqueFilenames { get; set; }
 
         public string ForumDoctypes { get; set; }
+
+        public string? MemberTypeAlias { get; set;}
     }
     
 }

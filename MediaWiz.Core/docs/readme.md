@@ -1,5 +1,15 @@
 # MediaWizForums #
-Simple Forum add on for Umbraco ≥ 10. 
+Simple Forum add on for Umbraco versions 10 to 13. 
+
+## 13.0.1 ##
+
+Update to support different MemberType. If you want to use a member type other than the created "forumMember", add the following setting in appsettings.json
+```
+  "MediaWizOptions": {
+    "MemberTypeAlias": "myMemberType",
+    ...
+  }
+```
 
 ## 13.0.0 ##
 

@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using Umbraco.Cms.Core.Cache;
 using Umbraco.Cms.Core.Logging;
 using Umbraco.Cms.Core.Models;
@@ -34,8 +35,9 @@ namespace MediaWiz.Forums.Controllers
         private readonly IMemberManager _memberManager;
         private readonly IMemberSignInManager _memberSignInManager;
         private readonly ILocalizationService _localizationService;
+        private readonly IOptions<ForumConfigOptions> _forumOptions;
 
-        public ForumMemberController(IMemberManager memberManager, IMemberService memberService, IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IMemberSignInManager memberSignInManager, IScopeProvider scopeProvider,ILogger<ForumMemberController> logger,IHttpContextAccessor httpContextAccessor,IForumMailService mailService,ILocalizationService localizationService) 
+        public ForumMemberController(IMemberManager memberManager, IMemberService memberService, IUmbracoContextAccessor umbracoContextAccessor, IUmbracoDatabaseFactory databaseFactory, ServiceContext services, AppCaches appCaches, IProfilingLogger profilingLogger, IPublishedUrlProvider publishedUrlProvider, IMemberSignInManager memberSignInManager, IScopeProvider scopeProvider,ILogger<ForumMemberController> logger,IHttpContextAccessor httpContextAccessor,IForumMailService mailService,ILocalizationService localizationService,IOptions<ForumConfigOptions> forumOptions) 
             : base(memberManager, memberService, umbracoContextAccessor, databaseFactory, services, appCaches, profilingLogger, publishedUrlProvider, memberSignInManager, scopeProvider)
         {
             _logger = logger;
@@ -45,6 +47,7 @@ namespace MediaWiz.Forums.Controllers
             _memberManager = memberManager;
             _memberSignInManager = memberSignInManager;
             _localizationService = localizationService;
+            _forumOptions = forumOptions;
         }
 
         [HttpPost]
@@ -94,7 +97,7 @@ namespace MediaWiz.Forums.Controllers
                 return CurrentUmbracoPage();
             }
 
-            var identityUser = MemberIdentityUser.CreateNew(newmember.Username, newmember.Email, "forumMember", isApproved: false, newmember.Name);
+            var identityUser = MemberIdentityUser.CreateNew(newmember.Username, newmember.Email, _forumOptions.Value.MemberTypeAlias ?? "forumMember", isApproved: false, newmember.Name);
             IdentityResult identityResult = await _memberManager.CreateAsync(
                 identityUser,
                 newmember.Password);

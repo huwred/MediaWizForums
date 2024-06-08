@@ -41,7 +41,9 @@ namespace MediaWiz.Forums.Indexing
                     new("edited", FieldDefinitionTypes.DateTime),
                     new("postType", FieldDefinitionTypes.FullText),
                     new("updated", FieldDefinitionTypes.Long), //changed to long
-                    new ("lastpost", FieldDefinitionTypes.DateTime)
+                    new ("lastpost", FieldDefinitionTypes.DateTime),
+                    new ("requireApproval",FieldDefinitionTypes.Integer),
+                    new ("approved",FieldDefinitionTypes.Integer)
                     );
 
                 options.UnlockIndex = true;
