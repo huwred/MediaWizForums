@@ -1,6 +1,6 @@
 ﻿        var MediaWiz = MediaWiz ||
         {
-            tools: "code undo redo | styleselect | bullist numlist | indent outdent | link codesample emoticons",
+            tools: "code undo redo | styleselect | bullist numlist | indent outdent | link codesample",
             returnUrl: "",
             currLang: getLang(),
             editPost: function(postId) {
@@ -42,6 +42,15 @@
                         location.reload();
                     });
                     locking.fail(function (result) { alert("sorry, there was an error locking this post" + result); });
+                }
+            },
+            approvePost: function(postId) {
+                if (window.confirm("Are you sure you want to Approve this post?")) {
+                    var locking = $.get("/approve/" + postId);
+                    locking.done(function(data, status) {
+                        location.reload();
+                    });
+                    locking.fail(function (result) { alert("sorry, there was an error approving the post" + result); });
                 }
             },
             lockUser: function(user,mode) {
@@ -147,6 +156,11 @@
                 e.stopPropagation();
                 e.preventDefault();
                 MediaWiz.lockPost($(this).data("postid"));
+            });
+            $(".post-approve").on("click",function (e) {
+                e.stopPropagation();
+                e.preventDefault();
+                MediaWiz.approvePost($(this).data("postid"));
             });
             $(".post-answer").on("click",function (e) {
 

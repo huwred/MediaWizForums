@@ -42,12 +42,14 @@ namespace MediaWiz.Forums.Indexing
                     new("postType", FieldDefinitionTypes.FullText),
                     new("updated", FieldDefinitionTypes.Long), //changed to long
                     new ("lastpost", FieldDefinitionTypes.DateTime),
-                    new ("requireApproval",FieldDefinitionTypes.Integer),
-                    new ("approved",FieldDefinitionTypes.Integer)
+                    new("answered", FieldDefinitionTypes.FullText),
+                    new("replies", FieldDefinitionTypes.FullText),
+                    new("requireApproval", FieldDefinitionTypes.Integer),
+                    new("approved", FieldDefinitionTypes.Integer)
                     );
 
                 options.UnlockIndex = true;
-                options.Validator = new ContentValueSetValidator(true, false, _publicAccessService, _scopeProvider, includeItemTypes: new[] { "forumPost" });
+                options.Validator = new ContentValueSetValidator(true,null,new[] { "forumPost" },null); //(true, null, _publicAccessService,  includeItemTypes: new[] { "forumPost" });
 
                 if (_settings.Value.LuceneDirectoryFactory == LuceneDirectoryFactory.SyncedTempFileSystemDirectoryFactory)
                 {

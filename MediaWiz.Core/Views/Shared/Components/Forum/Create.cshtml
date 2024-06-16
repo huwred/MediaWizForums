@@ -34,6 +34,10 @@
                         <input asp-for="@Model.AllowImages" class="form-check-input" type="checkbox" />
                         <label asp-for="@Model.AllowImages" class="form-check-label"></label>
                     </div>
+                    <div class="mb-3 form-check">
+                        <input asp-for="@Model.RequireApproval" class="form-check-input" type="checkbox" />
+                        <label asp-for="@Model.RequireApproval" class="form-check-label"></label>
+                    </div>
                     <input asp-for="@Model.ParentId" type="hidden" />
                 </div>
                 <div class="modal-footer">

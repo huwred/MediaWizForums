@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using MediaWiz.Forums.Models;
 using Microsoft.AspNetCore.Mvc;
+using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.PublishedContent;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
@@ -99,7 +100,7 @@ namespace MediaWiz.Forums.ViewComponents
         public string PostRestriction(IPublishedContent item)
         {
 
-            var canPostGroups = item.Value<string>("canPostGroups");
+            var canPostGroups = item.Value<string>("canPostGroup");
 
             // default(blank list) is anyone can post
             if (string.IsNullOrWhiteSpace(canPostGroups))

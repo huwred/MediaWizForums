@@ -153,15 +153,19 @@ fieldset ul.wiz-admin-links {
     width: 100%;
     box-sizing: border-box
 }
+
 #mediawiz-forums div.reply,  #mediawiz-forums div.wiz-reply-header {
     background-color:#f4f4f4;
 }
+/*    #mediawiz-forums div.topic, #mediawiz-forums .topic div.wiz-reply-header {
+        background-color: #fff;
+    }*/
 #mediawiz-forums div.wiz-reply-footer {
     margin-bottom: 0.9em;
 }
-    #mediawiz-forums div.reply.solution, #mediawiz-forums div.wiz-reply-footer.solution, #mediawiz-forums div.wiz-reply-header.solution {
-        background-color: #a4bda4;
-    }
+#mediawiz-forums div.reply.solution, #mediawiz-forums div.wiz-reply-footer.solution, #mediawiz-forums div.wiz-reply-header.solution {
+    background-color: #a4bda4;
+}
 .wiz-reply-post-date {
     margin-right: .3em;
     float: right;
@@ -173,6 +177,15 @@ fieldset ul.wiz-admin-links {
     background-color: #f4f4f4;
     margin-bottom: .7em;
 }
+#mediawiz-forums .topic .wiz-reply-header {
+    font-weight:700;
+    color: #333;
+}
+
+#mediawiz-forums li.topic.locked .wiz-reply-header {
+    background-color: darkred;
+}
+
 ul.wiz-admin-links li a {
     text-decoration: none !important;
 }
@@ -218,13 +231,11 @@ ul.wiz-admin-links li a:hover {
     overflow: hidden
 }
 
-#mediawiz-forums .topic .wiz-reply-header {
-    background-color: #333;
-    color: white;
-}
+
 #mediawiz-forums li.topic {
     margin-top: 0.6em;
 }
+
 .wiz-topics > div.wiz-body > div.topic {
     background-color: #eee;
     margin-bottom: 0.3em;
@@ -242,16 +253,61 @@ ul.wiz-admin-links li a:hover {
 #mediawiz-forums li.topic.locked .wiz-reply-header {
     background-color: darkred;
 }
+.wiz-topics > div.wiz-body > div.require-approval {
+    margin-bottom: 0.3em;
+    border: 3px solid #ffd800;
+}
+.wiz-topic-meta.notapproved, .wiz-topic-meta.notapproved {
+    background-color: darkorange;
+}
+
 .wiz-topics > div.wiz-body > div.solved {
-    background-color: #8fbc8f;
+    background-color: #8fbc8f !important;
     margin-bottom: 0.3em;
     border: 1px solid #777;
 }
-.wiz-topics > div.wiz-body > div.notapproved {
+div.reply.notapproved {
     background-color: #ffd800;
     margin-bottom: 0.3em;
-    border: 1px solid darkred;
+    border: 3px solid #ffd800;
 }
+.topic {
+    position: relative;
+    width: 100%;
+
+}
+    .topic:hover .approve-overlay {
+        opacity: 1;
+    }
+.approve-overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 100%;
+    opacity: 0.2;
+    transition: .3s ease;
+    background-color: #ffd800;
+    padding: 2px;
+}
+/* The icon inside the overlay is positioned in the middle vertically and horizontally */
+.overlay-icon {
+    color: white;
+    font-size: 32px;
+    position: absolute;
+    top: 50%;
+    right: 1%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+/* When you move the mouse over the icon, change color */
+    .overlay-icon .bi-people:hover {
+        color: #eee;
+    }
 #mediawiz-forums li.topic.locked div.wiz-topic-meta:before {
     font-family: bootstrap-icons !important;
     content: '\F47B';
@@ -386,7 +442,13 @@ ul.wiz-admin-links li a:hover {
     overflow: auto;
     max-width: 100%
 }
-
+#mediawiz-forums .accordion {
+    --bs-accordion-bg: #f0f0f0; /* Change background color */
+    --bs-accordion-color: #333; /* Change text color */
+}
+.bold {
+    font-weight: 700;
+}
 span.wiz-admin-links, ul.wiz-admin-links {
     float: right;
     color: #ddd
@@ -574,4 +636,8 @@ blockquote {
     border-left: 4px solid #ddd;
     padding: 0 15px;
     color: #777;
+}
+
+.wiz-reply-content  .row {
+    --bs-gutter-x: -.5rem;
 }

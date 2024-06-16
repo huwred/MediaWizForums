@@ -2,8 +2,6 @@
 using System.Linq;
 using Examine;
 using Examine.Search;
-using Lucene.Net.Index;
-using Lucene.Net.Search;
 using MediaWiz.Forums.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewEngines;
@@ -14,7 +12,6 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Core.Web;
 using Umbraco.Cms.Infrastructure.Examine;
 using Umbraco.Cms.Web.Common.Controllers;
-using Umbraco.Cms.Web.Common.UmbracoContext;
 using Umbraco.Extensions;
 
 
@@ -41,7 +38,7 @@ namespace MediaWiz.Forums.Controllers
         /// Added date range query
         /// </summary>
         [HttpGet]
-        public IActionResult Index([FromQuery(Name = "page")] int page, [FromQuery(Name = "TopicsSince")] string query)
+        public IActionResult Index([FromQuery(Name = "page")] int page, [FromQuery(Name = "TopicsSince")] string query, [FromQuery(Name = "showonly")] string filter)
         {
             ISearchResults results = null;
             var today = DateTime.Now;
@@ -74,20 +71,40 @@ namespace MediaWiz.Forums.Controllers
             int pageIndex = page - 1;
             if(pageIndex < 0) {pageIndex = 0;}
             int pageSize = CurrentPage.Value<int>("intPageSize");
-
-            if (_examineManager.TryGetIndex("ForumIndex", out var index))
+            if(filter != null)
             {
-                var searcher = index.Searcher;
+                if (_examineManager.TryGetIndex("ForumIndex", out var index))
+                {
+                    var searcher = index.Searcher;
 
+                    var examineQuery = searcher.CreateQuery(IndexTypes.Content)
+                    .Field("postType", "Topic");
 
+                    if (filter == "noreply")
+                    {
+                        examineQuery = examineQuery.And().Field("replies", "0");
+                    }
+                    if (filter == "unsolved")
+                    {
+                        examineQuery = examineQuery.And().Field("answered", "0");
+                    }
+                    results = examineQuery.OrderByDescending(new SortableField[] { new SortableField("updateDate") }).Execute();
+                }
+            }
+            else
+            {
+                if (_examineManager.TryGetIndex("ForumIndex", out var index))
+                {
+                    var searcher = index.Searcher;
 
-                var examineQuery = searcher.CreateQuery(IndexTypes.Content)
-                .Field("postType", "Topic")
-                    //.And().Field("approved", "1")
-                    .And().RangeQuery<long>(new string[] { "updated" }, min, max)
-                    .OrderByDescending(new SortableField[] { new SortableField("updateDate") });
+                    var examineQuery = searcher.CreateQuery(IndexTypes.Content)
+                    .Field("postType", "Topic")
+                        //.And().Field("approved", "1")
+                        .And().RangeQuery<long>(new string[] { "updated" }, min, max)
+                        .OrderByDescending(new SortableField[] { new SortableField("updateDate") });
                 
-                results = examineQuery.Execute();
+                    results = examineQuery.Execute();
+                }
             }
 
             if (results != null)

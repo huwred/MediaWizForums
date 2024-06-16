@@ -38,7 +38,7 @@ namespace MediaWiz.Forums.Models
         public bool AllowPosts { get; set; }
         [DisplayName("Allow Images")]
         public bool AllowImages { get; set; }
-        [DisplayName("Require Approval")]
+        [DisplayName("Require Approval for Posts")]
         public bool RequireApproval { get; set; }
     }
 }

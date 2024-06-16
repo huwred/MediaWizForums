@@ -29,22 +29,31 @@
           <intPageSize><![CDATA[10]]></intPageSize>
           <membersOnly>0</membersOnly>
           <forumPost id="1290" key="e7e38b9c-dc96-4be1-9372-2124358bfd60" parentID="1090" level="3" creatorID="-1" sortOrder="0" createDate="2022-12-07T16:56:04" updateDate="2022-12-07T16:56:04" nodeName="test Post" urlName="test-post" path="-1,1089,1090,1290" isDoc="" nodeType="1067" nodeTypeAlias="forumPost" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
+            <umbracoNaviHide>0</umbracoNaviHide>
+            <hideChildrenFromNav>0</hideChildrenFromNav>
             <postTitle><![CDATA[test Post]]></postTitle>
-            <postBody><![CDATA[<p>Just a test for quotes</p>]]></postBody>
-            <postAuthor></postAuthor>
+            <postBody><![CDATA[{"markup":"<p>Just a test for quotes</p>","blocks":{"contentData":[],"settingsData":[]}}]]></postBody>
+            <postAuthor><![CDATA[umb://member/b967dd594d4c4103a8838f22dabe3caf]]></postAuthor>
             <postType>1</postType>
-            <postCreator><![CDATA[Huw Reddick]]></postCreator>
+            <answer>0</answer>
+            <postCreator><![CDATA[Administrator]]></postCreator>
+            <deletedByAuthor>0</deletedByAuthor>
+            <replyCount>1</replyCount>
             <allowReplies>1</allowReplies>
             <intPageSize><![CDATA[10]]></intPageSize>
+            <approved>0</approved>
             <forumPost id="1291" key="5c196dd2-b5da-4cd7-8764-5af30550a6d6" parentID="1290" level="4" creatorID="-1" sortOrder="0" createDate="2022-12-07T16:59:04" updateDate="2022-12-07T16:59:04" nodeName="reply_20221207045904" urlName="reply_20221207045904" path="-1,1089,1090,1290,1291" isDoc="" nodeType="1067" nodeTypeAlias="forumPost" creatorName="Huw Reddick" writerName="Huw Reddick" writerID="-1" template="" isPublished="true">
-              <postBody><![CDATA[<blockquote>
-<p>Just a test for quotes</p>
-</blockquote>
-<p>Reply with quote</p>]]></postBody>
-              <postAuthor></postAuthor>
+              <umbracoNaviHide>0</umbracoNaviHide>
+              <hideChildrenFromNav>0</hideChildrenFromNav>
+              <postBody><![CDATA[{"markup":"<blockquote>\n<p>Just a test for quotes</p>\n</blockquote>\n<p>Reply with quote</p>","blocks":{"contentData":[],"settingsData":[]}}]]></postBody>
+              <postAuthor><![CDATA[umb://member/b967dd594d4c4103a8838f22dabe3caf]]></postAuthor>
               <postType>0</postType>
-              <postCreator><![CDATA[Huw Reddick]]></postCreator>
+              <answer>0</answer>
+              <postCreator><![CDATA[Administrator]]></postCreator>
+              <deletedByAuthor>0</deletedByAuthor>
               <allowReplies>1</allowReplies>
+              <intPageSize><![CDATA[10]]></intPageSize>
+              <approved>0</approved>
             </forumPost>
           </forumPost>
         </forum>
@@ -240,6 +249,19 @@
           <Validation></Validation>
           <ValidationRegExpMessage></ValidationRegExpMessage>
           <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Require Approval</Name>
+          <Alias>requireApproval</Alias>
+          <Key>84c6263a-e95d-4c0d-b425-30ae795a4a6c</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <Description><![CDATA[Posts require approval.]]></Description>
           <Variations>Nothing</Variations>
         </GenericProperty>
         <GenericProperty>
@@ -472,6 +494,19 @@
           <Variations>Nothing</Variations>
         </GenericProperty>
         <GenericProperty>
+          <Name>Answer</Name>
+          <Alias>answer</Alias>
+          <Key>00cc1c63-9086-4a72-a21b-6cc84960b79b</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>dc500a08-593c-44bd-9e46-905d859c9adb</Definition>
+          <Tab Alias="general">General</Tab>
+          <SortOrder>4</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <Description><![CDATA[Marked as solution/resolved.]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
           <Name>Post Creator</Name>
           <Alias>postCreator</Alias>
           <Key>2af528c0-12c5-4ca0-99e9-d0b818abe2a8</Key>
@@ -517,6 +552,19 @@
           <Validation></Validation>
           <ValidationRegExpMessage></ValidationRegExpMessage>
           <Description><![CDATA[Set if the author deleted the post, otherwise assume it was an Administrator or Moderator]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Replies</Name>
+          <Alias>replyCount</Alias>
+          <Key>c2e08f2f-c35e-4cee-9590-b3248a6adb96</Key>
+          <Type>Umbraco.Integer</Type>
+          <Definition>2e6d3631-066e-44b8-aec4-96f09099b2b5</Definition>
+          <Tab Alias="postInfo1">Post Info</Tab>
+          <SortOrder>3</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <Description><![CDATA[Number of replies.]]></Description>
           <Variations>Nothing</Variations>
         </GenericProperty>
         <GenericProperty>
@@ -567,6 +615,31 @@
           <Description><![CDATA[]]></Description>
           <Variations>Nothing</Variations>
         </GenericProperty>
+        <GenericProperty>
+          <Name>Approved</Name>
+          <Alias>approved</Alias>
+          <Key>6bf64b84-b947-438c-ba89-eb66e9cfffb8</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>ae1abc4d-4c13-42f8-a483-b5cef0866896</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>3</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <Description><![CDATA[Post has been approved.]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Unapproved Replies</Name>
+          <Alias>unapprovedReplies</Alias>
+          <Key>9dae69fd-c6de-46af-9da7-4c62a96dc701</Key>
+          <Type>Umbraco.Integer</Type>
+          <Definition>2e6d3631-066e-44b8-aec4-96f09099b2b5</Definition>
+          <Tab Alias="settings">Settings</Tab>
+          <SortOrder>4</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
       </GenericProperties>
       <Tabs>
         <Tab>
@@ -592,6 +665,93 @@
           <Caption>Settings</Caption>
           <Alias>settings</Alias>
           <SortOrder>3</SortOrder>
+        </Tab>
+      </Tabs>
+      <HistoryCleanupPolicy preventCleanup="false" />
+    </DocumentType>
+    <DocumentType Folders="Compositions" FolderKeys="793b05ff-b1b8-43bf-abec-8366f124c6ed">
+      <Info>
+        <Name>ForumCommon</Name>
+        <Alias>forumCommon</Alias>
+        <Key>8a9597b1-741d-4623-80f1-2ff7198dcc0a</Key>
+        <Icon>icon-defrag</Icon>
+        <Thumbnail>folder.png</Thumbnail>
+        <Description />
+        <AllowAtRoot>False</AllowAtRoot>
+        <IsListView>False</IsListView>
+        <IsElement>True</IsElement>
+        <Variations>Nothing</Variations>
+        <Compositions />
+        <AllowedTemplates />
+        <DefaultTemplate></DefaultTemplate>
+      </Info>
+      <Structure />
+      <GenericProperties>
+        <GenericProperty>
+          <Name>Umbraco Navi Hide</Name>
+          <Alias>umbracoNaviHide</Alias>
+          <Key>972ce6e7-463c-4e55-9e49-1c7af8efd6eb</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="umbNav/navigation">Navigation</Tab>
+          <SortOrder>0</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Hide Children From Nav</Name>
+          <Alias>hideChildrenFromNav</Alias>
+          <Key>2c124069-4c9c-4737-9e9d-09096629a89d</Key>
+          <Type>Umbraco.TrueFalse</Type>
+          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
+          <Tab Alias="umbNav/navigation">Navigation</Tab>
+          <SortOrder>1</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+        <GenericProperty>
+          <Name>Umbraco Url Alias</Name>
+          <Alias>umbracoUrlAlias</Alias>
+          <Key>1697604e-8a3d-4e37-a39c-2431978b72f8</Key>
+          <Type>Umbraco.TextBox</Type>
+          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
+          <Tab Alias="umbNav/navigation">Navigation</Tab>
+          <SortOrder>2</SortOrder>
+          <Mandatory>False</Mandatory>
+          <LabelOnTop>False</LabelOnTop>
+          <MandatoryMessage></MandatoryMessage>
+          <Validation></Validation>
+          <ValidationRegExpMessage></ValidationRegExpMessage>
+          <Description><![CDATA[]]></Description>
+          <Variations>Nothing</Variations>
+        </GenericProperty>
+      </GenericProperties>
+      <Tabs>
+        <Tab>
+          <Id>56</Id>
+          <Key>8e6cf32a-cd26-4b99-b8ac-2fceebae82e0</Key>
+          <Type>Group</Type>
+          <Caption>Navigation</Caption>
+          <Alias>umbNav/navigation</Alias>
+          <SortOrder>-1</SortOrder>
+        </Tab>
+        <Tab>
+          <Id>57</Id>
+          <Key>d46201f4-a47c-4fee-a7cd-4d4d0b0aaf8d</Key>
+          <Type>Tab</Type>
+          <Caption>UmbNav</Caption>
+          <Alias>umbNav</Alias>
+          <SortOrder>99</SortOrder>
         </Tab>
       </Tabs>
       <HistoryCleanupPolicy preventCleanup="false" />
@@ -1109,258 +1269,24 @@
       <Tabs />
       <HistoryCleanupPolicy preventCleanup="false" />
     </DocumentType>
-    <DocumentType Folders="Compositions" FolderKeys="793b05ff-b1b8-43bf-abec-8366f124c6ed">
-      <Info>
-        <Name>ForumCommon</Name>
-        <Alias>forumCommon</Alias>
-        <Key>8a9597b1-741d-4623-80f1-2ff7198dcc0a</Key>
-        <Icon>icon-defrag</Icon>
-        <Thumbnail>folder.png</Thumbnail>
-        <Description />
-        <AllowAtRoot>False</AllowAtRoot>
-        <IsListView>False</IsListView>
-        <IsElement>True</IsElement>
-        <Variations>Nothing</Variations>
-        <Compositions />
-        <AllowedTemplates />
-        <DefaultTemplate></DefaultTemplate>
-      </Info>
-      <Structure />
-      <GenericProperties>
-        <GenericProperty>
-          <Name>Umbraco Navi Hide</Name>
-          <Alias>umbracoNaviHide</Alias>
-          <Key>972ce6e7-463c-4e55-9e49-1c7af8efd6eb</Key>
-          <Type>Umbraco.TrueFalse</Type>
-          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
-          <Tab Alias="umbNav/navigation">Navigation</Tab>
-          <SortOrder>0</SortOrder>
-          <Mandatory>False</Mandatory>
-          <LabelOnTop>False</LabelOnTop>
-          <MandatoryMessage></MandatoryMessage>
-          <Validation></Validation>
-          <ValidationRegExpMessage></ValidationRegExpMessage>
-          <Description><![CDATA[]]></Description>
-          <Variations>Nothing</Variations>
-        </GenericProperty>
-        <GenericProperty>
-          <Name>Hide Children From Nav</Name>
-          <Alias>hideChildrenFromNav</Alias>
-          <Key>2c124069-4c9c-4737-9e9d-09096629a89d</Key>
-          <Type>Umbraco.TrueFalse</Type>
-          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
-          <Tab Alias="umbNav/navigation">Navigation</Tab>
-          <SortOrder>1</SortOrder>
-          <Mandatory>False</Mandatory>
-          <LabelOnTop>False</LabelOnTop>
-          <MandatoryMessage></MandatoryMessage>
-          <Validation></Validation>
-          <ValidationRegExpMessage></ValidationRegExpMessage>
-          <Description><![CDATA[]]></Description>
-          <Variations>Nothing</Variations>
-        </GenericProperty>
-        <GenericProperty>
-          <Name>Umbraco Url Alias</Name>
-          <Alias>umbracoUrlAlias</Alias>
-          <Key>1697604e-8a3d-4e37-a39c-2431978b72f8</Key>
-          <Type>Umbraco.TextBox</Type>
-          <Definition>0cc0eba1-9960-42c9-bf9b-60e150b429ae</Definition>
-          <Tab Alias="umbNav/navigation">Navigation</Tab>
-          <SortOrder>2</SortOrder>
-          <Mandatory>False</Mandatory>
-          <LabelOnTop>False</LabelOnTop>
-          <MandatoryMessage></MandatoryMessage>
-          <Validation></Validation>
-          <ValidationRegExpMessage></ValidationRegExpMessage>
-          <Description><![CDATA[]]></Description>
-          <Variations>Nothing</Variations>
-        </GenericProperty>
-      </GenericProperties>
-      <Tabs>
-        <Tab>
-          <Id>98</Id>
-          <Key>8e6cf32a-cd26-4b99-b8ac-2fceebae82e0</Key>
-          <Type>Group</Type>
-          <Caption>Navigation</Caption>
-          <Alias>umbNav/navigation</Alias>
-          <SortOrder>-1</SortOrder>
-        </Tab>
-        <Tab>
-          <Id>97</Id>
-          <Key>d46201f4-a47c-4fee-a7cd-4d4d0b0aaf8d</Key>
-          <Type>Tab</Type>
-          <Caption>UmbNav</Caption>
-          <Alias>umbNav</Alias>
-          <SortOrder>99</SortOrder>
-        </Tab>
-      </Tabs>
-      <HistoryCleanupPolicy preventCleanup="false" />
-    </DocumentType>
   </DocumentTypes>
   <MediaTypes />
   <Templates />
   <Stylesheets />
   <Scripts />
-  <PartialViews>
-    <View path="Navigation\_TopNavigation.cshtml"><![CDATA[@using Umbraco.Cms.Core.Models.PublishedContent
-@using Umbraco.Extensions
-@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
-
-@{
-    var site = (IPublishedContent)Umbraco.ContentAtRoot().FirstOrDefault();
-    var children = site.Children().Where(x => x.IsVisible());
-    var siblings = site.Siblings();
-}
-
-<!-- create your responsive navbar -->
-<nav class=" navbar-expand-lg navbar navbar-light bg-white" id="myNavbar">
-    <!-- next is where your logo goes -->
-    <img src="/wizard.jpg?width=60&height=60" alt="MediaWizards Logo" />
-    <a href="@site.Url()" class="navbar-brand" title="@site.Value("siteName")">@site.Value("siteName")</a>
-    <!-- next is your mobile burger menu toggle -->
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-
-    <!-- now we go to the main bit of the nav -->
-    <div class="collapse navbar-collapse" id="mainNav">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-            <!-- un comment the following line if you want to add the root node name to the top navigation
-            <li class="nav-item px-4"><a class="nav-link @Html.Raw(Model.Id == site.Id ? "navi-link--active" : "")" href="@site.Url()">@site.Name</a></li>-->
-
-            @foreach (var item in children)
-            {
-                if (item.Children().Any(x => x.IsVisible()) && !item.Value<bool>("hideChildrenFromNav"))
-                {
-                    <li class="nav-item px-4 dropdown">
-                        <a class="nav-link dropdown-toggle @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="#" id="@($"{item.Name.Replace(" ", "")}Dropdown")" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Name</a>
-                        <div class="dropdown-menu" aria-labelledby="@($"{item.Name.Replace(" ", "")}Dropdown")">
-                            @foreach (var child in item.Children().Where(x => x.IsVisible()))
-                            {
-                                <a class="dropdown-item" href="@child.Url()">@child.Name</a>
-                            }
-                        </div>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item px-4"><a class="nav-link @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@item.Url()">@item.Name</a></li>
-                }
-            }
-            @foreach (var item in siblings)
-            {
-                if (item.Children().Any(x => x.IsVisible()) && !item.Value<bool>("hideChildrenFromNav"))
-                {
-                    <li class="nav-item px-4 dropdown">
-                        <a class="nav-link dropdown-toggle @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="#" id="@($"{item.Name.Replace(" ", "")}Dropdown")" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Name</a>
-                        <div class="dropdown-menu" aria-labelledby="@($"{item.Name.Replace(" ", "")}Dropdown")">
-                            @foreach (var child in item.Children().Where(x => x.IsVisible()))
-                            {
-                                <a class="dropdown-item" href="@child.Url()">@child.Name</a>
-                            }
-                        </div>
-                    </li>
-                }
-                else
-                {
-                    <li class="nav-item px-4"><a class="nav-link @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@item.Url()">@item.Name</a></li>
-                }
-            }
-        </ul>
-    </div>
-</nav>]]></View>
-  </PartialViews>
-  <Macros>
-    <macro>
-      <name>Latest Forum Posts</name>
-      <key>36e8062f-55cb-41c5-8dab-7084651ad4ad</key>
-      <alias>LatestForumPosts</alias>
-      <macroSource>~/Views/MacroPartials/Latest Forum Posts.cshtml</macroSource>
-      <useInEditor>True</useInEditor>
-      <dontRender>False</dontRender>
-      <refreshRate>0</refreshRate>
-      <cacheByMember>False</cacheByMember>
-      <cacheByPage>False</cacheByPage>
-      <properties>
-        <property key="84dfdf55-7f59-42d9-83d5-fc7b1ca7d89c" name="NumberOfPosts" alias="numberOfPosts" sortOrder="1" propertyType="Umbraco.Integer" />
-        <property key="b94a9fd9-112b-4850-84c6-bae3a837a4a4" name="Select starting page" alias="startNodeId" sortOrder="0" propertyType="Umbraco.ContentPicker" />
-      </properties>
-    </macro>
-  </Macros>
-  <MacroPartialViews>
-    <View path="Latest Forum Posts.cshtml"><![CDATA[@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
-@using Umbraco.Cms.Core
-@using Umbraco.Cms.Core.Routing
-@using Umbraco.Extensions
-
-@inject IPublishedContentQuery PublishedContentQuery
-@inject IPublishedValueFallback PublishedValueFallback
-@inject IPublishedUrlProvider PublishedUrlProvider
-
-
-@{
-    var startNodeId = Model?.MacroParameters["startNodeId"]; 
-    var numberOfPosts = 3;
-    if (Model.MacroParameters["numberOfPosts"] != null)
-    {
-        int.TryParse((string)Model.MacroParameters["numberOfPosts"], out numberOfPosts);
-    }
-    
-    if (startNodeId != null)
-    {
-    @* Get the starting page *@
-        var startNode = PublishedContentQuery.Content(startNodeId);
-        var selection = startNode.DescendantsOrSelf()
-            .Where(x => x.IsVisible(PublishedValueFallback) && x.Value<bool>("postType"))
-            .OrderByDescending(o=>o.Value("editDate"))
-            .ThenByDescending(o => o.CreateDate).Take(numberOfPosts).ToArray();
-
-if (selection.Length > 0)
-{
-            <div class="sidebar">
-                <span class="wiz-forum-title">&nbsp;Latest forum posts</span>
-                <ul class="wiz-topics">
-                    <li class="wiz-body">
-                        @foreach (var item in selection)
-                        {
-                            var editdate = item.Value<DateTime>("editDate");
-                            <ul class="topic">
-                                <li class="wiz-topic-content">
-                                    <a class="wiz-topic-permalink" href="@item.Url(PublishedUrlProvider)">@item.Value("postTitle")</a>
-                                    <span class="wiz-topic-meta">@item.Value("postBody")</span>
-                                    <span class="wiz-topic-header">Created by @item.Value("postCreator") on <span class="wiz-topic-permalink">@item.CreateDate.ToLongDateString() at @item.CreateDate.ToLocalTime().ToShortTimeString()</span>
-                                        @if (editdate == DateTime.MinValue)
-                                        {
-
-                                        }
-                                        else
-                                        {
-                                            <span><br />Latest post @editdate.ToLocalTime().ToLongDateString() at @editdate.ToLocalTime().ToShortTimeString()</span>
-                                        }
-                                        
-                                    </span>
-                                </li>
-                            </ul>
-                        }
-                    </li>
-                </ul>
-            </div>
-        }
-    }
-}
-
-]]></View>
-  </MacroPartialViews>
+  <PartialViews />
+  <Macros />
+  <MacroPartialViews />
   <DictionaryItems />
   <Languages />
   <DataTypes>
+    <DataType Name="Forum - Approved - Toggle" Id="Umbraco.TrueFalse" Definition="ae1abc4d-4c13-42f8-a483-b5cef0866896" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Approved&quot;,&quot;labelOff&quot;:&quot;Not Approved&quot;}" />
     <DataType Name="Forum - Member Group Picker" Id="Umbraco.MemberGroupPicker" Definition="d1acd2f4-5ba8-440f-af31-e1ee16eb5fb6" DatabaseType="Ntext" Configuration="{}" />
     <DataType Name="Forum - Page Size - Search" Id="Umbraco.Slider" Definition="cc9c0125-73ed-4bbe-b431-ad7cdcfa93b8" DatabaseType="Nvarchar" Configuration="{&quot;enableRange&quot;:false,&quot;initVal1&quot;:25.0,&quot;initVal2&quot;:0.0,&quot;minVal&quot;:10.0,&quot;maxVal&quot;:100.0,&quot;step&quot;:5.0}" />
     <DataType Name="Forum - Page Size - Topics" Id="Umbraco.Slider" Definition="d62b131a-74c3-4f33-bf9a-3e1f5882fae9" DatabaseType="Nvarchar" Configuration="{&quot;enableRange&quot;:false,&quot;initVal1&quot;:10.0,&quot;initVal2&quot;:0.0,&quot;minVal&quot;:10.0,&quot;maxVal&quot;:100.0,&quot;step&quot;:5.0}" />
     <DataType Name="Forum - Post Type - Toggle" Id="Umbraco.TrueFalse" Definition="4d4c1220-72c9-42be-bf25-0c44dfdd5d1a" DatabaseType="Integer" Configuration="{&quot;default&quot;:true,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Topic&quot;,&quot;labelOff&quot;:&quot;Reply&quot;}" />
+    <DataType Name="Forum - Require - Toggle" Id="Umbraco.TrueFalse" Definition="99355d00-b42f-4c18-8033-6991e1d4dff2" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Required&quot;,&quot;labelOff&quot;:&quot;Not Required&quot;}" />
     <DataType Name="Forum - Resolved - Toggle" Id="Umbraco.TrueFalse" Definition="dc500a08-593c-44bd-9e46-905d859c9adb" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Answered&quot;,&quot;labelOff&quot;:&quot;Not Answered&quot;}" />
-    <DataType Name="List View - Members" Id="Umbraco.ListView" Definition="aa2c52a0-ce87-4e65-a47c-7df09358585d" DatabaseType="Nvarchar" Configuration="{&quot;pageSize&quot;:10,&quot;orderBy&quot;:&quot;username&quot;,&quot;orderDirection&quot;:&quot;asc&quot;,&quot;includeProperties&quot;:[{&quot;alias&quot;:&quot;username&quot;,&quot;isSystem&quot;:1},{&quot;alias&quot;:&quot;email&quot;,&quot;isSystem&quot;:1},{&quot;alias&quot;:&quot;updateDate&quot;,&quot;header&quot;:&quot;Last edited&quot;,&quot;isSystem&quot;:1}],&quot;layouts&quot;:[{&quot;name&quot;:&quot;List&quot;,&quot;path&quot;:&quot;views/propertyeditors/listview/layouts/list/list.html&quot;,&quot;icon&quot;:&quot;icon-list&quot;,&quot;isSystem&quot;:1,&quot;selected&quot;:true},{&quot;name&quot;:&quot;Grid&quot;,&quot;path&quot;:&quot;views/propertyeditors/listview/layouts/grid/grid.html&quot;,&quot;icon&quot;:&quot;icon-thumbnails-small&quot;,&quot;isSystem&quot;:1,&quot;selected&quot;:true}],&quot;bulkActionPermissions&quot;:{&quot;allowBulkPublish&quot;:true,&quot;allowBulkUnpublish&quot;:true,&quot;allowBulkCopy&quot;:true,&quot;allowBulkMove&quot;:true,&quot;allowBulkDelete&quot;:true},&quot;showContentFirst&quot;:false,&quot;useInfiniteEditor&quot;:false}" />
   </DataTypes>
   <MediaItems/>
 </umbPackage>

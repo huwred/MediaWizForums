@@ -48,42 +48,54 @@
         Post.ParentId = Model.Id;
         Post.IsTopic = showTitle;
 
-        using (Html.BeginUmbracoForm<ForumsSurfaceController>("PostReply", null, new { @class = "form-horizontal forum-reply-form" }))
-        {
-            <fieldset>
+        <div class="accordion " id="accordionFlushExample">
+            <div class="accordion-item">
+                <h2 class="accordion-header" id="flush-headingOne">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                        @mode
+                    </button>
+                </h2>
+                <div id="flush-collapseOne" class="accordion-collapse collapse p-3" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                    @using (Html.BeginUmbracoForm<ForumsSurfaceController>("CreatePost", null, new { @class = "form-horizontal forum-reply-form" }))
+                    {
+                        <fieldset>
 
-                @Html.ValidationSummary("Reply", true)
+                            @Html.ValidationSummary("Reply", true)
 
-                @if (showTitle)
-                {
-                    <legend>@mode</legend>
-                    <div class="form-group">
-                        <label asp-for="@Post.Title" class="control-label col-1"></label>
-                        <div class="col-11">
-                            <input asp-for="@Post.Title" class="form-control" aria_required="true" />
-                            <span asp-validation-for="@Post.Title" class="form-text text-danger"></span>
-                        </div>
-                    </div>
+                            @if (showTitle)
+                            {
+                                <div class="row g-3 align-items-center">
+                                    <div class="col-auto">
+                                        <label asp-for="@Post.Title" class="col-form-label"></label>
+                                    </div>
+                                    <div class="col-7">
+                                        <input asp-for="@Post.Title" class="form-control" aria_required="true" />
+                                        <span asp-validation-for="@Post.Title" class="form-text text-danger"></span>
+                                    </div>
+                                </div>
 
-                }
+                            }
 
-                <div class="form-group">
-                    <label class="control-label col-1">&nbsp;</label>
-                    <div class="col ms-5">
-                        <textarea asp-for="@Post.Body" class="form-control new-post" aria_required="true" rows="10" cols="20"></textarea>
-                        <span asp-validation-for="@Post.Body" class="form-text text-danger"></span>
-                    </div>
+                            <div class="mb-3">
+                                <div class="col ms-5">
+                                    <textarea asp-for="@Post.Body" class="form-control new-post" aria_required="true" rows="10" cols="20"></textarea>
+                                    <span asp-validation-for="@Post.Body" class="form-text text-danger"></span>
+                                </div>
+                            </div>
+                            <input asp-for="@Post.Id" type="hidden" />
+                            <input asp-for="@Post.ParentId" type="hidden" />
+                            <input asp-for="@Post.AuthorId" type="hidden" />
+                            <input asp-for="@Post.IsTopic" type="hidden" />
+
+                            <div class="col ms-5 p-2">
+                                <button type="submit" class="btn btn-dark">@btn</button> <button type="button" class="btn btn-secondary btn-cancel">@LocalizationService.GetOrCreateDictionaryValue("Forums.Cancel", "Cancel")</button>
+                            </div>
+                        </fieldset>
+                    }
                 </div>
-                <input asp-for="@Post.Id" type="hidden" />
-                <input asp-for="@Post.ParentId" type="hidden" />
-                <input asp-for="@Post.AuthorId" type="hidden" />
-                <input asp-for="@Post.IsTopic" type="hidden" />
+            </div>
+        </div>
 
-                <div class="col ms-5 p-2">
-                    <button type="submit" class="btn btn-dark">@btn</button> <button type="button" class="btn btn-secondary btn-cancel">@LocalizationService.GetOrCreateDictionaryValue("Forums.Cancel","Cancel")</button>
-                </div>
-            </fieldset>
-        }
     }
 }
 

@@ -37,8 +37,7 @@ namespace MediaWiz.Forums.Migrations
             IShortStringHelper shortStringHelper,
             IExamineManager examine,
             IContentTypeService contentTypeService,
-            IMemberService memberService,ILocalizationService localizationService,
-            IOptions<ForumConfigOptions> forumOptions) : base(context)
+            IMemberService memberService,ILocalizationService localizationService,IOptions<ForumConfigOptions> forumOptions) : base(context)
         {
             _logger = logger;
             _memberGroupService = memberGroupService;
@@ -51,6 +50,7 @@ namespace MediaWiz.Forums.Migrations
             _memberService = memberService;
             _localizationService = localizationService;
             _forumOptions = forumOptions;
+
         }
 
         protected override void Migrate()

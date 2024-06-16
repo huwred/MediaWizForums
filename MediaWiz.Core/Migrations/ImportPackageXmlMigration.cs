@@ -54,7 +54,7 @@ namespace MediaWiz.Forums.Migrations
                 _packagingService.InstallCompiledPackageData(packageXml);
             }
 
-            Context.AddPostMigration<PublishRootBranchPostMigration>();
+
         }
     }
 }

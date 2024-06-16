@@ -139,6 +139,138 @@ namespace MediaWiz.Forums.Controllers
                         // posts that are in a forum, are allowed replies 
                         // thats how the threads work.
                         post.SetValue("allowReplies", true);
+                    }
+
+                    post.SetValue("postType", model.IsTopic);
+                    if (model.IsTopic)
+                    {
+                        var admins = _memberService.FindMembersInRole("ForumAdministrator",User.Identity.Name);
+                        var mods = _memberService.FindMembersInRole("ForumModerator",User.Identity.Name);
+
+                        post.SetValue("intPageSize",parent.GetValue<int>("intPageSize"));
+                        if (!admins.Any() && !mods.Any())
+                        {
+                            if (parent.GetValue<bool>("requireApproval"))
+                            {
+                                post.SetValue("approved", false);
+                            }
+                            else
+                            {
+                                post.SetValue("approved", true);
+                            }
+                        }
+                        else
+                        {
+                            post.SetValue("approved", true);
+                        }
+
+                    }
+                    else //post is a reply so need to get the Forum
+                    {
+                        var admins = _memberService.FindMembersInRole("ForumAdministrator",User.Identity.Name);
+                        var mods = _memberService.FindMembersInRole("ForumModerator",User.Identity.Name);
+                        var forum = _contentService.GetById(parent.ParentId);
+                        if (!admins.Any() && !mods.Any())
+                        {
+                            if (forum.GetValue<bool>("requireApproval"))
+                            {
+                                post.SetValue("approved", false);
+                                var counter = parent.GetValue<int>("unapprovedReplies");
+                                counter += 1;
+                                parent.SetValue("unapprovedReplies",counter);
+
+                                _contentService.SaveAndPublish(parent, new string[] { "*" });
+                            }
+                            else
+                            {
+                                post.SetValue("approved", true);
+                            }
+                        }
+                        else
+                        {
+                            post.SetValue("approved", true);
+                        }
+
+                    }
+
+                    if (!newPost)
+                    {
+                        post.SetValue("editDate",DateTime.UtcNow);
+                    }
+                    
+                    var result = _contentService.SaveAndPublish(post, new string[] { "*" });
+
+                    return RedirectToCurrentUmbracoPage();
+                }
+            }
+            ModelState.AddModelError("Post",_localizationService.GetOrCreateDictionaryValue("Forums.Error.PostError","Error creating the post") );
+            return RedirectToCurrentUmbracoPage();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreatePost([Bind(Prefix="Post")]ForumsPostModel model)
+        {
+            if (await CanPost(model) == false)
+            {
+                ModelState.AddModelError("Reply",_localizationService.GetOrCreateDictionaryValue("Forums.Error.PostPermission","You do not have permissions to post here") );
+                return CurrentUmbracoPage();
+            }            
+            IEnumerable<ILanguage> languages = _localizationService.GetAllLanguages();
+
+            if (!ModelState.IsValid)
+            {
+                ModelState.AddModelError("Reply",_localizationService.GetOrCreateDictionaryValue("Forums.Error.InvalidReply","Error posting (invalid model)") );
+                return  CurrentUmbracoPage();
+            }
+
+            var postName =
+                $"reply_{DateTime.UtcNow:yyyyMMddhhmmss}";
+
+            if (!string.IsNullOrWhiteSpace(model.Title))
+            {
+                postName = model.Title;
+            }
+
+
+            var parent = _contentService.GetById(model.ParentId);
+            bool newPost = false;
+            if (parent != null)
+            {
+                IContent post = null;
+                if (model.Id > 0)
+                    post = _contentService.GetById(model.Id);
+
+                if (post == null)
+                {
+                    post = _contentService.Create(postName, parent, "forumPost");
+                    if (post.AvailableCultures.Any())
+                    {
+                        foreach (var language in languages)
+                        {
+                            post.SetCultureName(postName,language.IsoCode);
+                        }
+                    }
+                    newPost = true;
+                }
+
+                // unlikely but possible we still don't have a node.
+                if (post != null )
+                {
+                    post.SetValue("postTitle", model.Title);
+                    post.SetValue("postBody", model.Body);
+
+                    var author = _memberService.GetById(model.AuthorId);
+                    if (author != null)
+                    {
+                        post.SetValue("postCreator", author.Name);
+                        post.SetValue("postAuthor", author.Id);
+                    }
+
+                    if (parent.ContentType.Alias != "Forum")
+                    {
+                        // posts that are in a forum, are allowed replies 
+                        // thats how the threads work.
+                        post.SetValue("allowReplies", true);
 
                     }
                     
@@ -146,25 +278,58 @@ namespace MediaWiz.Forums.Controllers
                     post.SetValue("postType", model.IsTopic);
                     if (model.IsTopic)
                     {
+                        var admins = _memberService.FindMembersInRole("ForumAdministrator",User.Identity.Name);
+                        var mods = _memberService.FindMembersInRole("ForumModerator",User.Identity.Name);
+
                         post.SetValue("intPageSize",parent.GetValue<int>("intPageSize"));
+                        if (!admins.Any() && !mods.Any())
+                        {
+                            if (parent.GetValue<bool>("requireApproval"))
+                            {
+                                post.SetValue("approved", false);
+                            }
+                            else
+                            {
+                                post.SetValue("approved", true);
+                            }
+                        }
+                        else
+                        {
+                            post.SetValue("approved", true);
+                        }
+
+                    }
+                    else //post is a reply so need to get the Forum
+                    {
+                        var admins = _memberService.FindMembersInRole("ForumAdministrator",User.Identity.Name);
+                        var mods = _memberService.FindMembersInRole("ForumModerator",User.Identity.Name);
+                        var forum = _contentService.GetById(parent.ParentId);
+                        if (!admins.Any() && !mods.Any())
+                        {
+                            if (forum.GetValue<bool>("requireApproval"))
+                            {
+                                post.SetValue("approved", false);
+                                var counter = parent.GetValue<int>("unapprovedReplies");
+                                counter += 1;
+                                parent.SetValue("unapprovedReplies",counter);
+
+                                _contentService.SaveAndPublish(parent, new string[] { "*" });
+                            }
+                            else
+                            {
+                                post.SetValue("approved", true);
+                            }
+                        }
+                        else
+                        {
+                            post.SetValue("approved", true);
+                        }
+
                     }
 
                     if (!newPost)
                     {
                         post.SetValue("editDate",DateTime.UtcNow);
-                    }
-                    else
-                    {
-                        //does the post need approval
-                        post.SetValue("requireApproval",parent.GetValue<bool>("requireApproval"));
-                        if (parent.GetValue<bool>("requireApproval"))
-                        {
-                            post.SetValue("approved",false);
-                        }
-                        else
-                        {
-                            post.SetValue("approved",true);
-                        }
                     }
                     var result = _contentService.SaveAndPublish(post);
 
@@ -216,8 +381,8 @@ namespace MediaWiz.Forums.Controllers
             return RedirectToCurrentUmbracoPage();
         }
         [HttpPost]
-        [Authorize(Roles = "ForumAdministrator")]
-        public IActionResult CreateForum([Bind(Prefix="Forum")]ForumsForumModel model)
+        //[Authorize(Roles = "ForumAdministrator")]
+        public IActionResult CreateForum(/*[Bind(Prefix="Forum")]*/ForumsForumModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -227,13 +392,16 @@ namespace MediaWiz.Forums.Controllers
 
             var parent = _contentService.GetById(model.ParentId);
             var forum = _contentService.CreateContent(model.Title, parent.GetUdi(), "forum");
+            forum.SetValue("hideChildrenFromNav",true);
+            forum.SetValue("umbracoNaviHide",false);
             forum.SetValue("forumTitle",model.Title);
             forum.SetValue("forumDescription",model.Introduction);
             forum.SetValue("postAtRoot", model.AllowPosts);
             forum.SetValue("isActive",true);
             forum.SetValue("allowImages",model.AllowImages);
             forum.SetValue("requireApproval",model.RequireApproval);
-            var result = _contentService.SaveAndPublish(forum);
+            //var saveresult = _contentService.Save(forum);
+            var result = _contentService.SaveAndPublish(forum, new string[] { "*" });
             TempData["ForumSaveResult"] = result;
             return CurrentUmbracoPage();
         }
@@ -299,9 +467,13 @@ namespace MediaWiz.Forums.Controllers
             if ( model.ParentId > 0 ) 
             {
                 var parent = _publishedContentQuery.Content(model.ParentId);
+                if ( parent.ContentType.Alias != "forum" )
+                {
+                    parent = parent.Parent;
+                }
                 if ( parent != null )
                 {
-                    var canPostGroups = parent.Value<string>("canPostGroups");
+                    var canPostGroups = parent.Value<string>("canPostGroup");
 
                     // default is any one logged on...
                     if (string.IsNullOrWhiteSpace(canPostGroups))

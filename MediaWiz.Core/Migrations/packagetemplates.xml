@@ -40,16 +40,16 @@
     @if (Model.PagedResult.Any())
     {
         <div class="wiz-topics">
-            <div class="d-flex flex-row flex-wrap mb-3 p-2 color-white bg-secondary">
-                <div class="col-8">Topic</div>
-                <div class="col-2">Replies</div>
+            <div class="d-flex flex-row flex-wrap mb-3 p-2 color_dark bold">
+                <div class="col-7">Topic</div>
+                <div class="col-3">Replies</div>
                 <div class="col-2">Views</div>
             </div>
             <div class="wiz-body">
                 @foreach (var result in Model.PagedResult)
                 {
                     var post = Umbraco.Content(result.Id);
-                    @await Component.InvokeAsync("Posts",new {Template = "DisplayTopic",Model = post,showTitle = true})
+                    @await Component.InvokeAsync("Posts", new { Template = "DisplayTopic", Model = post, showTitle = true, activeTopics = true})
 
                 }
                 @if (totalPages > 1)
@@ -65,7 +65,18 @@
     {
         <p>No active Topics </p>
     }
-</div>]]></Design>
+</div>
+@section ForumScripts
+{
+    <script>
+        $(document).ready(function () {
+            MediaWiz.InitTinyMce("textarea.new-post");
+            $("#active-since").on("change", function () {
+                $("#topics-since").submit();
+            });
+        });
+    </script>
+}]]></Design>
     </Template>
     <Template>
       <Name>Forum</Name>
@@ -304,11 +315,17 @@ else
       <Design><![CDATA[@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<MediaWiz.Forums.ViewModels.SearchViewModel>
 @using MediaWiz.Forums.Interfaces
 @using System.Text.RegularExpressions
+@using Umbraco.Cms.Core.Security
 @using Umbraco.Extensions
 @inject IForumCacheService _forumCache;
-
+@inject IMemberManager _memberManager
 @{ Layout = "forumMaster.cshtml";
-
+    var currentUser = _memberManager.GetUserAsync(Context.User).Result;
+    IList<string> roles = new List<string>();
+    if (currentUser != null)
+    {
+        roles = _memberManager.GetRolesAsync(currentUser).Result;
+    }
     int.TryParse(Context.Request.Query["page"], out var pagenum);
     if (pagenum == 0)
     {
@@ -319,62 +336,91 @@ else
     ViewBag.Page = pagenum;
     ViewBag.TotalPages = totalPages;
 }
-<div class="row">
-    @await Component.InvokeAsync("Forum",new {Template = "Search"})
+<div class="wiz-forum-info">
+    <div class="page-header">
+        <h3>@Model.Value("title")</h3>
+    </div>
+    <div class="forum-intro">
+        @await Component.InvokeAsync("Forum", new { Template = "Search" })
+    </div>
 </div>
 <div class="row">
     @{ if (Model.PagedResult != null && Model.PagedResult.Any())
         {
             <div class="forum-posts col-sm-12">
                 <div class="wiz-topics">
-
+                    <div class="wiz-body">
                         @foreach (var result in Model.PagedResult)
                         {
                             var post = Umbraco.Content(result.Id);
+                            var forum = post;
+                            if (post.Parent.ContentType.Alias == "forum")
+                            {
+                                forum = post.Parent;
+                            }
+                            else if (post.Parent.Parent.ContentType.Alias == "forum")
+                            {
+                                forum = post.Parent.Parent;
+                            }
+                            bool isApproved = !forum.Value<bool>("requireApproval") || post.Value<bool>("approved");
                             string locked = post.Value<bool>("allowReplies") ? "" : "locked";
                             string solved = post.Value<bool>("answer") ? "solved" : "";
+                            string approvereplies = "notapproved";
+                            if (isApproved )
+                            {
+                                approvereplies = "";
+                                if (post.Value<int>("unapprovedReplies") > 0)
+                                {
+                                    approvereplies = "require-approval";
+                                };
+                            }
+                            isApproved = isApproved && post.Value<int>("unapprovedReplies") == 0;
                             var cacheInfo = _forumCache.GetPost(post, "Topic_" + post.Id);
-                            <div class="d-flex flex-row flex-wrap topic @locked @solved p-3 mb-2 bg-light">
-                                <div class="col-12">
-                                @if (post.Value<int>("stickiness") > 0)
-                                {
-                                    <i class="bi bi-star"></i>
-                                }
-                                @if (!post.Value<bool>("postType"))
-                                {
-                                    <a href="@post.Parent.Url()" style="display: block;" title="Navigate to @post.Parent.Value("postTitle")">@post.Parent.Value("postTitle")</a>
-                                }
-                                else
-                                {
-                                    <a href="@post.Url()" title="View post @post.Value("postTitle")" style="display: block;">@post.Value("postTitle")</a>
+                            @if (isApproved || roles.Contains("ForumAdministrator") || roles.Contains("ForumMederator"))
+                            {
+                            <div class="d-flex flex-row flex-wrap topic @locked @solved mb-2 p-3 @approvereplies rounded-3">
+                                <div class="col-7 ">
+                                    @if (post.Value<int>("stickiness") > 0)
+                                    {
+                                        <i class="bi bi-star"></i>
+                                    }
+                                    @if (!post.Value<bool>("postType"))
+                                    {
+                                        <a href="@post.Parent.Url()" style="display: block;" title="Navigate to @post.Parent.Value("postTitle")">@post.Parent.Value("postTitle")</a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@post.Url()" title="View post @post.Value("postTitle")" style="display: block;">@post.Value("postTitle")</a>
 
-                                }
-                            </div>
-                                <div class="col-12">
+                                    }
+                                </div>
+                                <div class="col-5">
                                     Created: @post.CreateDate.ToString("MMM dd, yyyy")
                                     @if (cacheInfo.latestPost != DateTime.MinValue)
                                     {
-                                        <span> - Last update:</span>@cacheInfo.latestPost.ToString("MMM dd, yyyy")
+                                        <span> - Last update:</span>
+
+                                        @cacheInfo.latestPost.ToString("MMM dd, yyyy")
                                     }
                                 </div>
-                            
                                 <div class="col-12 topic-summary pt-1">
-                                @if (post.Value<bool>("postType"))
-                                {
-                                    @Regex.Replace(post.Value<string>("postBody"), "<[^>]*(>|$)", string.Empty)
-
-                                }
-                                else
-                                {
-                                    @Regex.Replace(post.Parent.Value<string>("postBody"), "<[^>]*(>|$)", string.Empty)
-                                }
-                                    
+                                    @if (post.Value<bool>("postType"))
+                                    {
+                                        @Regex.Replace(post.Value<string>("postBody"), "<[^>]*(>|$)", string.Empty)
+                                    }
+                                    else
+                                    {
+                                        @Regex.Replace(post.Parent.Value<string>("postBody"), "<[^>]*(>|$)", string.Empty)
+                                    }
                                 </div>
                             </div>
-
+                                
+                            }
                         }
-                </div>
 
+                    </div>
+
+                </div>
                 @if (totalPages > 1)
                 {
                     @await Component.InvokeAsync("Navigation", new { Template = "PagerView", Model = Model })
@@ -509,7 +555,8 @@ else
       <Name>Profile</Name>
       <Key>bb5f1512-2163-476c-9afa-c95e9d6dcaa4</Key>
       <Alias>profile</Alias>
-      <Design><![CDATA[@using Umbraco.Extensions
+      <Design><![CDATA[@using System.Text.RegularExpressions
+@using Umbraco.Extensions
 @inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
 
 @{
@@ -524,7 +571,18 @@ else
         <h3>@Model.Value("title")</h3>
     </div>
     <div class="forum-intro">
-        @Html.Raw(Model.Value("message"))
+        @{
+            var res = Regex.Match(Context.Request.Query["user"].ToString(), @"^\d+$");
+            if (res.Success)
+            {
+                
+            }
+            else
+            {
+                @Html.Raw(Model.Value("message"))
+            }
+        }
+        
     </div>
 </div>
 @await Component.InvokeAsync("ForumMembership",new {Template = "EditProfile",qryUser = Context.Request.Query["user"].ToString()})
@@ -535,7 +593,6 @@ else
 
             var x = $(event.target).text();         // active tab
             var y = $(event.relatedTarget).text();  // previous tab console.log($(event));
-            console.log(x);
             if (x === "Files") {
                 $("#nav-files").load("/memberfiles/" + $("#nav-files").data("id"));
             }
@@ -723,14 +780,14 @@ else
 
 @{
     Layout = "forumMaster.cshtml";
-    var success = TempData["ValidationSuccess"] != null;
-    var error = TempData["ValidationError"] != null;
+    var success = Model.Success;
+    var error = Model.Error != null;
 }
 @section ForumHeader{
     <meta name="robots" content="noindex,nofollow" />
     @if (success)
     {
-        <meta http-equiv="Refresh" content="5;url=/Forums" />
+        <meta http-equiv="Refresh" content="5;url=@Umbraco.GetDictionaryValueOrDefault("Forums.ForumUrl", "/")" />
     }
 
 }
@@ -749,15 +806,163 @@ else
 }
 @if (error)
 {
-    <p class="text-warning">Validation failed. @TempData["ValidationError"]</p>
+    <p class="text-warning">Validation failed. @Model.Error</p>
 }]]></Design>
     </Template>
   </Templates>
   <Stylesheets />
   <Scripts />
-  <PartialViews />
-  <Macros />
-  <MacroPartialViews />
+  <PartialViews>
+    <View path="Navigation\_TopNavigation.cshtml"><![CDATA[@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+
+@{
+    var site = (IPublishedContent)Umbraco.ContentAtRoot().FirstOrDefault();
+    var children = site.Children().Where(x => x.IsVisible());
+    var siblings = site.Siblings();
+}
+
+<!-- create your responsive navbar -->
+<nav class=" navbar-expand-lg navbar navbar-light bg-white" id="myNavbar">
+    <!-- next is where your logo goes -->
+    <img src="/wizard.jpg?width=60&height=60" alt="MediaWizards Logo" />
+    <a href="@site.Url()" class="navbar-brand" title="@site.Value("siteName")">@site.Value("siteName")</a>
+    <!-- next is your mobile burger menu toggle -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- now we go to the main bit of the nav -->
+    <div class="collapse navbar-collapse" id="mainNav">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+
+            <!-- un comment the following line if you want to add the root node name to the top navigation
+            <li class="nav-item px-4"><a class="nav-link @Html.Raw(Model.Id == site.Id ? "navi-link--active" : "")" href="@site.Url()">@site.Name</a></li>-->
+
+            @foreach (var item in children)
+            {
+                if (item.Children().Any(x => x.IsVisible()) && !item.Value<bool>("hideChildrenFromNav"))
+                {
+                    <li class="nav-item px-4 dropdown">
+                        <a class="nav-link dropdown-toggle @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="#" id="@($"{item.Name.Replace(" ", "")}Dropdown")" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Name</a>
+                        <div class="dropdown-menu" aria-labelledby="@($"{item.Name.Replace(" ", "")}Dropdown")">
+                            @foreach (var child in item.Children().Where(x => x.IsVisible()))
+                            {
+                                <a class="dropdown-item" href="@child.Url()">@child.Name</a>
+                            }
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item px-4"><a class="nav-link @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@item.Url()">@item.Name</a></li>
+                }
+            }
+            @foreach (var item in siblings)
+            {
+                if (item.Children().Any(x => x.IsVisible()) && !item.Value<bool>("hideChildrenFromNav"))
+                {
+                    <li class="nav-item px-4 dropdown">
+                        <a class="nav-link dropdown-toggle @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="#" id="@($"{item.Name.Replace(" ", "")}Dropdown")" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">@item.Name</a>
+                        <div class="dropdown-menu" aria-labelledby="@($"{item.Name.Replace(" ", "")}Dropdown")">
+                            @foreach (var child in item.Children().Where(x => x.IsVisible()))
+                            {
+                                <a class="dropdown-item" href="@child.Url()">@child.Name</a>
+                            }
+                        </div>
+                    </li>
+                }
+                else
+                {
+                    <li class="nav-item px-4"><a class="nav-link @(item.IsAncestorOrSelf(Model) ? "nav-link--active" : null)" href="@item.Url()">@item.Name</a></li>
+                }
+            }
+        </ul>
+    </div>
+</nav>]]></View>
+  </PartialViews>
+  <Macros>
+    <macro>
+      <name>Latest Forum Posts</name>
+      <key>36e8062f-55cb-41c5-8dab-7084651ad4ad</key>
+      <alias>LatestForumPosts</alias>
+      <macroSource>~/Views/MacroPartials/Latest Forum Posts.cshtml</macroSource>
+      <useInEditor>True</useInEditor>
+      <dontRender>False</dontRender>
+      <refreshRate>0</refreshRate>
+      <cacheByMember>False</cacheByMember>
+      <cacheByPage>False</cacheByPage>
+      <properties>
+        <property key="84dfdf55-7f59-42d9-83d5-fc7b1ca7d89c" name="NumberOfPosts" alias="numberOfPosts" sortOrder="1" propertyType="Umbraco.Integer" />
+        <property key="b94a9fd9-112b-4850-84c6-bae3a837a4a4" name="Select starting page" alias="startNodeId" sortOrder="0" propertyType="Umbraco.ContentPicker" />
+      </properties>
+    </macro>
+  </Macros>
+  <MacroPartialViews>
+    <View path="Latest Forum Posts.cshtml"><![CDATA[@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Routing
+@using Umbraco.Extensions
+
+@inject IPublishedContentQuery PublishedContentQuery
+@inject IPublishedValueFallback PublishedValueFallback
+@inject IPublishedUrlProvider PublishedUrlProvider
+
+
+@{
+    var startNodeId = Model?.MacroParameters["startNodeId"]; 
+    var numberOfPosts = 3;
+    if (Model.MacroParameters["numberOfPosts"] != null)
+    {
+        int.TryParse((string)Model.MacroParameters["numberOfPosts"], out numberOfPosts);
+    }
+    
+    if (startNodeId != null)
+    {
+    @* Get the starting page *@
+        var startNode = PublishedContentQuery.Content(startNodeId);
+        var selection = startNode.DescendantsOrSelf()
+            .Where(x => x.IsVisible(PublishedValueFallback) && x.Value<bool>("postType"))
+            .OrderByDescending(o=>o.Value("editDate"))
+            .ThenByDescending(o => o.CreateDate).Take(numberOfPosts).ToArray();
+
+if (selection.Length > 0)
+{
+            <div class="sidebar">
+                <span class="wiz-forum-title">&nbsp;Latest forum posts</span>
+                <ul class="wiz-topics">
+                    <li class="wiz-body">
+                        @foreach (var item in selection)
+                        {
+                            var editdate = item.Value<DateTime>("editDate");
+                            <ul class="topic">
+                                <li class="wiz-topic-content">
+                                    <a class="wiz-topic-permalink" href="@item.Url(PublishedUrlProvider)">@item.Value("postTitle")</a>
+                                    <span class="wiz-topic-meta">@item.Value("postBody")</span>
+                                    <span class="wiz-topic-header">Created by @item.Value("postCreator") on <span class="wiz-topic-permalink">@item.CreateDate.ToLongDateString() at @item.CreateDate.ToLocalTime().ToShortTimeString()</span>
+                                        @if (editdate == DateTime.MinValue)
+                                        {
+
+                                        }
+                                        else
+                                        {
+                                            <span><br />Latest post @editdate.ToLocalTime().ToLongDateString() at @editdate.ToLocalTime().ToShortTimeString()</span>
+                                        }
+                                        
+                                    </span>
+                                </li>
+                            </ul>
+                        }
+                    </li>
+                </ul>
+            </div>
+        }
+    }
+}
+
+]]></View>
+  </MacroPartialViews>
   <DictionaryItems />
   <Languages />
   <DataTypes />

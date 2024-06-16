@@ -373,5 +373,5 @@ wwwroot/umbraco
 /MediaWiz.TestSite/MediaWiz.TestSite.csproj
 /WWWTest/WWWTest.csproj
 /WWWTest
-/MediaWiz.Forums14/MediaWiz.Forums14.csproj
-/MediaWiz.Forums14
+/MediaWiz.Core/Migrations/dataTypes.xml
+/MediaWiz.Core/Migrations/templates.xml

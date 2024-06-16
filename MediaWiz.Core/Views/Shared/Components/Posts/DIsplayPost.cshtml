@@ -13,7 +13,13 @@
     bool TopicIslocked = !Model.Value<bool>("allowReplies");
     
     var post = Model;
-    bool isApproved = !post.Value<bool>("requireApproval") || post.Value<bool>("approved");
+    var forum = post;
+    if(post.Parent.ContentType.Alias == "forum"){
+        forum = post.Parent;
+    }else if (post.Parent.Parent.ContentType.Alias == "forum"){
+        forum = post.Parent.Parent;
+    }
+    bool isApproved = !forum.Value<bool>("requireApproval") || post.Value<bool>("approved");
     var topicClass = post.Value<bool>("postType") ? "topic" : "reply";
     if (TopicIslocked)
     {
@@ -32,9 +38,9 @@
     }
 
 
-    <li class="@topicClass mt-3" style="overflow: auto">
+    <li class="@topicClass mt-3 rounded-3" style="overflow: auto">
 
-        @if ((post.IsVisible() && isApproved) || roles.Contains("ForumAdministrator"))
+        @if ((post.IsVisible() && isApproved) || roles.Contains("ForumAdministrator") || roles.Contains("ForumMederator") || (user.Id == post.Value<IPublishedContent>("postAuthor").Id.ToString()))
         {
             var alertwarning = "";
             var author = post.Value<IPublishedContent>("postAuthor");
@@ -46,10 +52,10 @@
             {
                 alertwarning = "notapproved";
             }
-            <div class="@topicClass @solved" style="overflow: auto">
+            <div class="@topicClass @solved @alertwarning" style="overflow: auto">
 
                 <div class="d-flex wiz-reply-content" id="content_@post.Id" style="overflow: auto;">
-                    <div class="w-2 align-self-stretch d-flex bg-white">
+                            <div class="w-2 flex-md-column p-2">
                         <a href="/profile/?user=@post.Value("postCreator")" title="View @post.Value("postCreator")'s profile" class="wiz-author-link">
                             <span>
                                 @{
@@ -90,7 +96,10 @@
                                 @{
                                     DisplayPostTools(post);
                                 }
-                                <li class="list-inline-item"><a href="#post_@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Link.Title","Direct link to post")"><i class="fs-5 bi-link-45deg"></i><span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Link.Text","Copy link")</span></a> </li>
+                                @if (isApproved)
+                                {
+                                    <li class="list-inline-item"><a href="#post_@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Link.Title","Direct link to post")"><i class="fs-5 bi-link-45deg"></i><span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Link.Text", "Copy link")</span></a> </li>
+                                }
                             </ul>
                         </div>
                     </div>
@@ -98,8 +107,9 @@
             </div>
 
         }
-        else if (roles.Contains("ForumAdministrator"))
+        else if (roles.Contains("ForumAdministrator") || roles.Contains("ForumMederator"))
         {
+
                 // hidden posts are deleted
             <div class="wiz-reply-header post-deleted">
                 @if (post.Value<bool>("deletedByAuthor"))
@@ -188,13 +198,16 @@
         {
             var memberById = _memberManager.FindByIdAsync(user.Id).Result;
             IPublishedContent member = _memberManager.AsPublishedMember(memberById);
+            @if (isApproved)
+            {
+                <li class="list-inline-item">
+                    <a class="post-quote" data-postid="@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.QuoteLink.Title","Reply with Quote")" href="#">
+                        <i class="fs-5 bi-chat-quote" aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.QuoteLink.Text", "Quote")</span>
+                    </a>
+                </li>                
+            }
 
-            <li class="list-inline-item">
-                <a class="post-quote" data-postid="@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.QuoteLink.Title","Reply with Quote")" href="#">
-                    <i class="fs-5 bi-chat-quote" aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.QuoteLink.Text","Quote")</span>
-                </a>
-            </li>
-            @if (!post.Value<bool>("postType") && !isSolved)
+            @if (!post.Value<bool>("postType") && !isSolved && isApproved)
             {
                 <li class="list-inline-item">
                     <a href="#" class="post-answer" data-postid="@post.Id" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.SolutionLink.Title","Mark as solution")">
@@ -202,7 +215,7 @@
                     </a>
                 </li>
             }
-            if ((member.Id == authorId) || roles.Contains("ForumAdministrator"))
+            if ((member.Id == authorId) || roles.Contains("ForumAdministrator") || roles.Contains("ForumMederator"))
             {
                 @if (post.CreateDate >= lastpostDate || roles.Contains("ForumAdministrator"))
                 {
@@ -232,6 +245,21 @@
                             }
                         </a>
                     </li>
+
+
+                }
+                @if ((roles.Contains("ForumAdministrator") || roles.Contains("ForumModerator")))
+                {
+
+                    @if (!post.Value<bool>("approved"))
+                    {
+                        <li class="list-inline-item">
+                            <a class="post-approve" data-postid="@post.Id" href="#" rel="nofollow" title="@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Approve","Approve Post")">
+                                <i class="fs-5 bi-file-check" aria-hidden="true"></i> <span class="tool-label" style="display: none;">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts.Approve", "Approve Post")</span>
+                            </a>
+                        </li>
+                    }
+
                 }
             }
         }

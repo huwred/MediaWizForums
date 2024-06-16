@@ -18,7 +18,7 @@ namespace MediaWiz.Forums.ViewComponents
             _contextAccessor = contextAccessor;
 
         }
-        public async Task<IViewComponentResult> InvokeAsync(string Template, int Id,IPublishedContent Model, bool ShowTitle)
+        public async Task<IViewComponentResult> InvokeAsync(string Template, int Id,IPublishedContent Model, bool ShowTitle, bool ActiveTopics = false)
         {
             switch (Template)
             {
@@ -45,6 +45,7 @@ namespace MediaWiz.Forums.ViewComponents
                 case "DisplayPost":
                     return await Task.FromResult((IViewComponentResult)View(Template,Model));
                 case "DisplayTopic":
+                    TempData["ActiveTopics"] = ActiveTopics ? "true" : "false";
                     return await Task.FromResult((IViewComponentResult)View(Template,Model));
                 default:
                     return await Task.FromResult((IViewComponentResult)View(Template));

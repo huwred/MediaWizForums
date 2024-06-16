@@ -18,11 +18,11 @@
     {
         <div>
             <div id="forums-list-0" class="wiz-forums">
-                <div class="d-flex flex-row flex-wrap mb-3 p-2 bg-secondary color-white">
+                <div class="d-flex flex-row flex-wrap mb-3 p-2 color_dark bold">
                     <div class="col-8 col-sm-5">@LocalizationService.GetOrCreateDictionaryValue("Forums.Forum","Forum")</div>
-                    <div class="col-2">@LocalizationService.GetOrCreateDictionaryValue("Forums.Topic","Topic")</div>
+                    <div class="col-2">@LocalizationService.GetOrCreateDictionaryValue("Forums.Topics","Topics")</div>
                     <div class="col-2">@LocalizationService.GetOrCreateDictionaryValue("Forums.Posts","Posts")</div>
-                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">@LocalizationService.GetOrCreateDictionaryValue("Forums.LatestPost","Latest Pos")t</div>
+                    <div class="d-none d-md-block col-sm flex-shrink-0 flex-grow-1">@LocalizationService.GetOrCreateDictionaryValue("Forums.LatestPost","Latest Post")</div>
                 </div>
                 <div class="wiz-body p-2">
                     @foreach (var forum in Model.Forums)

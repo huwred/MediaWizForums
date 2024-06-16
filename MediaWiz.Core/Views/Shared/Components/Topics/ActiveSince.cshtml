@@ -5,12 +5,13 @@
     string activesince = Context.Request.Query["TopicsSince"];
     activesince ??= "7d";
 }
-<div class="row">
-    <div class="col-1">
+<form action="/Active-Topics" class="col-10 offset-1" id="topics-since">
+    <div class="row mb-3">
+        <div class="col-2">
         <label class="form-label pt-2">@LocalizationService.GetOrCreateDictionaryValue("Forums.ActiveSince", "Within the")</label>
     </div>
     <div class="col-6">
-        <form action="/Active-Topics" class="col-10 offset-1" id="topics-since">
+
             <fieldset>
                 <select class="form-select" name="TopicsSince" id="active-since">
                     <!option value="60m"
@@ -40,8 +41,21 @@
                     }>@LocalizationService.GetOrCreateDictionaryValue("Forums.ActiveSince.LastYear", "Last year")</!option>
                 </select>
             </fieldset>
-        </form>
 
 
+
+        </div>
     </div>
-</div>
+    <fieldset>
+        <label class="mb-3">Filter By</label>
+        <div class="row">
+            <div class="col-6">
+                <a href="/active-topics/?showonly=unsolved" class="badge rounded-pill border bg-white p-3">SHOW ONLY UNSOLVED TOPICS</a>
+            </div>
+            <div class="col-6">
+                <a href="/active-topics/?showonly=noreply" class="badge rounded-pill border bg-white p-3">SHOW ONLY TOPICS WITH NO REPLIES</a>
+            </div>
+        </div>
+    </fieldset>    
+</form>
+

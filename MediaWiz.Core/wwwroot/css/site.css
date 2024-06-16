@@ -652,7 +652,7 @@ a.blogpost {
 	margin-left: 3px !important;
 }
 
-article.pageBox, .wiz-forums, .wiz-topics, .mediawiz-wrapper {
+article.pageBox {
 	background-color: white;
 }
 p.caption {
@@ -686,7 +686,13 @@ section {
 
 
 
-
+.rich-text h3 {
+	font-size: 28px;
+	font-weight: 300;
+	line-height: 1.2;
+	 margin:revert; 
+	color: inherit;
+}
 
 
 

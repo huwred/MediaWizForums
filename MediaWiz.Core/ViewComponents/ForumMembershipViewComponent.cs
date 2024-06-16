@@ -6,6 +6,8 @@ using Umbraco.Cms.Core.Services;
 using Umbraco.Cms.Web.Common.Models;
 using Umbraco.Cms.Web.Website.Models;
 using Umbraco.Cms.Core.Security;
+using Umbraco.Cms.Web.Common;
+using System;
 
 namespace MediaWiz.Forums.ViewComponents
 {
@@ -61,7 +63,11 @@ namespace MediaWiz.Forums.ViewComponents
 
                     if (model.CurrentUser != null)
                     {
-                        model.MemberIdentity = _memberManager.FindByNameAsync(model.CurrentUser.UserName).Result;
+                        model.MemberIdentity = _memberManager.FindByNameAsync(qryUser).Result;
+                        if(model.MemberIdentity == null)
+                        {
+                            model.MemberIdentity = _memberManager.FindByIdAsync(qryUser).Result;
+                        }
                         model.ViewMember = _memberService.GetByKey(model.MemberIdentity.Key);
                     }
 

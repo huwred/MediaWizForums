@@ -10,14 +10,8 @@
 
     if (Model.Value<bool>("postAtRoot") && MemberCanPost(Model))
     {
-        if (!string.IsNullOrWhiteSpace(create) && create == "true")
-        {
-            @await Component.InvokeAsync("Posts", new {Template="PostForm",Model,ShowTitle = true})
-        }
-        else
-        {
-            <a href="?create=true" class="btn btn-dark">Create a new Topic</a>
-        }
+        @await Component.InvokeAsync("Posts", new { Template = "PostForm", Model, ShowTitle = true })
+
     }
 }
 
