@@ -293,19 +293,19 @@ namespace MediaWiz.Forums.Controllers
         }    
         #region Installation
 
-        [Route("sendvalidation/{id?}")]
-        public void ResendValidation(Guid? id)
+        [Route("sendvalidation/{id}")]
+        //[HttpPost]
+        public void ResendValidation(string id)
         {
+            //var id = jobj["id"].Value<int?>();
+
             if (id == null)
             {
                 return;
             }
-            var member = _memberService.GetByKey(id.Value);
-                string resetGuid = ForumHelper.GenerateUniqueCode(16);
-                member.SetValue("resetGuid", resetGuid);    
-            _memberService.Save(member);
-
-            var result =  _mailService.SendVerifyAccount(member.Email,resetGuid).Result;
+            var member = _memberService.GetById(Convert.ToInt32(id));
+            
+            var result =  _mailService.SendVerifyAccount(member.Email,member.GetValue<string>("resetGuid")).Result;
         }
         #endregion
 

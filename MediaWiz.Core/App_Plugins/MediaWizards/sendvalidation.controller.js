@@ -65,7 +65,7 @@
 
             // Get the current member id using the editorState
             var _memberId = editorState.current.id;
-
+            console.log_memberId();
             // Do Login
             $http.post(
                 url,

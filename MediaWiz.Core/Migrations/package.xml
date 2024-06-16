@@ -252,19 +252,6 @@
           <Variations>Nothing</Variations>
         </GenericProperty>
         <GenericProperty>
-          <Name>Require Approval</Name>
-          <Alias>requireApproval</Alias>
-          <Key>84c6263a-e95d-4c0d-b425-30ae795a4a6c</Key>
-          <Type>Umbraco.TrueFalse</Type>
-          <Definition>92897bc6-a5f3-4ffe-ae27-f2e7e33dda49</Definition>
-          <Tab Alias="general">General</Tab>
-          <SortOrder>2</SortOrder>
-          <Mandatory>False</Mandatory>
-          <LabelOnTop>False</LabelOnTop>
-          <Description><![CDATA[Posts require approval.]]></Description>
-          <Variations>Nothing</Variations>
-        </GenericProperty>
-        <GenericProperty>
           <Name>Post At Root</Name>
           <Alias>postAtRoot</Alias>
           <Key>569a5474-d72e-4b86-8425-50ce9b8ce463</Key>
@@ -613,31 +600,6 @@
           <Validation></Validation>
           <ValidationRegExpMessage></ValidationRegExpMessage>
           <Description><![CDATA[]]></Description>
-          <Variations>Nothing</Variations>
-        </GenericProperty>
-        <GenericProperty>
-          <Name>Approved</Name>
-          <Alias>approved</Alias>
-          <Key>6bf64b84-b947-438c-ba89-eb66e9cfffb8</Key>
-          <Type>Umbraco.TrueFalse</Type>
-          <Definition>ae1abc4d-4c13-42f8-a483-b5cef0866896</Definition>
-          <Tab Alias="settings">Settings</Tab>
-          <SortOrder>3</SortOrder>
-          <Mandatory>False</Mandatory>
-          <LabelOnTop>False</LabelOnTop>
-          <Description><![CDATA[Post has been approved.]]></Description>
-          <Variations>Nothing</Variations>
-        </GenericProperty>
-        <GenericProperty>
-          <Name>Unapproved Replies</Name>
-          <Alias>unapprovedReplies</Alias>
-          <Key>9dae69fd-c6de-46af-9da7-4c62a96dc701</Key>
-          <Type>Umbraco.Integer</Type>
-          <Definition>2e6d3631-066e-44b8-aec4-96f09099b2b5</Definition>
-          <Tab Alias="settings">Settings</Tab>
-          <SortOrder>4</SortOrder>
-          <Mandatory>False</Mandatory>
-          <LabelOnTop>False</LabelOnTop>
           <Variations>Nothing</Variations>
         </GenericProperty>
       </GenericProperties>
@@ -1280,13 +1242,13 @@
   <DictionaryItems />
   <Languages />
   <DataTypes>
-    <DataType Name="Forum - Approved - Toggle" Id="Umbraco.TrueFalse" Definition="ae1abc4d-4c13-42f8-a483-b5cef0866896" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Approved&quot;,&quot;labelOff&quot;:&quot;Not Approved&quot;}" />
     <DataType Name="Forum - Member Group Picker" Id="Umbraco.MemberGroupPicker" Definition="d1acd2f4-5ba8-440f-af31-e1ee16eb5fb6" DatabaseType="Ntext" Configuration="{}" />
     <DataType Name="Forum - Page Size - Search" Id="Umbraco.Slider" Definition="cc9c0125-73ed-4bbe-b431-ad7cdcfa93b8" DatabaseType="Nvarchar" Configuration="{&quot;enableRange&quot;:false,&quot;initVal1&quot;:25.0,&quot;initVal2&quot;:0.0,&quot;minVal&quot;:10.0,&quot;maxVal&quot;:100.0,&quot;step&quot;:5.0}" />
     <DataType Name="Forum - Page Size - Topics" Id="Umbraco.Slider" Definition="d62b131a-74c3-4f33-bf9a-3e1f5882fae9" DatabaseType="Nvarchar" Configuration="{&quot;enableRange&quot;:false,&quot;initVal1&quot;:10.0,&quot;initVal2&quot;:0.0,&quot;minVal&quot;:10.0,&quot;maxVal&quot;:100.0,&quot;step&quot;:5.0}" />
     <DataType Name="Forum - Post Type - Toggle" Id="Umbraco.TrueFalse" Definition="4d4c1220-72c9-42be-bf25-0c44dfdd5d1a" DatabaseType="Integer" Configuration="{&quot;default&quot;:true,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Topic&quot;,&quot;labelOff&quot;:&quot;Reply&quot;}" />
-    <DataType Name="Forum - Require - Toggle" Id="Umbraco.TrueFalse" Definition="99355d00-b42f-4c18-8033-6991e1d4dff2" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Required&quot;,&quot;labelOff&quot;:&quot;Not Required&quot;}" />
     <DataType Name="Forum - Resolved - Toggle" Id="Umbraco.TrueFalse" Definition="dc500a08-593c-44bd-9e46-905d859c9adb" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Answered&quot;,&quot;labelOff&quot;:&quot;Not Answered&quot;}" />
+    <DataType Name="Forum - Require - Toggle" Id="Umbraco.TrueFalse" Definition="99355d00-b42f-4c18-8033-6991e1d4dff2" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Required&quot;,&quot;labelOff&quot;:&quot;Not Required&quot;}" />
+    <DataType Name="Forum - Approved - Toggle" Id="Umbraco.TrueFalse" Definition="ae1abc4d-4c13-42f8-a483-b5cef0866896" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Approved&quot;,&quot;labelOff&quot;:&quot;Not Approved&quot;}" />
   </DataTypes>
   <MediaItems/>
 </umbPackage>

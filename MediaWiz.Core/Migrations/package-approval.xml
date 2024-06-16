@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<umbPackage>
+  <info>
+    <package>
+      <name>MediaWiz Forums</name>
+    </package>
+  </info>
+  <Documents />
+  <DocumentTypes />
+  <MediaTypes />
+  <Templates />
+  <Stylesheets />
+  <Scripts />
+  <PartialViews />
+  <Macros />
+  <MacroPartialViews />
+  <DictionaryItems />
+  <Languages />
+  <DataTypes>
+    <DataType Name="Forum - Require - Toggle" Id="Umbraco.TrueFalse" Definition="99355d00-b42f-4c18-8033-6991e1d4dff2" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Required&quot;,&quot;labelOff&quot;:&quot;Not Required&quot;}" />
+    <DataType Name="Forum - Approved - Toggle" Id="Umbraco.TrueFalse" Definition="ae1abc4d-4c13-42f8-a483-b5cef0866896" DatabaseType="Integer" Configuration="{&quot;default&quot;:false,&quot;showLabels&quot;:true,&quot;labelOn&quot;:&quot;Approved&quot;,&quot;labelOff&quot;:&quot;Not Approved&quot;}" />
+  </DataTypes>
+  <MediaItems/>
+</umbPackage>
